@@ -90,10 +90,27 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="最大回撤计算">最大回撤计算</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。</div><div class="line">名词解释：最大回撤率：在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。</div></pre></td></tr></table></figure>
-
+<blockquote>
+<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br>名词解释：最大回撤率：在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。</p>
+</blockquote>
 <h3 id="要求：">要求：</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">实时计算，每只股票处理延迟平均不超过<span class="number">50</span>ms</div><div class="line">计算结果持久化，可查询每只股票某天的最大回撤值。</div></pre></td></tr></table></figure>
+<ol>
+<li>实时计算，每只股票处理延迟平均不超过50ms</li>
+<li>计算结果持久化，可查询每只股票某天的最大回撤值。<h3 id="数据准备：">数据准备：</h3>
+</li>
+<li>模拟5000只股票信息</li>
+<li>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<h3 id="场景实现分析：">场景实现分析：</h3>
+<blockquote>
+<p>实时计算股票最大回撤值，拟用Redis保存行情记录和股票信息，Storm计算股票某天的最大回撤值。计算完毕保存计算结果到Redis，提供查询。</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="http://i.imgur.com/XO5FoHA.png" alt=""><br>Redis 数据结构如<br><img src="http://i.imgur.com/RPNs5jj.png" alt=""><br><img src="http://i.imgur.com/XbZWxqN.png" alt=""></p>
+<p>Storm计算拓扑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">TopologyBuilder builder = new TopologyBuilder();   </div><div class="line">LocalDRPC drpc = new LocalDRPC();</div><div class="line">   DRPCSpout drpcSpout = (args != null && args.length &gt; <span class="number">0</span>)?new DRPCSpout(<span class="string">"max_drawdown_DRPC"</span>):new DRPCSpout(<span class="string">"max_drawdown_DRPC"</span>,drpc);  </div><div class="line">   builder.setSpout(<span class="string">"drpc-input"</span>, drpcSpout,<span class="number">25</span>); </div><div class="line">   builder.setBolt(<span class="string">"drawdown"</span>, new DrawdownBolt(), <span class="number">50</span>).noneGrouping(<span class="string">"drpc-input"</span>);  </div><div class="line">   builder.setBolt(<span class="string">"return"</span>, new ReturnResults(),<span class="number">50</span>).noneGrouping(<span class="string">"drawdown"</span>);</div></pre></td></tr></table></figure>
+
+<p>算法公式：<br><img src="http://i.imgur.com/cJcoH60.png" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 获取最大回撤值</div><div class="line"> * @param 按时间排序的价格列表</div><div class="line"> * @<span class="keyword">return</span></div><div class="line"> */</div><div class="line">public static double getMaxDrawdown(List&lt;String&gt; list){</div><div class="line">	double maxDrawdown = <span class="number">0</span>;//最大回撤值</div><div class="line">	double price = <span class="number">0</span>;//初始化比较价格</div><div class="line">	<span class="keyword">for</span>(String v : list){</div><div class="line">		double realtimePrice =  Double.parseDouble(v);//取出实时价格</div><div class="line">		double val = price - realtimePrice ;</div><div class="line">		<span class="keyword">if</span>(val &lt; <span class="number">0</span>)//如果实时价格大于比较价格</div><div class="line">			price = realtimePrice;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">if</span>(maxDrawdown &lt; val) maxDrawdown = val;//取最大回撤值</div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> maxDrawdown;</div><div class="line">}</div></pre></td></tr></table></figure>
 
 
       
