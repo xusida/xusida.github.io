@@ -98,7 +98,7 @@
 </li>
 <li>模拟5000只股票信息</li>
 <li>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<h3 id="场景实现分析">场景实现分析</h3>
-  实时计算股票最大回撤值，拟用Redis保存行情记录和股票信息，Storm计算股票某天的最大回撤值。计算完毕保存计算结果到Redis，提供查询。 </li>
+  实时计算股票最大回撤值，拟用<a href="http://redis.io" target="_blank" rel="external">Redis</a>保存行情记录和股票信息，<a href="https://storm.apache.org/" target="_blank" rel="external">Storm</a>计算股票某天的最大回撤值。计算完毕保存计算结果到<a href="http://redis.io" target="_blank" rel="external">Redis</a>，提供查询。 </li>
 </ol>
 <p><img src="http://i.imgur.com/XO5FoHA.png" alt=""><br>Redis 数据结构<br><img src="http://i.imgur.com/DuLxc14.png" alt=""><br><img src="http://i.imgur.com/mPFmPg4.png" alt=""></p>
 <p>Storm计算拓扑：</p>
@@ -168,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/01/28/-华泰证券实时计算场景测试/" data-id="m0drl9eunadwnwzg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/01/28/-华泰证券实时计算场景测试/" data-id="0a1kkr1qm5jh0rdy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
