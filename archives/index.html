@@ -90,22 +90,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="最大回撤计算">最大回撤计算</h2>
-<p><code>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。
-名词解释：最大回撤率：在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。</code></p>
-<h3 id="要求：">要求：</h3>
+<pre><code>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。
+名词解释：最大回撤率：在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。<span class="string">``</span>
+</code></pre><h3 id="要求：">要求：</h3>
 <ol>
 <li>实时计算，每只股票处理延迟平均不超过50ms</li>
 <li>计算结果持久化，可查询每只股票某天的最大回撤值。<h3 id="数据准备：">数据准备：</h3>
 </li>
 <li>模拟5000只股票信息</li>
 <li>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<h3 id="场景实现分析：">场景实现分析：</h3>
-<code>实时计算股票最大回撤值，拟用Redis保存行情记录和股票信息，Storm计算股票某天的最大回撤值。计算完毕保存计算结果到Redis，提供查询。</code></li>
+  实时计算股票最大回撤值，拟用Redis保存行情记录和股票信息，Storm计算股票某天的最大回撤值。计算完毕保存计算结果到Redis，提供查询。 </li>
 </ol>
 <p><img src="http://i.imgur.com/XO5FoHA.png" alt=""><br>Redis 数据结构<br><img src="http://i.imgur.com/DuLxc14.png" alt=""><br><img src="http://i.imgur.com/mPFmPg4.png" alt=""></p>
 <p>Storm计算拓扑：</p>
 <pre><code>    TopologyBuilder builder = <span class="keyword">new</span> TopologyBuilder();   
-    LocalDRPC drpc = <span class="keyword">new</span> LocalDRPC();
-    DRPCSpout drpcSpout = (args != <span class="literal">null</span> &amp;&amp; args.length &gt; <span class="number">0</span>)?<span class="keyword">new</span> DRPCSpout(<span class="string">"max_drawdown_DRPC"</span>):<span class="keyword">new</span> DRPCSpout(<span class="string">"max_drawdown_DRPC"</span>,drpc);  
     builder.setSpout(<span class="string">"drpc-input"</span>, drpcSpout,<span class="number">25</span>); 
     builder.setBolt(<span class="string">"drawdown"</span>, <span class="keyword">new</span> DrawdownBolt(), <span class="number">50</span>).noneGrouping(<span class="string">"drpc-input"</span>);  
     builder.setBolt(<span class="string">"return"</span>, <span class="keyword">new</span> ReturnResults(),<span class="number">50</span>).noneGrouping(<span class="string">"drawdown"</span>); 
@@ -133,7 +131,7 @@
     <span class="keyword">return</span> maxDrawdown;
 }
 </code></pre><p>软硬件环境：</p>
-<table><tr><td>机器名</td>    <td>IP</td>    <td>硬件配置</td>    <td>操作系统</td>    <td>软件配置</td></tr><br><tr><td>nimbus</td>    <td>    192.168.55.173</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64     </td>    <td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td></tr><br><tr><td>supervisor1</td>    <td>    192.168.55.174</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64 </td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br><tr><td>supervisor2</td>    <td>    192.168.55.175</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64</td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br></table>
+<table border="1"><tr><td>机器名</td>    <td>IP</td>    <td>硬件配置</td>    <td>操作系统</td>    <td>软件配置</td></tr><br><tr><td>nimbus</td>    <td>    192.168.55.173</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64     </td>    <td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td></tr><br><tr><td>supervisor1</td>    <td>    192.168.55.174</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64 </td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br><tr><td>supervisor2</td>    <td>    192.168.55.175</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64</td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br></table>
 
 
 <ul>
@@ -143,78 +141,50 @@
 <li>Supervisor1和Supervisor2作为Storm supervisor计算节点</li>
 </ul>
 <p>Redis状态:<br><code># Memory
-used_memory:308482824
-used_memory_human:294.19M
-used_memory_rss:322035712
-used_memory_peak:332559416
-used_memory_peak_human:317.15M
-used_memory_lua:35840
-mem_fragmentation_ratio:1.04
-mem_allocator:jemalloc-3.6.0</code></p>
+    used_memory:308482824
+    used_memory_human:294.19M
+    used_memory_rss:322035712
+    used_memory_peak:332559416
+    used_memory_peak_human:317.15M
+    used_memory_lua:35840
+    mem_fragmentation_ratio:1.04
+    mem_allocator:jemalloc-3.6.0</code></p>
 <p>Storm UI<br><img src="http://i.imgur.com/0qkmRGj.png" alt=""></p>
+<p>场景测试结果<br><img src="http://i.imgur.com/TiU1ThV.jpg" alt=""></p>
+<ul>
+<li>并行调用对耗时的影响<br><img src="http://i.imgur.com/Tuee3qf.jpg" alt=""><br>上图可以看出Storm在并发实时计算上的优势，当调用线程数越多，平均计算耗时越少。但是提高Storm的并行节点数并没能提高计算耗时，这可能是因为并行节点在20个左右的情况已经达到并行处理最优，再多的节点只会更多耗时在节点之间的消息传递上。</li>
+</ul>
+<ul>
+<li>并行调用对CPU和内存占用率影响<br><img src="http://i.imgur.com/l1kAfqt.jpg" alt=""><br>上图可以看出随着并发调用线程数提高，瞬时cpu占用率会逐渐提高。当线程数很少，Supervisor2计算节点没有分配计算请求，cpu占用率不会变化。对于内存占用率，一般情况当计算需要的内存没有超出Storm预先开辟的内存空间时，内存占用率基本不会变化。</li>
+</ul>
+<ul>
+<li><p>场景测试结论</p>
+<ol>
+<li>对某只股票，某天的行情最大回撤值计算平均耗时最低2.21ms最高50ms,计算结果可查询满足场景计算要求。</li>
+<li>storm系统的处理延迟为毫秒级。</li>
+<li>storm 在场景测试中，tuple全部ack没有fail出现。</li>
+<li>redis 基于内存的数据库在读取和写入配合storm并行计算可以把延迟控制在毫秒级</li>
+<li>redis 由于单机部署在 storm nimbus机器上，没有做性能测试。作为内存数据库redis提供了丰6. 富的数据结构和处理方式。</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>场景应用中的一些问题</p>
+<ol>
+<li>supervisor2 由于未知原因当机后,DRPC服务不可用。supervisor2重启后DRPC服务依然不可用，执行rebalance依然不能分配计算任务到supervisor2。重启nimbus和重新部署Topology后正常。</li>
+<li>当计算处理延迟在毫秒级时，对redis的访问要及时释放连接池连接，不然会在导致连接池满，无法连接redis。</li>
+</ol>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/01/28/-华泰证券实时计算场景测试/" data-id="xd7pfdxn2ckctgni" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/01/28/-华泰证券实时计算场景测试/" data-id="q2bsfrgpzt4ks2yc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/01/28/hello-world/" class="article-date">
-  <time datetime="2015-01-28T02:15:35.000Z" itemprop="datePublished">1月 28 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/28/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/01/28/hello-world/" data-id="9ibexcjj08oy0fs9" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -251,7 +221,7 @@ mem_allocator:jemalloc-3.6.0</code></p>
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -264,10 +234,6 @@ mem_allocator:jemalloc-3.6.0</code></p>
         
           <li>
             <a href="/2015/01/28/-华泰证券实时计算场景测试/">华泰证券实时计算场景测试</a>
-          </li>
-        
-          <li>
-            <a href="/2015/01/28/hello-world/">Hello World</a>
           </li>
         
       </ul>
