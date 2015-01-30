@@ -130,32 +130,14 @@
 </ol>
 <p><img src="http://i.imgur.com/XO5FoHA.png" alt=""><br>Redis 数据结构<br><img src="http://i.imgur.com/DuLxc14.png" alt=""><br><img src="http://i.imgur.com/mPFmPg4.png" alt=""></p>
 <p>Storm计算拓扑：</p>
-<pre><code>    TopologyBuilder builder = <span class="keyword">new</span> TopologyBuilder();   
-    builder.setSpout(<span class="string">"drpc-input"</span>, drpcSpout,<span class="number">25</span>); 
-    builder.setBolt(<span class="string">"drawdown"</span>, <span class="keyword">new</span> DrawdownBolt(), <span class="number">50</span>).noneGrouping(<span class="string">"drpc-input"</span>);  
-    builder.setBolt(<span class="string">"return"</span>, <span class="keyword">new</span> ReturnResults(),<span class="number">50</span>).noneGrouping(<span class="string">"drawdown"</span>); 
-</code></pre><p>算法公式：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">TopologyBuilder builder = <span class="keyword">new</span> TopologyBuilder();   </div><div class="line">   builder.setSpout(<span class="string">"drpc-input"</span>, drpcSpout,<span class="number">25</span>); </div><div class="line">   builder.setBolt(<span class="string">"drawdown"</span>, <span class="keyword">new</span> DrawdownBolt(), <span class="number">50</span>).noneGrouping(<span class="string">"drpc-input"</span>);  </div><div class="line">   builder.setBolt(<span class="string">"return"</span>, <span class="keyword">new</span> ReturnResults(),<span class="number">50</span>).noneGrouping(<span class="string">"drawdown"</span>);</div></pre></td></tr></table></figure>
+
+<p>算法公式：</p>
 <p><img src="http://i.imgur.com/cJcoH60.png" alt=""></p>
 <p> 考虑到优化时间复杂度方面，很容易想到一个O(n)的时间复杂度 算法。因为对于每个j，j之前的最大值与j-1之前的最大值有关系，即maxj=max{xj，maxj-1},因此可以对于每次遍历只要将当前值与之前的最大值做比较，如果当前值比i之前的最大值还大，则当前最大值等于当前值，反之则等于之前最大值。对于d的维护也一样，如果当前值xj-当前最大值比之前的d还小，则当前最大回撤等于当前xj-当前最大值，反之等于之前的d。</p>
-<pre><code><span class="javadoc">/**
- * 获取最大回撤值
- *<span class="javadoctag"> @param</span> 按时间排序的价格列表
- *<span class="javadoctag"> @return</span>
- */</span>
-<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getMaxDrawdown</span>(List&lt;String&gt; list){
-    <span class="keyword">double</span> maxDrawdown = <span class="number">0</span>;<span class="comment">//最大回撤值</span>
-    <span class="keyword">double</span> price = <span class="number">0</span>;<span class="comment">//初始化比较价格</span>
-    <span class="keyword">for</span>(String v : list){
-        <span class="keyword">double</span> realtimePrice =  Double.parseDouble(v);<span class="comment">//取出实时价格</span>
-        <span class="keyword">double</span> val = price - realtimePrice ;
-        <span class="keyword">if</span>(val &lt; <span class="number">0</span>)<span class="comment">//如果实时价格大于比较价格</span>
-            price = realtimePrice;
-        <span class="keyword">else</span>
-            <span class="keyword">if</span>(maxDrawdown &lt; val) maxDrawdown = val;<span class="comment">//取最大回撤值</span>
-    }
-    <span class="keyword">return</span> maxDrawdown;
-}
-</code></pre><p>软硬件环境</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line"> * 获取最大回撤值</div><div class="line"> *<span class="javadoctag"> @param</span> 按时间排序的价格列表</div><div class="line"> *<span class="javadoctag"> @return</span></div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getMaxDrawdown</span>(List&lt;String&gt; list){</div><div class="line">	<span class="keyword">double</span> maxDrawdown = <span class="number">0</span>;<span class="comment">//最大回撤值</span></div><div class="line">	<span class="keyword">double</span> price = <span class="number">0</span>;<span class="comment">//初始化比较价格</span></div><div class="line">	<span class="keyword">for</span>(String v : list){</div><div class="line">		<span class="keyword">double</span> realtimePrice =  Double.parseDouble(v);<span class="comment">//取出实时价格</span></div><div class="line">		<span class="keyword">double</span> val = price - realtimePrice ;</div><div class="line">		<span class="keyword">if</span>(val &lt; <span class="number">0</span>)<span class="comment">//如果实时价格大于比较价格</span></div><div class="line">			price = realtimePrice;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">if</span>(maxDrawdown &lt; val) maxDrawdown = val;<span class="comment">//取最大回撤值</span></div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> maxDrawdown;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>软硬件环境</p>
 <table><br><tr><td>机器名</td>    <td>IP</td>    <td>硬件配置</td>    <td>操作系统</td>    <td>软件配置</td></tr><br><tr><td>nimbus</td>    <td>    192.168.55.173</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64     </td>    <td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td></tr><br><tr><td>supervisor1</td>    <td>    192.168.55.174</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64 </td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br><tr><td>supervisor2</td>    <td>    192.168.55.175</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64</td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br></table>
 
 <ul>
@@ -197,7 +179,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://xusida.github.io/2015/01/28/-华泰证券实时计算场景测试/" data-id="gkihhckkmn7hmua9" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://xusida.github.io/2015/01/28/-华泰证券实时计算场景测试/" data-id="uqej3bpj30ht6rva" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -301,7 +283,7 @@
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="返回顶部"><img src="//img/scrollup.png"/></a>
+<a title="返回顶部"><img src="img/scrollup.png"/></a>
 </div>
 <!-- totop end -->
 
