@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[男怕夜奔，女怕思凡]]></title>
+  <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://xusida.github.io/"/>
+  <updated>2015-01-30T10:01:36.650Z</updated>
+  <id>http://xusida.github.io/</id>
+  
+  <author>
+    <name><![CDATA[xusida]]></name>
+    <email><![CDATA[xusida.plus@gmail.com]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[华泰证券实时计算场景测试<1>最大回撤计算]]></title>
+    <link href="http://xusida.github.io/2015/01/28/-%E5%8D%8E%E6%B3%B0%E8%AF%81%E5%88%B8%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%97%E5%9C%BA%E6%99%AF%E6%B5%8B%E8%AF%95/"/>
+    <id>http://xusida.github.io/2015/01/28/-华泰证券实时计算场景测试/</id>
+    <published>2015-01-28T06:12:07.000Z</published>
+    <updated>2015-01-30T09:50:43.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="最大回撤计算">最大回撤计算</h2>
+<blockquote>
+<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
+</blockquote>
+<h3 id="要求">要求</h3>
+<blockquote>
+<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
+</blockquote>
+<h3 id="数据准备">数据准备</h3>
+<blockquote>
+<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br><a id="more"></a></p>
+</blockquote>
+<h3 id="场景实现分析">场景实现分析</h3>
+<blockquote>
+<p>实时计算股票最大回撤值，拟用<a href="http://redis.io" target="_blank" rel="external">Redis</a>保存行情记录和股票信息，<a href="https://storm.apache.org/" target="_blank" rel="external">Storm</a>计算股票某天的最大回撤值。计算完毕保存计算结果到<a href="http://redis.io" target="_blank" rel="external">Redis</a>，提供查询。 </p>
+</blockquote>
+<p><img src="http://i.imgur.com/XO5FoHA.png" alt=""></p>
+<h4 id="Redis_数据结构">Redis 数据结构</h4>
+<p><img src="http://i.imgur.com/DuLxc14.png" alt=""><br><img src="http://i.imgur.com/mPFmPg4.png" alt=""></p>
+<h4 id="Storm计算拓扑">Storm计算拓扑</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">TopologyBuilder builder = <span class="keyword">new</span> TopologyBuilder();   </div><div class="line">   builder.setSpout(<span class="string">"drpc-input"</span>, drpcSpout,<span class="number">25</span>); </div><div class="line">   builder.setBolt(<span class="string">"drawdown"</span>, <span class="keyword">new</span> DrawdownBolt(), <span class="number">50</span>).noneGrouping(<span class="string">"drpc-input"</span>);  </div><div class="line">   builder.setBolt(<span class="string">"return"</span>, <span class="keyword">new</span> ReturnResults(),<span class="number">50</span>).noneGrouping(<span class="string">"drawdown"</span>);</div></pre></td></tr></table></figure>
+
+<h4 id="算法公式">算法公式</h4>
+<p> 定义：对于序列$(x_1,x_2,\cdots,x_n)x_1,x_2,\cdots,x_n$ ，定义最大回撤 $d$为</p>
+ <center>$$ d = \min_{i\leq j} (x_j - x_i) = \min_j (x_j - \max_{i\leq j} x_i) $$</center>
+
+
+<blockquote>
+<p>考虑到优化时间复杂度方面，很容易想到一个O(n)的时间复杂度 算法。因为对于每个j，j之前的最大值与j-1之前的最大值有关系，即maxj=max{xj，maxj-1},因此可以对于每次遍历只要将当前值与之前的最大值做比较，如果当前值比i之前的最大值还大，则当前最大值等于当前值，反之则等于之前最大值。对于d的维护也一样，如果当前值xj-当前最大值比之前的d还小，则当前最大回撤等于当前xj-当前最大值，反之等于之前的d。</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line"> * 获取最大回撤值</div><div class="line"> *<span class="javadoctag"> @param</span> 按时间排序的价格列表</div><div class="line"> *<span class="javadoctag"> @return</span></div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getMaxDrawdown</span>(List&lt;String&gt; list){</div><div class="line">	<span class="keyword">double</span> maxDrawdown = <span class="number">0</span>;<span class="comment">//最大回撤值</span></div><div class="line">	<span class="keyword">double</span> price = <span class="number">0</span>;<span class="comment">//初始化比较价格</span></div><div class="line">	<span class="keyword">for</span>(String v : list){</div><div class="line">		<span class="keyword">double</span> realtimePrice =  Double.parseDouble(v);<span class="comment">//取出实时价格</span></div><div class="line">		<span class="keyword">double</span> val = price - realtimePrice ;</div><div class="line">		<span class="keyword">if</span>(val &lt; <span class="number">0</span>)<span class="comment">//如果实时价格大于比较价格</span></div><div class="line">			price = realtimePrice;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">if</span>(maxDrawdown &lt; val) maxDrawdown = val;<span class="comment">//取最大回撤值</span></div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> maxDrawdown;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h4 id="软硬件环境">软硬件环境</h4>
+<blockquote>
+<table><br><tr><td>机器名</td>    <td>IP</td>    <td>硬件配置</td>    <td>操作系统</td>    <td>软件配置</td></tr><br><tr><td>nimbus</td>    <td>    192.168.55.173</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64     </td>    <td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td></tr><br><tr><td>supervisor1</td>    <td>    192.168.55.174</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64 </td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br><tr><td>supervisor2</td>    <td>    192.168.55.175</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64</td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br></table>
+
+</blockquote>
+<ul>
+<li>Nimbus 安装Redis、Storm nimbus、Storm UI和 Storm DRPC服务</li>
+<li>Supervisor1和Supervisor2作为Storm supervisor计算节点</li>
+</ul>
+<h4 id="Redis状态">Redis状态</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># <span class="tag">Memory</span></div><div class="line">   <span class="tag">used_memory</span><span class="pseudo">:308482824</span></div><div class="line">   <span class="tag">used_memory_human</span><span class="pseudo">:294</span><span class="class">.19M</span></div><div class="line">   <span class="tag">used_memory_rss</span><span class="pseudo">:322035712</span></div><div class="line">   <span class="tag">used_memory_peak</span><span class="pseudo">:332559416</span></div><div class="line">   <span class="tag">used_memory_peak_human</span><span class="pseudo">:317</span><span class="class">.15M</span></div><div class="line">   <span class="tag">used_memory_lua</span><span class="pseudo">:35840</span></div><div class="line">   <span class="tag">mem_fragmentation_ratio</span><span class="pseudo">:1</span><span class="class">.04</span></div><div class="line">   <span class="tag">mem_allocator</span><span class="pseudo">:jemalloc-3</span><span class="class">.6</span><span class="class">.0</span></div></pre></td></tr></table></figure>
+
+<h4 id="Storm_UI">Storm UI</h4>
+<p><img src="http://i.imgur.com/0qkmRGj.png" alt=""></p>
+<h4 id="场景测试结果">场景测试结果</h4>
+<p><img src="http://i.imgur.com/TiU1ThV.jpg" alt=""></p>
+<ul>
+<li>并行调用对耗时的影响<br><img src="http://i.imgur.com/Tuee3qf.jpg" alt=""><blockquote>
+<p>上图可以看出Storm在并发实时计算上的优势，当调用线程数越多，平均计算耗时越少。但是提高Storm的并行节点数并没能提高计算耗时，这可能是因为并行节点在20个左右的情况已经达到并行处理最优，再多的节点只会更多耗时在节点之间的消息传递上。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>并行调用对CPU和内存占用率影响<br><img src="http://i.imgur.com/l1kAfqt.jpg" alt=""><blockquote>
+<p>上图可以看出随着并发调用线程数提高，瞬时cpu占用率会逐渐提高。当线程数很少，Supervisor2计算节点没有分配计算请求，cpu占用率不会变化。对于内存占用率，一般情况当计算需要的内存没有超出Storm预先开辟的内存空间时，内存占用率基本不会变化。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="场景测试结论">场景测试结论</h4>
+<ol>
+<li>对某只股票，某天的行情最大回撤值计算平均耗时最低2.21ms最高50ms,计算结果可查询满足场景计算要求。</li>
+<li><a href="https://storm.apache.org/" target="_blank" rel="external">Storm</a>系统的处理延迟为毫秒级。</li>
+<li><a href="https://storm.apache.org/" target="_blank" rel="external">Storm</a> 在场景测试中，tuple全部ack没有fail出现。</li>
+<li><a href="http://redis.io" target="_blank" rel="external">Redis</a> 基于内存的数据库在读取和写入配合storm并行计算可以把延迟控制在毫秒级</li>
+<li><a href="http://redis.io" target="_blank" rel="external">Redis</a> 由于单机部署在 storm nimbus机器上，没有做性能测试。作为内存数据库redis提供了丰6. 富的数据结构和处理方式。</li>
+</ol>
+<h4 id="场景应用中的一些问题">场景应用中的一些问题</h4>
+<ol>
+<li>supervisor2 由于未知原因当机后,DRPC服务不可用。supervisor2重启后DRPC服务依然不可用，执行rebalance依然不能分配计算任务到supervisor2。重启nimbus和重新部署Topology后正常。</li>
+<li>当计算处理延迟在毫秒级时，对redis的访问要及时释放连接池连接，不然会在导致连接池满，无法连接redis。</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="最大回撤计算">最大回撤计算</h2>
+<blockquote>
+<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
+</blockquote>
+<h3 id="要求">要求</h3>
+<blockquote>
+<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
+</blockquote>
+<h3 id="数据准备">数据准备</h3>
+<blockquote>
+<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>]]>
+    
+    </summary>
+    
+      <category term="华泰证券" scheme="http://xusida.github.io/tags/%E5%8D%8E%E6%B3%B0%E8%AF%81%E5%88%B8/"/>
+    
+  </entry>
+  
+</feed>
