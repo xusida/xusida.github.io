@@ -152,10 +152,40 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line"> * 获取最大回撤值</div><div class="line"> *<span class="javadoctag"> @param</span> 按时间排序的价格列表</div><div class="line"> *<span class="javadoctag"> @return</span></div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getMaxDrawdown</span>(List&lt;String&gt; list){</div><div class="line">	<span class="keyword">double</span> maxDrawdown = <span class="number">0</span>;<span class="comment">//最大回撤值</span></div><div class="line">	<span class="keyword">double</span> price = <span class="number">0</span>;<span class="comment">//初始化比较价格</span></div><div class="line">	<span class="keyword">for</span>(String v : list){</div><div class="line">		<span class="keyword">double</span> realtimePrice =  Double.parseDouble(v);<span class="comment">//取出实时价格</span></div><div class="line">		<span class="keyword">double</span> val = price - realtimePrice ;</div><div class="line">		<span class="keyword">if</span>(val &lt; <span class="number">0</span>)<span class="comment">//如果实时价格大于比较价格</span></div><div class="line">			price = realtimePrice;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">if</span>(maxDrawdown &lt; val) maxDrawdown = val;<span class="comment">//取最大回撤值</span></div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> maxDrawdown;</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <h4 id="软硬件环境">软硬件环境</h4>
-<blockquote>
-<table><br><tr><td>机器名</td>    <td>IP</td>    <td>硬件配置</td>    <td>操作系统</td>    <td>软件配置</td></tr><br><tr><td>nimbus</td>    <td>    192.168.55.173</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64     </td>    <td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td></tr><br><tr><td>supervisor1</td>    <td>    192.168.55.174</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64 </td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br><tr><td>supervisor2</td>    <td>    192.168.55.175</td>    <td>    4cpu 2.93GHz 4G内存</td>    <td>    Linux x86_64</td>    <td>    storm0.9.1 supervisor、zookeeper3.3</td></tr><br></table>
-
-</blockquote>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+<th>软件配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td>
+<td>192.168.55.173</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td>
+</tr>
+<tr>
+<td>supervisor1</td>
+<td>192.168.55.174</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.3</td>
+</tr>
+<tr>
+<td>supervisor2</td>
+<td>192.168.55.175</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.3</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Nimbus 安装Redis、Storm nimbus、Storm UI和 Storm DRPC服务</li>
 <li>Supervisor1和Supervisor2作为Storm supervisor计算节点</li>
@@ -211,6 +241,20 @@
   </div>
   
     
+<nav id="article-nav">
+  
+    <a href="/2015/02/02/LDAP-介绍/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          LDAP 介绍
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
   
 </article>
 
@@ -228,7 +272,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LDAP/">LDAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -237,7 +281,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/华泰证券/" style="font-size: NaNpx;">华泰证券</a>
+      <a href="/tags/LDAP/" style="font-size: NaNpx;">LDAP</a><a href="/tags/华泰证券/" style="font-size: NaNpx;">华泰证券</a>
     </div>
   </div>
 
@@ -246,7 +290,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -256,6 +300,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/02/02/LDAP-介绍/">LDAP 介绍</a>
+          </li>
         
           <li>
             <a href="/2015/01/28/-华泰证券实时计算场景测试/">华泰证券实时计算场景测试&lt;1&gt;最大回撤计算</a>
