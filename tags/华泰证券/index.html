@@ -74,10 +74,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post--华泰证券实时计算场景测试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/01/28/-华泰证券实时计算场景测试/" class="article-date">
-  <time datetime="2015-01-28T06:12:07.000Z" itemprop="datePublished">1月 28 2015</time>
+    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
+  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
 </a>
     
   </div>
@@ -88,7 +88,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/28/-华泰证券实时计算场景测试/">华泰证券实时计算场景测试&lt;1&gt;最大回撤计算</a>
+      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
     </h1>
   
 
@@ -109,18 +109,115 @@
 <p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
         
           <p class="article-more-link">
-            <a href="/2015/01/28/-华泰证券实时计算场景测试/#more">Read More</a>
+            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://xusida.github.io/2015/01/28/-华泰证券实时计算场景测试/" data-id="a4o44d2nv0ko2vvg" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="ogn6nzv2yba8u4qk" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
-        <a href="http://xusida.github.io/2015/01/28/-华泰证券实时计算场景测试/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
+  <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="硬件准备">硬件准备</h2>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+<th>软件配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td>
+<td>192.168.55.173</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor1</td>
+<td>192.168.55.174</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor2</td>
+<td>192.168.55.175</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="软件准备">软件准备</h2>
+<blockquote>
+<p>三台虚拟物理机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
+</blockquote>
+<p>设置hosts文件</p>
+<pre><code>    <span class="keyword">vi</span> /ets/hosts
+</code></pre><p>如下</p>
+<pre><code>    127.0.0.1 nimbus
+    192.168.55.173  nimbus
+    192.168.55.174 supervisor1
+    192.168.55.175 supervisor2
+</code></pre><h3 id="基本软件安装">基本软件安装</h3>
+<blockquote>
+<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
+        
+          <p class="article-more-link">
+            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/" data-id="9tadr5rjhox95o9x" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+        <a href="http://xusida.github.io/2015/02/10/实时计算1环境准备/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
@@ -144,7 +241,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LDAP/">LDAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -153,7 +250,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/LDAP/" style="font-size: NaNpx;">LDAP</a><a href="/tags/华泰证券/" style="font-size: NaNpx;">华泰证券</a>
+      <a href="/tags/华泰证券/" style="font-size: NaNpx;">华泰证券</a>
     </div>
   </div>
 
@@ -162,7 +259,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -174,11 +271,11 @@
       <ul>
         
           <li>
-            <a href="/2015/02/02/LDAP-介绍/">LDAP 介绍</a>
+            <a href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
           </li>
         
           <li>
-            <a href="/2015/01/28/-华泰证券实时计算场景测试/">华泰证券实时计算场景测试&lt;1&gt;最大回撤计算</a>
+            <a href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
           </li>
         
       </ul>

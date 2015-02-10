@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-02-09T06:43:06.892Z</updated>
+  <updated>2015-02-10T08:23:16.936Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -15,61 +15,11 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[LDAP 介绍]]></title>
-    <link href="http://xusida.github.io/2015/02/02/LDAP-%E4%BB%8B%E7%BB%8D/"/>
-    <id>http://xusida.github.io/2015/02/02/LDAP-介绍/</id>
-    <published>2015-02-02T02:35:06.000Z</published>
-    <updated>2015-02-03T09:04:25.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="wiki介绍">wiki介绍</h2>
-<blockquote>
-<p>轻型目录访问协议（英文：Lightweight Directory Access Protocol，缩写：<a href="http://zh.wikipedia.org/wiki/%E8%BD%BB%E5%9E%8B%E7%9B%AE%E5%BD%95%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE" target="_blank" rel="external">LDAP</a>）是一个访问在线目录服务的协议。</p>
-<p>目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的<a href="http://zh.wikipedia.org/wiki/%E8%BD%BB%E5%9E%8B%E7%9B%AE%E5%BD%95%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE" target="_blank" rel="external">LDAP</a>协议由<a href="http://tools.ietf.org/html/rfc4511" target="_blank" rel="external">RFC 4511</a>所定义。</p>
-</blockquote>
-<h3 id="什么是LDAP">什么是LDAP</h3>
-<blockquote>
-<p><em>一种协议，而非“目录”</em></p>
-</blockquote>
-<h3 id="实现LDAP协议的产品">实现LDAP协议的产品</h3>
-<blockquote>
-<p>IBM Tivoli Directory Server（默认目录数据存储在DB2）</p>
-<p>OpenLDAP(开源）（默认目录数据存储在Berkeley DB）</p>
-<p>Microsoft Active Directory（默认目录数据存储在ntds.dit文件）</p>
-</blockquote>
-<h3 id="为什么要使用LDAP">为什么要使用LDAP</h3>
-<blockquote>
-<p>“我们为什么要用LDAP？”<br>“类似的数据已存储在关系型数据库中，我们为什么还需要LDAP？”</p>
-</blockquote>
-<ul>
-<li>LDAP作为轻量级目录访问的协议，目录树的存储方式和更加注重查询服务，忽略事务和锁的各种因素，带来比关系型数据库高一个数量级的查询速度。</li>
-<li>统一的协议标准使得客户端更容易实现。</li>
-<li>支持ACL控制访问列表</li>
-</ul>
-<h3 id="LDAP用途">LDAP用途</h3>
-<ul>
-<li>统一认证</li>
-<li>管理企业组织机构树和员工信息、客户信息、设备管理</li>
-</ul>
-<h3 id="LDAP_条目和属性">LDAP 条目和属性</h3>
-<p>LDAP目录的条目（entry）由属性（attribute）的一个聚集组成，并由一个唯一性的名字引用，即专有名称（distinguished name，DN）。<br>例如，DN能取这样的值：</p>
-<pre><code><span class="variable">CN=</span>张三,<span class="variable">OU=</span>技术部,<span class="variable">DC=</span>htsc,<span class="variable">DC=</span>com,<span class="variable">DC=</span>cn
-</code></pre><p>该条目代表一个员工条目，其中DN有三个属性，分别是CN,OU,DC<br>DC (Domain Component) 域名组合，通常使用公司网址按dot分隔。<br>CN (Common Name) 通用名称，该条目的通用名称。<br>OU (Organizational Unit) 组织单元，通常使用公司的组织机构。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="wiki介绍">wiki介绍</h2>
-<blockquote>
-<p>轻型目录访问协议（英文：Lightweight Directory Access Protocol，缩写：<a href="http://zh.wikipedia.org/wiki/%E8%B]]>
-    </summary>
-    
-      <category term="LDAP" scheme="http://xusida.github.io/tags/LDAP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[华泰证券实时计算场景测试<1>最大回撤计算]]></title>
-    <link href="http://xusida.github.io/2015/01/28/-%E5%8D%8E%E6%B3%B0%E8%AF%81%E5%88%B8%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%97%E5%9C%BA%E6%99%AF%E6%B5%8B%E8%AF%95/"/>
-    <id>http://xusida.github.io/2015/01/28/-华泰证券实时计算场景测试/</id>
-    <published>2015-01-28T06:12:07.000Z</published>
-    <updated>2015-02-09T06:30:42.000Z</updated>
+    <title><![CDATA[实时计算<2>最大回撤]]></title>
+    <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%972%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4/"/>
+    <id>http://xusida.github.io/2015/02/10/实时计算2最大回撤/</id>
+    <published>2015-02-10T07:01:15.000Z</published>
+    <updated>2015-02-10T07:36:14.000Z</updated>
     <content type="html"><![CDATA[<h2 id="最大回撤计算">最大回撤计算</h2>
 <blockquote>
 <p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
@@ -119,21 +69,21 @@
 <td>192.168.55.173</td>
 <td>4cpu 2.93GHz 4G内存</td>
 <td>Linux x86_64</td>
-<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.3</td>
+<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
 </tr>
 <tr>
 <td>supervisor1</td>
 <td>192.168.55.174</td>
 <td>4cpu 2.93GHz 4G内存</td>
 <td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.3</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
 </tr>
 <tr>
 <td>supervisor2</td>
 <td>192.168.55.175</td>
 <td>4cpu 2.93GHz 4G内存</td>
 <td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.3</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
 </tr>
 </tbody>
 </table>
@@ -186,6 +136,226 @@
 <h3 id="数据准备">数据准备</h3>
 <blockquote>
 <p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>]]>
+    
+    </summary>
+    
+      <category term="华泰证券" scheme="http://xusida.github.io/tags/%E5%8D%8E%E6%B3%B0%E8%AF%81%E5%88%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[实时计算<1>环境准备]]></title>
+    <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%971%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/"/>
+    <id>http://xusida.github.io/2015/02/10/实时计算1环境准备/</id>
+    <published>2015-02-10T07:00:54.000Z</published>
+    <updated>2015-02-10T08:21:55.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="硬件准备">硬件准备</h2>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+<th>软件配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td>
+<td>192.168.55.173</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor1</td>
+<td>192.168.55.174</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor2</td>
+<td>192.168.55.175</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="软件准备">软件准备</h2>
+<blockquote>
+<p>三台虚拟物理机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
+</blockquote>
+<p>设置hosts文件</p>
+<pre><code>    <span class="keyword">vi</span> /ets/hosts
+</code></pre><p>如下</p>
+<pre><code>    127.0.0.1 nimbus
+    192.168.55.173  nimbus
+    192.168.55.174 supervisor1
+    192.168.55.175 supervisor2
+</code></pre><h3 id="基本软件安装">基本软件安装</h3>
+<blockquote>
+<p>三台机器必备安装软件，jdk、storm、zookeeper<br><a id="more"></a></p>
+</blockquote>
+<h4 id="Jdk1-7-0_15安装">Jdk1.7.0_15安装</h4>
+<ol>
+<li><p>下载JDK</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.oracle.com/otn</span>-pub/java/jdk/<span class="number">8</span>u31-b13/jdk-<span class="number">7</span>u15-linux-x64.tar.gz
+</code></pre></li>
+<li><p>解压JDK</p>
+<pre><code> <span class="title">tar</span> zvxf jdk-7u15-linux-x64.tar.gz
+</code></pre></li>
+<li><p>设置环境变量</p>
+<pre><code> <span class="variable">$ </span>set <span class="constant">PATH</span>=<span class="regexp">/your_jdk_unzip_dir/jdk</span>1.<span class="number">7.0_15</span>/<span class="symbol">bin:</span><span class="variable">$PATH</span>
+ <span class="variable">$ </span>set <span class="constant">JAVA_HOME</span>=<span class="regexp">/your_jdk_unzip_dir/jdk</span>1.<span class="number">7.0_15</span>
+</code></pre></li>
+<li><p>验证Jdk版本</p>
+<pre><code> $ jdk -<span class="keyword">version</span>
+</code></pre></li>
+</ol>
+<h4 id="Zookeeper3-4-6安装">Zookeeper3.4.6安装</h4>
+<ol>
+<li><p>下载zookeeper</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/mirrors.cnnic.cn/apache</span><span class="regexp">/zookeeper/zookeeper</span>-<span class="number">3.4</span>.<span class="number">6</span>/zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz
+</code></pre></li>
+<li><p>解压zookeeper</p>
+<pre><code> <span class="variable">$ </span>tar zvxf zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz
+</code></pre></li>
+<li><p>修改配置文件</p>
+<pre><code>     $ vi /your_zookeeper_unzip_dir/conf/zoo.cfg
+
+     <span class="comment"># The number of milliseconds of each tick</span>
+     <span class="variable">tickTime=</span><span class="number">2000</span>
+     <span class="comment"># The number of ticks that the initial</span>
+     <span class="comment"># synchronization phase can take</span>
+     <span class="variable">initLimit=</span><span class="number">10</span>
+     <span class="comment"># The number of ticks that can pass between</span>
+     <span class="comment"># sending a request and getting an acknowledgement</span>
+     <span class="variable">syncLimit=</span><span class="number">5</span>
+     <span class="comment"># the directory where the snapshot is stored.</span>
+     <span class="variable">dataDir=</span>/your_zookeeper_unzip_dir/dataDir/zookeeper
+     <span class="comment"># the port at which the clients will connect</span>
+     <span class="variable">clientPort=</span><span class="number">2181</span>            
+
+     server.<span class="number">1</span>=<span class="number">192.168</span>.<span class="number">55.173</span>:<span class="number">2888</span>:<span class="number">3888</span>
+     server.<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">55.174</span>:<span class="number">2888</span>:<span class="number">3888</span>
+     server.<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">55.175</span>:<span class="number">2888</span>:<span class="number">3888</span>
+</code></pre><blockquote>
+<p>接下来在dataDir所指定的目录下创建一个文件名为myid的文件，文件中的内容只有一行，为本主机对应的id值，也就是上图中server.id中的id。例如：在服务器1中的myid的内容应该写入1。</p>
+</blockquote>
+</li>
+<li><p>启动</p>
+<pre><code>  $ ./zkServer.<span class="keyword">sh</span> start
+</code></pre></li>
+</ol>
+<h4 id="Storm0-9-0-1安装">Storm0.9.0.1安装</h4>
+<ol>
+<li><p>下载storm</p>
+<pre><code>  $ wget http<span class="variable">s:</span>//<span class="keyword">dl</span>.dropboxusercontent.<span class="keyword">com</span>/<span class="keyword">s</span>/tqdpoif32gufapo/storm-<span class="number">0.9</span>.<span class="number">0.1</span>.tar.gz
+</code></pre></li>
+<li><p>解压storm</p>
+<pre><code>  <span class="variable">$ </span>tar zvxf storm-<span class="number">0</span>.<span class="number">9.0</span>.<span class="number">1</span>.tar.gz
+</code></pre></li>
+<li><p>修改配置文件</p>
+<pre><code>  $ vi /your_storm_unzip_dir/conf/<span class="filename">storm.yaml 
+
+  nimbus.host</span>: <span class="string">"nimbus"</span>
+  <span class="filename">storm.zookeeper.servers</span>:
+         - <span class="string">"nimbus"</span>
+         - <span class="string">"supervisor1"</span>
+         - <span class="string">"supervisor2"</span>
+  <span class="filename">storm.local.dir</span>: <span class="string">"/your_storm_unzip_dir/storm-local"</span>
+  <span class="filename">storm.messaging.transport</span>: <span class="string">"backtype.storm.messaging.netty.Context"</span>
+  <span class="filename">storm.messaging.netty.server_worker_threads</span>: <span class="number">1</span>
+  <span class="filename">storm.messaging.netty.client_worker_threads</span>: <span class="number">1</span>
+  <span class="filename">storm.messaging.netty.buffer_size</span>: <span class="number">5242880</span>
+  <span class="filename">storm.messaging.netty.max_retries</span>: <span class="number">100</span>
+  <span class="filename">storm.messaging.netty.max_wait_ms</span>: <span class="number">1000</span>
+  <span class="filename">storm.messaging.netty.min_wait_ms</span>: <span class="number">100</span>
+  <span class="filename">drpc.queue.size</span>: <span class="number">1024</span>
+  <span class="filename">drpc.worker.threads</span>: <span class="number">512</span>
+  <span class="filename">drpc.request.timeout.secs</span>: <span class="number">30</span>
+  <span class="filename">drpc.servers</span>:
+      - <span class="string">"nimbus"</span>
+</code></pre></li>
+<li><p>启动</p>
+<blockquote>
+<p>nimbus </p>
+<pre><code> <span class="variable">$ </span>./storm nimbus
+</code></pre><p>supervisor</p>
+<pre><code> <span class="variable">$ </span>./storm supervisor
+</code></pre><p>drpc</p>
+<pre><code> <span class="variable">$ </span>./storm drpc
+</code></pre><p>storm ui</p>
+<pre><code> <span class="variable">$ </span>./storm ui
+</code></pre></blockquote>
+</li>
+</ol>
+<h4 id="Redis2-8-18安装">Redis2.8.18安装</h4>
+<ol>
+<li><p>下载安装</p>
+<pre><code> <span class="char">$ </span>wget <span class="method">http:</span>//download.redis.io/releases/redis-<span class="number">2.8</span><span class="number">.18</span>.tar.gz
+ <span class="char">$ </span>tar xzf redis-<span class="number">2.8</span><span class="number">.18</span>.tar.gz
+ <span class="char">$ </span>cd redis-<span class="number">2.8</span><span class="number">.18</span>
+ <span class="char">$ </span>make
+</code></pre></li>
+<li><p>启动</p>
+<pre><code> <span class="variable">$ </span>src/redis-server
+</code></pre></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="硬件准备">硬件准备</h2>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+<th>软件配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td>
+<td>192.168.55.173</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor1</td>
+<td>192.168.55.174</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor2</td>
+<td>192.168.55.175</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="软件准备">软件准备</h2>
+<blockquote>
+<p>三台虚拟物理机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
+</blockquote>
+<p>设置hosts文件</p>
+<pre><code>    <span class="keyword">vi</span> /ets/hosts
+</code></pre><p>如下</p>
+<pre><code>    127.0.0.1 nimbus
+    192.168.55.173  nimbus
+    192.168.55.174 supervisor1
+    192.168.55.175 supervisor2
+</code></pre><h3 id="基本软件安装">基本软件安装</h3>
+<blockquote>
+<p>三台机器必备安装软件，jdk、storm、zookeeper<br>]]>
     
     </summary>
     

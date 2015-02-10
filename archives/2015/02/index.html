@@ -74,10 +74,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-LDAP-介绍" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/02/02/LDAP-介绍/" class="article-date">
-  <time datetime="2015-02-02T02:35:06.000Z" itemprop="datePublished">2月 2 2015</time>
+    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
+  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
 </a>
     
   </div>
@@ -88,7 +88,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/02/LDAP-介绍/">LDAP 介绍</a>
+      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
     </h1>
   
 
@@ -96,53 +96,132 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="wiki介绍">wiki介绍</h2>
+        <h2 id="最大回撤计算">最大回撤计算</h2>
 <blockquote>
-<p>轻型目录访问协议（英文：Lightweight Directory Access Protocol，缩写：<a href="http://zh.wikipedia.org/wiki/%E8%BD%BB%E5%9E%8B%E7%9B%AE%E5%BD%95%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE" target="_blank" rel="external">LDAP</a>）是一个访问在线目录服务的协议。</p>
-<p>目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的<a href="http://zh.wikipedia.org/wiki/%E8%BD%BB%E5%9E%8B%E7%9B%AE%E5%BD%95%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE" target="_blank" rel="external">LDAP</a>协议由<a href="http://tools.ietf.org/html/rfc4511" target="_blank" rel="external">RFC 4511</a>所定义。</p>
+<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
 </blockquote>
-<h3 id="什么是LDAP">什么是LDAP</h3>
+<h3 id="要求">要求</h3>
 <blockquote>
-<p><em>一种协议，而非“目录”</em></p>
+<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
 </blockquote>
-<h3 id="实现LDAP协议的产品">实现LDAP协议的产品</h3>
+<h3 id="数据准备">数据准备</h3>
 <blockquote>
-<p>IBM Tivoli Directory Server（默认目录数据存储在DB2）</p>
-<p>OpenLDAP(开源）（默认目录数据存储在Berkeley DB）</p>
-<p>Microsoft Active Directory（默认目录数据存储在ntds.dit文件）</p>
-</blockquote>
-<h3 id="为什么要使用LDAP">为什么要使用LDAP</h3>
-<blockquote>
-<p>“我们为什么要用LDAP？”<br>“类似的数据已存储在关系型数据库中，我们为什么还需要LDAP？”</p>
-</blockquote>
-<ul>
-<li>LDAP作为轻量级目录访问的协议，目录树的存储方式和更加注重查询服务，忽略事务和锁的各种因素，带来比关系型数据库高一个数量级的查询速度。</li>
-<li>统一的协议标准使得客户端更容易实现。</li>
-<li>支持ACL控制访问列表</li>
-</ul>
-<h3 id="LDAP用途">LDAP用途</h3>
-<ul>
-<li>统一认证</li>
-<li>管理企业组织机构树和员工信息、客户信息、设备管理</li>
-</ul>
-<h3 id="LDAP_条目和属性">LDAP 条目和属性</h3>
-<p>LDAP目录的条目（entry）由属性（attribute）的一个聚集组成，并由一个唯一性的名字引用，即专有名称（distinguished name，DN）。<br>例如，DN能取这样的值：</p>
-<pre><code><span class="variable">CN=</span>张三,<span class="variable">OU=</span>技术部,<span class="variable">DC=</span>htsc,<span class="variable">DC=</span>com,<span class="variable">DC=</span>cn
-</code></pre><p>该条目代表一个员工条目，其中DN有三个属性，分别是CN,OU,DC<br>DC (Domain Component) 域名组合，通常使用公司网址按dot分隔。<br>CN (Common Name) 通用名称，该条目的通用名称。<br>OU (Organizational Unit) 组织单元，通常使用公司的组织机构。</p>
-
+<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
+        
+          <p class="article-more-link">
+            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://xusida.github.io/2015/02/02/LDAP-介绍/" data-id="wsryqh163npui4hi" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="ogn6nzv2yba8u4qk" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
-        <a href="http://xusida.github.io/2015/02/02/LDAP-介绍/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LDAP/">LDAP</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
+  <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="硬件准备">硬件准备</h2>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+<th>软件配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td>
+<td>192.168.55.173</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor1</td>
+<td>192.168.55.174</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+<tr>
+<td>supervisor2</td>
+<td>192.168.55.175</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="软件准备">软件准备</h2>
+<blockquote>
+<p>三台虚拟物理机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
+</blockquote>
+<p>设置hosts文件</p>
+<pre><code>    <span class="keyword">vi</span> /ets/hosts
+</code></pre><p>如下</p>
+<pre><code>    127.0.0.1 nimbus
+    192.168.55.173  nimbus
+    192.168.55.174 supervisor1
+    192.168.55.175 supervisor2
+</code></pre><h3 id="基本软件安装">基本软件安装</h3>
+<blockquote>
+<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
+        
+          <p class="article-more-link">
+            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/" data-id="9tadr5rjhox95o9x" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+        <a href="http://xusida.github.io/2015/02/10/实时计算1环境准备/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
 
     </footer>
   </div>
@@ -162,7 +241,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LDAP/">LDAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -171,7 +250,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/LDAP/" style="font-size: NaNpx;">LDAP</a><a href="/tags/华泰证券/" style="font-size: NaNpx;">华泰证券</a>
+      <a href="/tags/华泰证券/" style="font-size: NaNpx;">华泰证券</a>
     </div>
   </div>
 
@@ -180,7 +259,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -192,11 +271,11 @@
       <ul>
         
           <li>
-            <a href="/2015/02/02/LDAP-介绍/">LDAP 介绍</a>
+            <a href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
           </li>
         
           <li>
-            <a href="/2015/01/28/-华泰证券实时计算场景测试/">华泰证券实时计算场景测试&lt;1&gt;最大回撤计算</a>
+            <a href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
           </li>
         
       </ul>

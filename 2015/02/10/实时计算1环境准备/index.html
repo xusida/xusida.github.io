@@ -4,17 +4,89 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015 | 男怕夜奔，女怕思凡</title>
+  <title>实时计算&lt;1&gt;环境准备 | 男怕夜奔，女怕思凡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="知识管理、学习记录">
-<meta property="og:type" content="website">
-<meta property="og:title" content="男怕夜奔，女怕思凡">
-<meta property="og:url" content="http://xusida.github.io/archives/2015/">
+  <meta name="description" content="硬件准备
+
+
+
+机器名
+IP
+硬件配置
+操作系统
+软件配置
+
+
+
+
+nimbus
+192.168.55.173
+4cpu 2.93GHz 4G内存
+Linux x86_64
+redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6
+
+
+supervisor1
+192.168.55.174
+4cpu 2.93GHz 4G内存
+Linux x86_64
+st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实时计算<1>环境准备">
+<meta property="og:url" content="http://xusida.github.io/2015/02/10/实时计算1环境准备/">
 <meta property="og:site_name" content="男怕夜奔，女怕思凡">
-<meta property="og:description" content="知识管理、学习记录">
+<meta property="og:description" content="硬件准备
+
+
+
+机器名
+IP
+硬件配置
+操作系统
+软件配置
+
+
+
+
+nimbus
+192.168.55.173
+4cpu 2.93GHz 4G内存
+Linux x86_64
+redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6
+
+
+supervisor1
+192.168.55.174
+4cpu 2.93GHz 4G内存
+Linux x86_64
+st">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="男怕夜奔，女怕思凡">
-<meta name="twitter:description" content="知识管理、学习记录">
+<meta name="twitter:title" content="实时计算<1>环境准备">
+<meta name="twitter:description" content="硬件准备
+
+
+
+机器名
+IP
+硬件配置
+操作系统
+软件配置
+
+
+
+
+nimbus
+192.168.55.173
+4cpu 2.93GHz 4G内存
+Linux x86_64
+redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6
+
+
+supervisor1
+192.168.55.174
+4cpu 2.93GHz 4G内存
+Linux x86_64
+st">
 
   
     <link rel="alternative" href="/atom.xml" title="男怕夜奔，女怕思凡" type="application/atom+xml">
@@ -72,68 +144,7 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
-  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="最大回撤计算">最大回撤计算</h2>
-<blockquote>
-<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
-</blockquote>
-<h3 id="要求">要求</h3>
-<blockquote>
-<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
-</blockquote>
-<h3 id="数据准备">数据准备</h3>
-<blockquote>
-<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="ogn6nzv2yba8u4qk" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
   <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
@@ -146,8 +157,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
+    <h1 class="article-title" itemprop="name">
+      实时计算&lt;1&gt;环境准备
     </h1>
   
 
@@ -203,12 +214,115 @@
     192.168.55.175 supervisor2
 </code></pre><h3 id="基本软件安装">基本软件安装</h3>
 <blockquote>
-<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
-          </p>
-        
+<p>三台机器必备安装软件，jdk、storm、zookeeper<br><a id="more"></a></p>
+</blockquote>
+<h4 id="Jdk1-7-0_15安装">Jdk1.7.0_15安装</h4>
+<ol>
+<li><p>下载JDK</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.oracle.com/otn</span>-pub/java/jdk/<span class="number">8</span>u31-b13/jdk-<span class="number">7</span>u15-linux-x64.tar.gz
+</code></pre></li>
+<li><p>解压JDK</p>
+<pre><code> <span class="title">tar</span> zvxf jdk-7u15-linux-x64.tar.gz
+</code></pre></li>
+<li><p>设置环境变量</p>
+<pre><code> <span class="variable">$ </span>set <span class="constant">PATH</span>=<span class="regexp">/your_jdk_unzip_dir/jdk</span>1.<span class="number">7.0_15</span>/<span class="symbol">bin:</span><span class="variable">$PATH</span>
+ <span class="variable">$ </span>set <span class="constant">JAVA_HOME</span>=<span class="regexp">/your_jdk_unzip_dir/jdk</span>1.<span class="number">7.0_15</span>
+</code></pre></li>
+<li><p>验证Jdk版本</p>
+<pre><code> $ jdk -<span class="keyword">version</span>
+</code></pre></li>
+</ol>
+<h4 id="Zookeeper3-4-6安装">Zookeeper3.4.6安装</h4>
+<ol>
+<li><p>下载zookeeper</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/mirrors.cnnic.cn/apache</span><span class="regexp">/zookeeper/zookeeper</span>-<span class="number">3.4</span>.<span class="number">6</span>/zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz
+</code></pre></li>
+<li><p>解压zookeeper</p>
+<pre><code> <span class="variable">$ </span>tar zvxf zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz
+</code></pre></li>
+<li><p>修改配置文件</p>
+<pre><code>     $ vi /your_zookeeper_unzip_dir/conf/zoo.cfg
+
+     <span class="comment"># The number of milliseconds of each tick</span>
+     <span class="variable">tickTime=</span><span class="number">2000</span>
+     <span class="comment"># The number of ticks that the initial</span>
+     <span class="comment"># synchronization phase can take</span>
+     <span class="variable">initLimit=</span><span class="number">10</span>
+     <span class="comment"># The number of ticks that can pass between</span>
+     <span class="comment"># sending a request and getting an acknowledgement</span>
+     <span class="variable">syncLimit=</span><span class="number">5</span>
+     <span class="comment"># the directory where the snapshot is stored.</span>
+     <span class="variable">dataDir=</span>/your_zookeeper_unzip_dir/dataDir/zookeeper
+     <span class="comment"># the port at which the clients will connect</span>
+     <span class="variable">clientPort=</span><span class="number">2181</span>            
+
+     server.<span class="number">1</span>=<span class="number">192.168</span>.<span class="number">55.173</span>:<span class="number">2888</span>:<span class="number">3888</span>
+     server.<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">55.174</span>:<span class="number">2888</span>:<span class="number">3888</span>
+     server.<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">55.175</span>:<span class="number">2888</span>:<span class="number">3888</span>
+</code></pre><blockquote>
+<p>接下来在dataDir所指定的目录下创建一个文件名为myid的文件，文件中的内容只有一行，为本主机对应的id值，也就是上图中server.id中的id。例如：在服务器1中的myid的内容应该写入1。</p>
+</blockquote>
+</li>
+<li><p>启动</p>
+<pre><code>  $ ./zkServer.<span class="keyword">sh</span> start
+</code></pre></li>
+</ol>
+<h4 id="Storm0-9-0-1安装">Storm0.9.0.1安装</h4>
+<ol>
+<li><p>下载storm</p>
+<pre><code>  $ wget http<span class="variable">s:</span>//<span class="keyword">dl</span>.dropboxusercontent.<span class="keyword">com</span>/<span class="keyword">s</span>/tqdpoif32gufapo/storm-<span class="number">0.9</span>.<span class="number">0.1</span>.tar.gz
+</code></pre></li>
+<li><p>解压storm</p>
+<pre><code>  <span class="variable">$ </span>tar zvxf storm-<span class="number">0</span>.<span class="number">9.0</span>.<span class="number">1</span>.tar.gz
+</code></pre></li>
+<li><p>修改配置文件</p>
+<pre><code>  $ vi /your_storm_unzip_dir/conf/<span class="filename">storm.yaml 
+
+  nimbus.host</span>: <span class="string">"nimbus"</span>
+  <span class="filename">storm.zookeeper.servers</span>:
+         - <span class="string">"nimbus"</span>
+         - <span class="string">"supervisor1"</span>
+         - <span class="string">"supervisor2"</span>
+  <span class="filename">storm.local.dir</span>: <span class="string">"/your_storm_unzip_dir/storm-local"</span>
+  <span class="filename">storm.messaging.transport</span>: <span class="string">"backtype.storm.messaging.netty.Context"</span>
+  <span class="filename">storm.messaging.netty.server_worker_threads</span>: <span class="number">1</span>
+  <span class="filename">storm.messaging.netty.client_worker_threads</span>: <span class="number">1</span>
+  <span class="filename">storm.messaging.netty.buffer_size</span>: <span class="number">5242880</span>
+  <span class="filename">storm.messaging.netty.max_retries</span>: <span class="number">100</span>
+  <span class="filename">storm.messaging.netty.max_wait_ms</span>: <span class="number">1000</span>
+  <span class="filename">storm.messaging.netty.min_wait_ms</span>: <span class="number">100</span>
+  <span class="filename">drpc.queue.size</span>: <span class="number">1024</span>
+  <span class="filename">drpc.worker.threads</span>: <span class="number">512</span>
+  <span class="filename">drpc.request.timeout.secs</span>: <span class="number">30</span>
+  <span class="filename">drpc.servers</span>:
+      - <span class="string">"nimbus"</span>
+</code></pre></li>
+<li><p>启动</p>
+<blockquote>
+<p>nimbus </p>
+<pre><code> <span class="variable">$ </span>./storm nimbus
+</code></pre><p>supervisor</p>
+<pre><code> <span class="variable">$ </span>./storm supervisor
+</code></pre><p>drpc</p>
+<pre><code> <span class="variable">$ </span>./storm drpc
+</code></pre><p>storm ui</p>
+<pre><code> <span class="variable">$ </span>./storm ui
+</code></pre></blockquote>
+</li>
+</ol>
+<h4 id="Redis2-8-18安装">Redis2.8.18安装</h4>
+<ol>
+<li><p>下载安装</p>
+<pre><code> <span class="char">$ </span>wget <span class="method">http:</span>//download.redis.io/releases/redis-<span class="number">2.8</span><span class="number">.18</span>.tar.gz
+ <span class="char">$ </span>tar xzf redis-<span class="number">2.8</span><span class="number">.18</span>.tar.gz
+ <span class="char">$ </span>cd redis-<span class="number">2.8</span><span class="number">.18</span>
+ <span class="char">$ </span>make
+</code></pre></li>
+<li><p>启动</p>
+<pre><code> <span class="variable">$ </span>src/redis-server
+</code></pre></li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
@@ -226,11 +340,28 @@
     </footer>
   </div>
   
+    
+<nav id="article-nav">
+  
+    <a href="/2015/02/10/实时计算2最大回撤/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          实时计算&lt;2&gt;最大回撤
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
 </article>
 
 
-  
-  
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/02/10/实时计算1环境准备/" data-title="实时计算&lt;1&gt;环境准备" data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">
