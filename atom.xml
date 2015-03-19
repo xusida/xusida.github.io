@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-02-10T08:23:16.936Z</updated>
+  <updated>2015-03-19T02:05:11.573Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -13,6 +13,93 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Docker学习<1>环境准备]]></title>
+    <link href="http://xusida.github.io/2015/03/18/Docker%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://xusida.github.io/2015/03/18/Docker学习/</id>
+    <published>2015-03-18T08:01:45.000Z</published>
+    <updated>2015-03-19T02:03:53.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="安装">安装</h2>
+<h3 id="软件准备">软件准备</h3>
+<p>Oracle VirtualBox4.3.6</p>
+<p>CentOS-6.6-x86_64-minimal.iso</p>
+<h3 id="Docker_安装">Docker 安装</h3>
+<ol>
+<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
+<pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
+ CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
+</code></pre></li>
+<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+</code></pre></li>
+<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
+<pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+</code></pre><a id="more"></a></li>
+<li><p>检查EPEL 源<br>安装好EPEL 源后，用yum 命令来检查是否添加到源列表</p>
+<pre><code> <span class="comment"># yum repolist</span>
+ Loaded plugins: fastestmirror
+ Loading mirror speeds <span class="keyword">from</span> cached hostfile
+  * base: mirrors.vonline.vn
+  * epel: buaya.klas.<span class="keyword">or</span>.<span class="property">id</span>
+  * extras: centos-hn.viettelidc.com.vn
+  * updates: mirrors.fibo.vn
+ repo <span class="property">id</span>        repo <span class="property">name</span>                                              status
+ base           CentOS-<span class="number">6</span> - Base                                         <span class="number">6</span>,<span class="number">381</span>
+ epel           Extra Packages <span class="keyword">for</span> Enterprise Linux <span class="number">6</span> - x86_64         <span class="number">10</span>,<span class="number">023</span>
+ extras         CentOS-<span class="number">6</span> - Extras                                          <span class="number">13</span>
+ nginx          nginx repo                                                 <span class="number">47</span>
+ updates        CentOS-<span class="number">6</span> - Updates                                      <span class="number">1</span>,<span class="number">555</span>
+</code></pre><p>EPEL已经在repo 后列出，并且显示提供了上万个软件包，所以EPEL 已经安装到你的CentOS了。<br>EPEL源的配置安装到了 /etc/yum.repos.d/epel.repo 文件。        repolist: 18,019</p>
+</li>
+<li><p>安装 Docker —— CentOS-6<br>要在 CentOS-6 上安装 docker，请利用以下指令安装 docker-io 组件：</p>
+<pre><code> $ <span class="built_in">sudo</span> yum install docker-io
+</code></pre><p>安装 docker 后，你必须引导该服务才能应用它。</p>
+<pre><code> $ <span class="built_in">sudo</span> service docker start
+</code></pre><p>若要开机时引导 docker 服务：</p>
+<pre><code> $ sudo chkconfig docker <span class="command"><span class="keyword">on</span></span>
+</code></pre></li>
+<li><p>应用 Docker<br>在缺省情况下，docker 必须由 root 或是通过 sudo 的权限执行。你也可以把一个用户加进 docker 群组来让该用户才接执行 docker。<br>请留意要是该用户逃出了容器之外，这样做也许会让他能提升权限。</p>
+<pre><code> $ <span class="built_in">sudo</span> usermod <span class="operator">-a</span> -G docker &lt;你的用户&gt;
+</code></pre><p>要从 Docker Hub 取得最新的稳定版 CentOS 官方映像：</p>
+<pre><code> $ <span class="built_in">sudo</span> docker pull centos
+</code></pre><p>这个指令只会取出标签为 centos:latest 的映像，该标签永远指向最新的稳定版 CentOS 发行版本，现时为 CentOS 7（centos:centos7）。若要访问其它版本的 CentOS 映像，例如 CentOS 6：</p>
+<pre><code> $ <span class="built_in">sudo</span> docker pull centos:centos6
+</code></pre><p>要查看已下载至本地的映像：</p>
+<pre><code> $ <span class="built_in">sudo</span> docker images centos
+ REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+ centos              centos6             a30bc9f3097e        <span class="number">3</span> days ago          <span class="number">215.8</span> MB
+ centos              latest              dade6cb4530a        <span class="number">3</span> days ago          <span class="number">224</span> MB
+ centos              centos7             dade6cb4530a        <span class="number">3</span> days ago          <span class="number">224</span> MB
+</code></pre><p>要通过 docker 执行基本的 cat 指令：</p>
+<pre><code> $ sudo docker run cento<span class="variable">s:latest</span> <span class="keyword">cat</span> /etc/centos-release
+ CentOS Linux release <span class="number">7.0</span>.<span class="number">1406</span> (Core)
+</code></pre></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="安装">安装</h2>
+<h3 id="软件准备">软件准备</h3>
+<p>Oracle VirtualBox4.3.6</p>
+<p>CentOS-6.6-x86_64-minimal.iso</p>
+<h3 id="Docker_安装">Docker 安装</h3>
+<ol>
+<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
+<pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
+ CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
+</code></pre></li>
+<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+</code></pre></li>
+<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
+<pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+</code></pre>]]>
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://xusida.github.io/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[实时计算<2>最大回撤]]></title>
@@ -148,7 +235,7 @@
     <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%971%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/"/>
     <id>http://xusida.github.io/2015/02/10/实时计算1环境准备/</id>
     <published>2015-02-10T07:00:54.000Z</published>
-    <updated>2015-02-10T08:21:55.000Z</updated>
+    <updated>2015-02-10T08:26:49.000Z</updated>
     <content type="html"><![CDATA[<h2 id="硬件准备">硬件准备</h2>
 <table>
 <thead>
@@ -186,7 +273,7 @@
 </table>
 <h2 id="软件准备">软件准备</h2>
 <blockquote>
-<p>三台虚拟物理机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
+<p>三台虚拟机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
 </blockquote>
 <p>设置hosts文件</p>
 <pre><code>    <span class="keyword">vi</span> /ets/hosts
@@ -344,7 +431,7 @@
 </table>
 <h2 id="软件准备">软件准备</h2>
 <blockquote>
-<p>三台虚拟物理机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
+<p>三台虚拟机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
 </blockquote>
 <p>设置hosts文件</p>
 <pre><code>    <span class="keyword">vi</span> /ets/hosts

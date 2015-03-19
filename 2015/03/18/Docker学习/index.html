@@ -4,17 +4,47 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015 | 男怕夜奔，女怕思凡</title>
+  <title>Docker学习&lt;1&gt;环境准备 | 男怕夜奔，女怕思凡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="知识管理、学习记录">
-<meta property="og:type" content="website">
-<meta property="og:title" content="男怕夜奔，女怕思凡">
-<meta property="og:url" content="http://xusida.github.io/archives/2015/">
+  <meta name="description" content="安装
+软件准备
+Oracle VirtualBox4.3.6
+CentOS-6.6-x86_64-minimal.iso
+Docker 安装
+
+确认你的CentOS 的版本首先通过以下命令确认你的CentOS 版本
+ $ cat /etc/redhat-release 
+ CentOS release 6.6 (Final)
+
+下载EPEL 的rpm 安装包现在从上面的地址下载CentOS 版本所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习<1>环境准备">
+<meta property="og:url" content="http://xusida.github.io/2015/03/18/Docker学习/">
 <meta property="og:site_name" content="男怕夜奔，女怕思凡">
-<meta property="og:description" content="知识管理、学习记录">
+<meta property="og:description" content="安装
+软件准备
+Oracle VirtualBox4.3.6
+CentOS-6.6-x86_64-minimal.iso
+Docker 安装
+
+确认你的CentOS 的版本首先通过以下命令确认你的CentOS 版本
+ $ cat /etc/redhat-release 
+ CentOS release 6.6 (Final)
+
+下载EPEL 的rpm 安装包现在从上面的地址下载CentOS 版本所">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="男怕夜奔，女怕思凡">
-<meta name="twitter:description" content="知识管理、学习记录">
+<meta name="twitter:title" content="Docker学习<1>环境准备">
+<meta name="twitter:description" content="安装
+软件准备
+Oracle VirtualBox4.3.6
+CentOS-6.6-x86_64-minimal.iso
+Docker 安装
+
+确认你的CentOS 的版本首先通过以下命令确认你的CentOS 版本
+ $ cat /etc/redhat-release 
+ CentOS release 6.6 (Final)
+
+下载EPEL 的rpm 安装包现在从上面的地址下载CentOS 版本所">
 
   
     <link rel="alternative" href="/atom.xml" title="男怕夜奔，女怕思凡" type="application/atom+xml">
@@ -72,9 +102,7 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-Docker学习" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Docker学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/03/18/Docker学习/" class="article-date">
   <time datetime="2015-03-18T08:01:45.000Z" itemprop="datePublished">3月 18 2015</time>
@@ -87,8 +115,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/18/Docker学习/">Docker学习&lt;1&gt;环境准备</a>
+    <h1 class="article-title" itemprop="name">
+      Docker学习&lt;1&gt;环境准备
     </h1>
   
 
@@ -111,12 +139,48 @@
 </code></pre></li>
 <li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
 <pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
-</code></pre>
-        
-          <p class="article-more-link">
-            <a href="/2015/03/18/Docker学习/#more">Read More</a>
-          </p>
-        
+</code></pre><a id="more"></a></li>
+<li><p>检查EPEL 源<br>安装好EPEL 源后，用yum 命令来检查是否添加到源列表</p>
+<pre><code> <span class="comment"># yum repolist</span>
+ Loaded plugins: fastestmirror
+ Loading mirror speeds <span class="keyword">from</span> cached hostfile
+  * base: mirrors.vonline.vn
+  * epel: buaya.klas.<span class="keyword">or</span>.<span class="property">id</span>
+  * extras: centos-hn.viettelidc.com.vn
+  * updates: mirrors.fibo.vn
+ repo <span class="property">id</span>        repo <span class="property">name</span>                                              status
+ base           CentOS-<span class="number">6</span> - Base                                         <span class="number">6</span>,<span class="number">381</span>
+ epel           Extra Packages <span class="keyword">for</span> Enterprise Linux <span class="number">6</span> - x86_64         <span class="number">10</span>,<span class="number">023</span>
+ extras         CentOS-<span class="number">6</span> - Extras                                          <span class="number">13</span>
+ nginx          nginx repo                                                 <span class="number">47</span>
+ updates        CentOS-<span class="number">6</span> - Updates                                      <span class="number">1</span>,<span class="number">555</span>
+</code></pre><p>EPEL已经在repo 后列出，并且显示提供了上万个软件包，所以EPEL 已经安装到你的CentOS了。<br>EPEL源的配置安装到了 /etc/yum.repos.d/epel.repo 文件。        repolist: 18,019</p>
+</li>
+<li><p>安装 Docker —— CentOS-6<br>要在 CentOS-6 上安装 docker，请利用以下指令安装 docker-io 组件：</p>
+<pre><code> $ <span class="built_in">sudo</span> yum install docker-io
+</code></pre><p>安装 docker 后，你必须引导该服务才能应用它。</p>
+<pre><code> $ <span class="built_in">sudo</span> service docker start
+</code></pre><p>若要开机时引导 docker 服务：</p>
+<pre><code> $ sudo chkconfig docker <span class="command"><span class="keyword">on</span></span>
+</code></pre></li>
+<li><p>应用 Docker<br>在缺省情况下，docker 必须由 root 或是通过 sudo 的权限执行。你也可以把一个用户加进 docker 群组来让该用户才接执行 docker。<br>请留意要是该用户逃出了容器之外，这样做也许会让他能提升权限。</p>
+<pre><code> $ <span class="built_in">sudo</span> usermod <span class="operator">-a</span> -G docker &lt;你的用户&gt;
+</code></pre><p>要从 Docker Hub 取得最新的稳定版 CentOS 官方映像：</p>
+<pre><code> $ <span class="built_in">sudo</span> docker pull centos
+</code></pre><p>这个指令只会取出标签为 centos:latest 的映像，该标签永远指向最新的稳定版 CentOS 发行版本，现时为 CentOS 7（centos:centos7）。若要访问其它版本的 CentOS 映像，例如 CentOS 6：</p>
+<pre><code> $ <span class="built_in">sudo</span> docker pull centos:centos6
+</code></pre><p>要查看已下载至本地的映像：</p>
+<pre><code> $ <span class="built_in">sudo</span> docker images centos
+ REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+ centos              centos6             a30bc9f3097e        <span class="number">3</span> days ago          <span class="number">215.8</span> MB
+ centos              latest              dade6cb4530a        <span class="number">3</span> days ago          <span class="number">224</span> MB
+ centos              centos7             dade6cb4530a        <span class="number">3</span> days ago          <span class="number">224</span> MB
+</code></pre><p>要通过 docker 执行基本的 cat 指令：</p>
+<pre><code> $ sudo docker run cento<span class="variable">s:latest</span> <span class="keyword">cat</span> /etc/centos-release
+ CentOS Linux release <span class="number">7.0</span>.<span class="number">1406</span> (Core)
+</code></pre></li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
@@ -134,167 +198,24 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
-  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
-    </h1>
+    <a href="/2015/02/10/实时计算2最大回撤/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">实时计算&lt;2&gt;最大回撤</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="最大回撤计算">最大回撤计算</h2>
-<blockquote>
-<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
-</blockquote>
-<h3 id="要求">要求</h3>
-<blockquote>
-<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
-</blockquote>
-<h3 id="数据准备">数据准备</h3>
-<blockquote>
-<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="058tiny88rfrdmje" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
 
-  
-    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
-  <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="硬件准备">硬件准备</h2>
-<table>
-<thead>
-<tr>
-<th>机器名</th>
-<th>IP</th>
-<th>硬件配置</th>
-<th>操作系统</th>
-<th>软件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>nimbus</td>
-<td>192.168.55.173</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor1</td>
-<td>192.168.55.174</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor2</td>
-<td>192.168.55.175</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-</tbody>
-</table>
-<h2 id="软件准备">软件准备</h2>
-<blockquote>
-<p>三台虚拟机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
-</blockquote>
-<p>设置hosts文件</p>
-<pre><code>    <span class="keyword">vi</span> /ets/hosts
-</code></pre><p>如下</p>
-<pre><code>    127.0.0.1 nimbus
-    192.168.55.173  nimbus
-    192.168.55.174 supervisor1
-    192.168.55.175 supervisor2
-</code></pre><h3 id="基本软件安装">基本软件安装</h3>
-<blockquote>
-<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/" data-id="zm1h1ut4ewiywfum" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/02/10/实时计算1环境准备/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/03/18/Docker学习/" data-title="Docker学习&lt;1&gt;环境准备" data-url="http://xusida.github.io/2015/03/18/Docker学习/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">

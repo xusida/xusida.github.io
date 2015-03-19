@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 华泰证券 | 男怕夜奔，女怕思凡</title>
+  <title>Tag: Docker | 男怕夜奔，女怕思凡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="知识管理、学习记录">
 <meta property="og:type" content="website">
 <meta property="og:title" content="男怕夜奔，女怕思凡">
-<meta property="og:url" content="http://xusida.github.io/tags/华泰证券/">
+<meta property="og:url" content="http://xusida.github.io/tags/Docker/">
 <meta property="og:site_name" content="男怕夜奔，女怕思凡">
 <meta property="og:description" content="知识管理、学习记录">
 <meta name="twitter:card" content="summary">
@@ -74,10 +74,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Docker学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
-  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
+    <a href="/2015/03/18/Docker学习/" class="article-date">
+  <time datetime="2015-03-18T08:01:45.000Z" itemprop="datePublished">3月 18 2015</time>
 </a>
     
   </div>
@@ -88,7 +88,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
+      <a class="article-title" href="/2015/03/18/Docker学习/">Docker学习&lt;1&gt;环境准备</a>
     </h1>
   
 
@@ -96,132 +96,40 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="最大回撤计算">最大回撤计算</h2>
-<blockquote>
-<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
-</blockquote>
-<h3 id="要求">要求</h3>
-<blockquote>
-<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
-</blockquote>
-<h3 id="数据准备">数据准备</h3>
-<blockquote>
-<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
+        <h2 id="安装">安装</h2>
+<h3 id="软件准备">软件准备</h3>
+<p>Oracle VirtualBox4.3.6</p>
+<p>CentOS-6.6-x86_64-minimal.iso</p>
+<h3 id="Docker_安装">Docker 安装</h3>
+<ol>
+<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
+<pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
+ CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
+</code></pre></li>
+<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+</code></pre></li>
+<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
+<pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+</code></pre>
         
           <p class="article-more-link">
-            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
+            <a href="/2015/03/18/Docker学习/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="058tiny88rfrdmje" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://xusida.github.io/2015/03/18/Docker学习/" data-id="qlij0efgzmhutzlk" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
-        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://xusida.github.io/2015/03/18/Docker学习/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
-  <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="硬件准备">硬件准备</h2>
-<table>
-<thead>
-<tr>
-<th>机器名</th>
-<th>IP</th>
-<th>硬件配置</th>
-<th>操作系统</th>
-<th>软件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>nimbus</td>
-<td>192.168.55.173</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor1</td>
-<td>192.168.55.174</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor2</td>
-<td>192.168.55.175</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-</tbody>
-</table>
-<h2 id="软件准备">软件准备</h2>
-<blockquote>
-<p>三台虚拟机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
-</blockquote>
-<p>设置hosts文件</p>
-<pre><code>    <span class="keyword">vi</span> /ets/hosts
-</code></pre><p>如下</p>
-<pre><code>    127.0.0.1 nimbus
-    192.168.55.173  nimbus
-    192.168.55.174 supervisor1
-    192.168.55.175 supervisor2
-</code></pre><h3 id="基本软件安装">基本软件安装</h3>
-<blockquote>
-<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/" data-id="zm1h1ut4ewiywfum" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/02/10/实时计算1环境准备/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
 
     </footer>
   </div>
