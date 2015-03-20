@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-03-19T02:05:11.573Z</updated>
+  <updated>2015-03-20T06:53:33.862Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -15,13 +15,154 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Docker学习<3>部署一个Web应用]]></title>
+    <link href="http://xusida.github.io/2015/03/20/Docker%E5%AD%A6%E4%B9%A03/"/>
+    <id>http://xusida.github.io/2015/03/20/Docker学习3/</id>
+    <published>2015-03-20T08:01:45.000Z</published>
+    <updated>2015-03-20T06:50:03.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="部署一个web应用">部署一个web应用</h3>
+<ol>
+<li><p>下载jetty镜像</p>
+<pre><code> <span class="variable">$ </span>docker pull jetty
+ jetty     <span class="number">9</span>        <span class="number">3</span>f468c596b78        <span class="number">2</span> days ago          <span class="number">344.1</span> <span class="constant">MB</span>
+</code></pre><p>大概300M+，包括OpenJdk1.7 和操作系统</p>
+</li>
+<li><p>官方文档 <a href="https://registry.hub.docker.com/u/library/jetty/" target="_blank" rel="external">Jetty registry</a></p>
+<pre><code> $ docker run <span class="operator">-d</span> jetty
+</code></pre><p>测试 <strong><em><a href="http://container-ip:8080" target="_blank" rel="external">http://container-ip:8080</a></em></strong> 可以看到 Jetty 已经运行,如果你想使用host的端口请做如下端口映射:</p>
+<pre><code> $ docker run <span class="operator">-d</span> -p <span class="number">8888</span>:<span class="number">8080</span> jetty
+</code></pre><p>现在可以用 Docker host 的 ip 和端口 8888 来测试 Jetty</p>
+<pre><code> $curl http://docker-host-ip:8888
+ <span class="tag">&lt;<span class="title">HTML</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">HEAD</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">TITLE</span>&gt;</span>Error 404 - Not Found<span class="tag">&lt;/<span class="title">TITLE</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">BODY</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">H2</span>&gt;</span>Error 404 - Not Found.<span class="tag">&lt;/<span class="title">H2</span>&gt;</span>
+ No context on this server matched or handled this request.<span class="tag">&lt;<span class="title">BR</span>&gt;</span>Contexts known to this server are: <span class="tag">&lt;<span class="title">ul</span>&gt;</span><span class="tag">&lt;/<span class="title">ul</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">border</span>=<span class="value">0</span> <span class="attribute">src</span>=<span class="value">"/favicon.ico"</span>/&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span>Powered by Jetty:// Java Web Server<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>/&gt;</span>
+</code></pre></li>
+</ol>
+<p>Jetty镜像的默认环境配置:</p>
+<pre><code>    $ docker run -i -t jetty env
+    <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
+    <span class="variable">TERM=</span>xterm
+    <span class="variable">JAVA_VERSION=</span><span class="number">7</span>u75
+    <span class="variable">JAVA_DEBIAN_VERSION=</span><span class="number">7</span>u75-<span class="number">2.5</span>.<span class="number">4</span>-<span class="number">2</span>
+    <span class="variable">JETTY_HOME=</span>/usr/local/jetty
+    <span class="variable">JETTY_MAJOR=</span><span class="number">9</span>
+    <span class="variable">JETTY_VERSION=</span><span class="number">9.2</span>.<span class="number">10</span>.v20150310
+    <span class="variable">JETTY_TGZ_URL=</span>http://eclipse.org/downloads/download.php?<span class="variable">r=</span><span class="number">1</span>&amp;<span class="variable">file=</span>/jetty/stable-<span class="number">9</span>/dist/jetty-distribution-<span class="number">9.2</span>.<span class="number">10</span>.v20150310.tar.gz
+    <span class="variable">JETTY_BASE=</span>/var/lib/jetty
+    <span class="variable">JETTY_RUN=</span>/run/jetty
+    <span class="variable">JETTY_STATE=</span>/run/jetty/jetty.state
+    <span class="variable">TMPDIR=</span>/tmp/jetty
+    <span class="variable">HOME=</span>/root    
+</code></pre><p>Webapps 被部署在容器内的 <strong><em>/var/lib/jetty/webapps</em></strong>.<br>挂载 Docker Host 上的目录到容器内：</p>
+<pre><code>    $ docker run -d  -v <span class="regexp">/tmp/</span>webapps:<span class="regexp">/var/</span>lib<span class="regexp">/jetty/</span>webapps -p <span class="number">8080</span>:<span class="number">8080</span> jetty
+</code></pre><p>挂载 Docker Host上的 <strong><em>/tmp/webapps</em></strong> 到容器的 <strong><em>/var/lib/jetty/webapps</em></strong> 目录并映射 Host 上8080端口到容器的 8080 端口。<br>下面部署webapp到 <strong><em>/tmp/webapps</em></strong> 中，建立一个 Web Project ： jetty-webapp-test,在web根目录添加两个测试文件 index.jsp 和 index.html，打包成 jetty-webapp-test.war。把war包移动到 Docker Host 的 <strong><em>/tmp/webapps</em></strong> 下:</p>
+<pre><code>    $ curl http://localhost:8080/jetty-webapp-test/index.html
+    <span class="doctype">&lt;!DOCTYPE html&gt;</span>
+    <span class="tag">&lt;<span class="title">html</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>index.html<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    这是一个测试html！
+    <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+    $ curl http://localhost:8080/jetty-webapp-test/index.jsp
+    <span class="tag">&lt;<span class="title">html</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">h2</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="title">h2</span>&gt;</span>
+    hello world!
+</code></pre><p>部署完成。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="部署一个web应用">部署一个web应用</h3>
+<ol>
+<li><p>下载jetty镜像</p>
+<pre><code> <span class="variable">$ </span>docker pull jetty
+ jetty     <span c]]>
+    </summary>
+    
+      <category term="Docker" scheme="http://xusida.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Docker学习<2>入门]]></title>
+    <link href="http://xusida.github.io/2015/03/19/Docker%E5%AD%A6%E4%B9%A02/"/>
+    <id>http://xusida.github.io/2015/03/19/Docker学习2/</id>
+    <published>2015-03-19T08:01:45.000Z</published>
+    <updated>2015-03-20T06:52:24.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="教程示例">教程示例</h3>
+<p><a href="http://www.docker.org.cn/book/docker.html" target="_blank" rel="external">入门教程</a></p>
+<ol>
+<li><p>搜索可用的docker镜像</p>
+<pre><code> $ docker <span class="built_in">search</span> tutorial
+ NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
+ learn/tutorial                                           <span class="number">8</span>                    
+ caterpillar/java-tutorial                                <span class="number">2</span>                    
+ caterpillar/<span class="keyword">python</span>-tutorial                              <span class="number">2</span>                    
+ florentbenoit/docker-angularjs-tutorials                 <span class="number">1</span>                    [OK]
+ fabioberger/dockerize-tutorial                           <span class="number">0</span>                    [OK]
+ tobegit3hub/tutorial-beego                               <span class="number">0</span>                    [OK]
+ wonderlamb/tutorial                        Tutorial      <span class="number">0</span>                    
+ kedarvaidya/rails-tutorial-v3-dev                        <span class="number">0</span>                    [OK]
+</code></pre><p>找到 <strong><em>learn/tutorial</em></strong>，官方入门示例。</p>
+</li>
+<li><p>下载容器镜像</p>
+<pre><code><span class="attribute"> $ docker pull learn/tutorial
+ Pulling repository learn/tutorial
+ 8dbd9e392a96: Downloading [================</span>=<span class="string">&gt;                                 ]    20 MB/58.34 MB 7m40s</span>
+</code></pre></li>
+<li><p>在docker容器中运行hello world!</p>
+<pre><code> $ docker <span class="command">run</span> learn/tutorial echo <span class="string">"hello word"</span>
+ hello <span class="property">word</span>
+</code></pre></li>
+<li><p>在容器中安装新的程序</p>
+<pre><code> $ docker <span class="command">run</span> learn/tutorial apt-<span class="keyword">get</span> install -y ping
+</code></pre><p>在执行apt-get 命令的时候，要带上-y参数。如果不指定-y参数的话，apt-get命令会进入交互模式，需要用户输入命令来进行确认，但在docker环境中是无法响应这种交互的。</p>
+</li>
+<li><p>保存对容器的修改</p>
+<pre><code> $ docker <span class="keyword">ps</span> -<span class="keyword">l</span>
+ CONTAINER ID        IMAGE                   COMMAND                CREATED             STATUS              PORTS               NAMES
+ <span class="number">942</span>f628e4d4f        learn/tutoria<span class="variable">l:latest</span>   <span class="string">"ping www.sina.com.cn   7 seconds ago                                               modest_heisenberg   
+</span> $ docker commit <span class="number">942</span> learn/ping
+ <span class="number">94015</span>fcbbe9bdf9d788ba2085de6d7409cf9cf52a7899fa3313363505fb949bc
+ $ docker images
+ REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+ learn/ping          latest              <span class="number">94015</span>fcbbe9b        <span class="number">15</span> seconds ago      <span class="number">128</span> MB
+ centos              <span class="number">7</span>                   <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
+ centos              centos7             <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
+ centos              latest              <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
+ learn/tutorial      latest              <span class="number">8</span>dbd9e392a96        <span class="number">23</span> months ago       <span class="number">128</span> MB
+</code></pre><p>首先使用docker ps -l命令获得安装完ping命令之后容器的id。然后把这个镜像保存为learn/ping。</p>
+</li>
+<li><p>运行新的镜像</p>
+<pre><code> $docker run learn/<span class="built_in">ping</span> <span class="built_in">ping</span> www.google.com
+</code></pre></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="教程示例">教程示例</h3>
+<p><a href="http://www.docker.org.cn/book/docker.html" target="_blank" rel="external">入门教程</a></p>
+<ol>
+<li><p>搜索可用的]]>
+    </summary>
+    
+      <category term="Docker" scheme="http://xusida.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Docker学习<1>环境准备]]></title>
     <link href="http://xusida.github.io/2015/03/18/Docker%E5%AD%A6%E4%B9%A0/"/>
     <id>http://xusida.github.io/2015/03/18/Docker学习/</id>
     <published>2015-03-18T08:01:45.000Z</published>
-    <updated>2015-03-19T02:03:53.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="安装">安装</h2>
-<h3 id="软件准备">软件准备</h3>
+    <updated>2015-03-19T05:53:38.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="软件准备">软件准备</h3>
 <p>Oracle VirtualBox4.3.6</p>
 <p>CentOS-6.6-x86_64-minimal.iso</p>
 <h3 id="Docker_安装">Docker 安装</h3>
@@ -78,8 +219,7 @@
 </ol>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h2 id="安装">安装</h2>
-<h3 id="软件准备">软件准备</h3>
+    <![CDATA[<h3 id="软件准备">软件准备</h3>
 <p>Oracle VirtualBox4.3.6</p>
 <p>CentOS-6.6-x86_64-minimal.iso</p>
 <h3 id="Docker_安装">Docker 安装</h3>

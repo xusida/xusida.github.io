@@ -4,17 +4,44 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Docker | 男怕夜奔，女怕思凡</title>
+  <title>Docker学习&lt;3&gt;部署一个Web应用 | 男怕夜奔，女怕思凡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="知识管理、学习记录">
-<meta property="og:type" content="website">
-<meta property="og:title" content="男怕夜奔，女怕思凡">
-<meta property="og:url" content="http://xusida.github.io/tags/Docker/">
+  <meta name="description" content="部署一个web应用
+
+下载jetty镜像
+ $ docker pull jetty
+ jetty     9        3f468c596b78        2 days ago          344.1 MB
+大概300M+，包括OpenJdk1.7 和操作系统
+
+官方文档 Jetty registry
+ $ docker run -d jetty
+测试 http://containe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习<3>部署一个Web应用">
+<meta property="og:url" content="http://xusida.github.io/2015/03/20/Docker学习3/">
 <meta property="og:site_name" content="男怕夜奔，女怕思凡">
-<meta property="og:description" content="知识管理、学习记录">
+<meta property="og:description" content="部署一个web应用
+
+下载jetty镜像
+ $ docker pull jetty
+ jetty     9        3f468c596b78        2 days ago          344.1 MB
+大概300M+，包括OpenJdk1.7 和操作系统
+
+官方文档 Jetty registry
+ $ docker run -d jetty
+测试 http://containe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="男怕夜奔，女怕思凡">
-<meta name="twitter:description" content="知识管理、学习记录">
+<meta name="twitter:title" content="Docker学习<3>部署一个Web应用">
+<meta name="twitter:description" content="部署一个web应用
+
+下载jetty镜像
+ $ docker pull jetty
+ jetty     9        3f468c596b78        2 days ago          344.1 MB
+大概300M+，包括OpenJdk1.7 和操作系统
+
+官方文档 Jetty registry
+ $ docker run -d jetty
+测试 http://containe">
 
   
     <link rel="alternative" href="/atom.xml" title="男怕夜奔，女怕思凡" type="application/atom+xml">
@@ -72,9 +99,7 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-Docker学习3" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Docker学习3" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/03/20/Docker学习3/" class="article-date">
   <time datetime="2015-03-20T08:01:45.000Z" itemprop="datePublished">3月 20 2015</time>
@@ -87,8 +112,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/20/Docker学习3/">Docker学习&lt;3&gt;部署一个Web应用</a>
+    <h1 class="article-title" itemprop="name">
+      Docker学习&lt;3&gt;部署一个Web应用
     </h1>
   
 
@@ -171,166 +196,24 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Docker学习2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/03/19/Docker学习2/" class="article-date">
-  <time datetime="2015-03-19T08:01:45.000Z" itemprop="datePublished">3月 19 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/19/Docker学习2/">Docker学习&lt;2&gt;入门</a>
-    </h1>
+    <a href="/2015/03/19/Docker学习2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker学习&lt;2&gt;入门</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="教程示例">教程示例</h3>
-<p><a href="http://www.docker.org.cn/book/docker.html" target="_blank" rel="external">入门教程</a></p>
-<ol>
-<li><p>搜索可用的docker镜像</p>
-<pre><code> $ docker <span class="built_in">search</span> tutorial
- NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
- learn/tutorial                                           <span class="number">8</span>                    
- caterpillar/java-tutorial                                <span class="number">2</span>                    
- caterpillar/<span class="keyword">python</span>-tutorial                              <span class="number">2</span>                    
- florentbenoit/docker-angularjs-tutorials                 <span class="number">1</span>                    [OK]
- fabioberger/dockerize-tutorial                           <span class="number">0</span>                    [OK]
- tobegit3hub/tutorial-beego                               <span class="number">0</span>                    [OK]
- wonderlamb/tutorial                        Tutorial      <span class="number">0</span>                    
- kedarvaidya/rails-tutorial-v3-dev                        <span class="number">0</span>                    [OK]
-</code></pre><p>找到 <strong><em>learn/tutorial</em></strong>，官方入门示例。</p>
-</li>
-<li><p>下载容器镜像</p>
-<pre><code><span class="attribute"> $ docker pull learn/tutorial
- Pulling repository learn/tutorial
- 8dbd9e392a96: Downloading [================</span>=<span class="string">&gt;                                 ]    20 MB/58.34 MB 7m40s</span>
-</code></pre></li>
-<li><p>在docker容器中运行hello world!</p>
-<pre><code> $ docker <span class="command">run</span> learn/tutorial echo <span class="string">"hello word"</span>
- hello <span class="property">word</span>
-</code></pre></li>
-<li><p>在容器中安装新的程序</p>
-<pre><code> $ docker <span class="command">run</span> learn/tutorial apt-<span class="keyword">get</span> install -y ping
-</code></pre><p>在执行apt-get 命令的时候，要带上-y参数。如果不指定-y参数的话，apt-get命令会进入交互模式，需要用户输入命令来进行确认，但在docker环境中是无法响应这种交互的。</p>
-</li>
-<li><p>保存对容器的修改</p>
-<pre><code> $ docker <span class="keyword">ps</span> -<span class="keyword">l</span>
- CONTAINER ID        IMAGE                   COMMAND                CREATED             STATUS              PORTS               NAMES
- <span class="number">942</span>f628e4d4f        learn/tutoria<span class="variable">l:latest</span>   <span class="string">"ping www.sina.com.cn   7 seconds ago                                               modest_heisenberg   
-</span> $ docker commit <span class="number">942</span> learn/ping
- <span class="number">94015</span>fcbbe9bdf9d788ba2085de6d7409cf9cf52a7899fa3313363505fb949bc
- $ docker images
- REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
- learn/ping          latest              <span class="number">94015</span>fcbbe9b        <span class="number">15</span> seconds ago      <span class="number">128</span> MB
- centos              <span class="number">7</span>                   <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
- centos              centos7             <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
- centos              latest              <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
- learn/tutorial      latest              <span class="number">8</span>dbd9e392a96        <span class="number">23</span> months ago       <span class="number">128</span> MB
-</code></pre><p>首先使用docker ps -l命令获得安装完ping命令之后容器的id。然后把这个镜像保存为learn/ping。</p>
-</li>
-<li><p>运行新的镜像</p>
-<pre><code> $docker run learn/<span class="built_in">ping</span> <span class="built_in">ping</span> www.google.com
-</code></pre></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/03/19/Docker学习2/" data-id="4o3ut0xtbp4okxjy" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/03/19/Docker学习2/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
 
-  
-    <article id="post-Docker学习" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/03/18/Docker学习/" class="article-date">
-  <time datetime="2015-03-18T08:01:45.000Z" itemprop="datePublished">3月 18 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/18/Docker学习/">Docker学习&lt;1&gt;环境准备</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="软件准备">软件准备</h3>
-<p>Oracle VirtualBox4.3.6</p>
-<p>CentOS-6.6-x86_64-minimal.iso</p>
-<h3 id="Docker_安装">Docker 安装</h3>
-<ol>
-<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
-<pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
- CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
-</code></pre></li>
-<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
-<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
-</code></pre></li>
-<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
-<pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
-</code></pre>
-        
-          <p class="article-more-link">
-            <a href="/2015/03/18/Docker学习/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/03/18/Docker学习/" data-id="lrf5ujv71rrxlb4s" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/03/18/Docker学习/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/03/20/Docker学习3/" data-title="Docker学习&lt;3&gt;部署一个Web应用" data-url="http://xusida.github.io/2015/03/20/Docker学习3/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">

@@ -4,17 +4,35 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015/2 | 男怕夜奔，女怕思凡</title>
+  <title>Docker学习&lt;2&gt;入门 | 男怕夜奔，女怕思凡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="知识管理、学习记录">
-<meta property="og:type" content="website">
-<meta property="og:title" content="男怕夜奔，女怕思凡">
-<meta property="og:url" content="http://xusida.github.io/archives/2015/02/">
+  <meta name="description" content="教程示例
+入门教程
+
+搜索可用的docker镜像
+ $ docker search tutorial
+ NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
+ learn/tutorial                                           8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习<2>入门">
+<meta property="og:url" content="http://xusida.github.io/2015/03/19/Docker学习2/">
 <meta property="og:site_name" content="男怕夜奔，女怕思凡">
-<meta property="og:description" content="知识管理、学习记录">
+<meta property="og:description" content="教程示例
+入门教程
+
+搜索可用的docker镜像
+ $ docker search tutorial
+ NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
+ learn/tutorial                                           8">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="男怕夜奔，女怕思凡">
-<meta name="twitter:description" content="知识管理、学习记录">
+<meta name="twitter:title" content="Docker学习<2>入门">
+<meta name="twitter:description" content="教程示例
+入门教程
+
+搜索可用的docker镜像
+ $ docker search tutorial
+ NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
+ learn/tutorial                                           8">
 
   
     <link rel="alternative" href="/atom.xml" title="男怕夜奔，女怕思凡" type="application/atom+xml">
@@ -72,12 +90,10 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Docker学习2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
-  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
+    <a href="/2015/03/19/Docker学习2/" class="article-date">
+  <time datetime="2015-03-19T08:01:45.000Z" itemprop="datePublished">3月 19 2015</time>
 </a>
     
   </div>
@@ -87,8 +103,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
+    <h1 class="article-title" itemprop="name">
+      Docker学习&lt;2&gt;入门
     </h1>
   
 
@@ -96,141 +112,99 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="最大回撤计算">最大回撤计算</h2>
-<blockquote>
-<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
-</blockquote>
-<h3 id="要求">要求</h3>
-<blockquote>
-<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
-</blockquote>
-<h3 id="数据准备">数据准备</h3>
-<blockquote>
-<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
-          </p>
-        
+        <h3 id="教程示例">教程示例</h3>
+<p><a href="http://www.docker.org.cn/book/docker.html" target="_blank" rel="external">入门教程</a></p>
+<ol>
+<li><p>搜索可用的docker镜像</p>
+<pre><code> $ docker <span class="built_in">search</span> tutorial
+ NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
+ learn/tutorial                                           <span class="number">8</span>                    
+ caterpillar/java-tutorial                                <span class="number">2</span>                    
+ caterpillar/<span class="keyword">python</span>-tutorial                              <span class="number">2</span>                    
+ florentbenoit/docker-angularjs-tutorials                 <span class="number">1</span>                    [OK]
+ fabioberger/dockerize-tutorial                           <span class="number">0</span>                    [OK]
+ tobegit3hub/tutorial-beego                               <span class="number">0</span>                    [OK]
+ wonderlamb/tutorial                        Tutorial      <span class="number">0</span>                    
+ kedarvaidya/rails-tutorial-v3-dev                        <span class="number">0</span>                    [OK]
+</code></pre><p>找到 <strong><em>learn/tutorial</em></strong>，官方入门示例。</p>
+</li>
+<li><p>下载容器镜像</p>
+<pre><code><span class="attribute"> $ docker pull learn/tutorial
+ Pulling repository learn/tutorial
+ 8dbd9e392a96: Downloading [================</span>=<span class="string">&gt;                                 ]    20 MB/58.34 MB 7m40s</span>
+</code></pre></li>
+<li><p>在docker容器中运行hello world!</p>
+<pre><code> $ docker <span class="command">run</span> learn/tutorial echo <span class="string">"hello word"</span>
+ hello <span class="property">word</span>
+</code></pre></li>
+<li><p>在容器中安装新的程序</p>
+<pre><code> $ docker <span class="command">run</span> learn/tutorial apt-<span class="keyword">get</span> install -y ping
+</code></pre><p>在执行apt-get 命令的时候，要带上-y参数。如果不指定-y参数的话，apt-get命令会进入交互模式，需要用户输入命令来进行确认，但在docker环境中是无法响应这种交互的。</p>
+</li>
+<li><p>保存对容器的修改</p>
+<pre><code> $ docker <span class="keyword">ps</span> -<span class="keyword">l</span>
+ CONTAINER ID        IMAGE                   COMMAND                CREATED             STATUS              PORTS               NAMES
+ <span class="number">942</span>f628e4d4f        learn/tutoria<span class="variable">l:latest</span>   <span class="string">"ping www.sina.com.cn   7 seconds ago                                               modest_heisenberg   
+</span> $ docker commit <span class="number">942</span> learn/ping
+ <span class="number">94015</span>fcbbe9bdf9d788ba2085de6d7409cf9cf52a7899fa3313363505fb949bc
+ $ docker images
+ REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+ learn/ping          latest              <span class="number">94015</span>fcbbe9b        <span class="number">15</span> seconds ago      <span class="number">128</span> MB
+ centos              <span class="number">7</span>                   <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
+ centos              centos7             <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
+ centos              latest              <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
+ learn/tutorial      latest              <span class="number">8</span>dbd9e392a96        <span class="number">23</span> months ago       <span class="number">128</span> MB
+</code></pre><p>首先使用docker ps -l命令获得安装完ping命令之后容器的id。然后把这个镜像保存为learn/ping。</p>
+</li>
+<li><p>运行新的镜像</p>
+<pre><code> $docker run learn/<span class="built_in">ping</span> <span class="built_in">ping</span> www.google.com
+</code></pre></li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="b2l2tbdz67w6g7ue" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://xusida.github.io/2015/03/19/Docker学习2/" data-id="4o3ut0xtbp4okxjy" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
-        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://xusida.github.io/2015/03/19/Docker学习2/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
-  <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="硬件准备">硬件准备</h2>
-<table>
-<thead>
-<tr>
-<th>机器名</th>
-<th>IP</th>
-<th>硬件配置</th>
-<th>操作系统</th>
-<th>软件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>nimbus</td>
-<td>192.168.55.173</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor1</td>
-<td>192.168.55.174</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor2</td>
-<td>192.168.55.175</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-</tbody>
-</table>
-<h2 id="软件准备">软件准备</h2>
-<blockquote>
-<p>三台虚拟机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
-</blockquote>
-<p>设置hosts文件</p>
-<pre><code>    <span class="keyword">vi</span> /ets/hosts
-</code></pre><p>如下</p>
-<pre><code>    127.0.0.1 nimbus
-    192.168.55.173  nimbus
-    192.168.55.174 supervisor1
-    192.168.55.175 supervisor2
-</code></pre><h3 id="基本软件安装">基本软件安装</h3>
-<blockquote>
-<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/" data-id="hmgr2tgclslli78g" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/02/10/实时计算1环境准备/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
 
     </footer>
   </div>
   
+    
+<nav id="article-nav">
+  
+    <a href="/2015/03/20/Docker学习3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker学习&lt;3&gt;部署一个Web应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/18/Docker学习/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker学习&lt;1&gt;环境准备</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-  
-  
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/03/19/Docker学习2/" data-title="Docker学习&lt;2&gt;入门" data-url="http://xusida.github.io/2015/03/19/Docker学习2/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">
