@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-03-20T09:05:49.661Z</updated>
+  <updated>2015-03-20T09:09:38.792Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://xusida.github.io/2015/03/20/Docker%E5%AD%A6%E4%B9%A03/"/>
     <id>http://xusida.github.io/2015/03/20/Docker学习3/</id>
     <published>2015-03-20T08:01:45.000Z</published>
-    <updated>2015-03-20T09:04:30.000Z</updated>
+    <updated>2015-03-20T09:07:18.000Z</updated>
     <content type="html"><![CDATA[<h3 id="部署一个web应用">部署一个web应用</h3>
 <ol>
 <li><p>下载<code>jetty</code>镜像</p>
@@ -29,9 +29,9 @@
 </li>
 <li><p>官方文档 <a href="https://registry.hub.docker.com/u/library/jetty/" target="_blank" rel="external">Jetty registry</a></p>
 <pre><code> $ docker run <span class="operator">-d</span> jetty
-</code></pre><p>测试 <code>http://container-ip:8080</code> 可以看到 <code>Jetty</code> 已经运行,如果你想使用<code>host</code>的端口请做如下端口映射:</p>
+</code></pre><p>测试 <code>http://container-ip:8080</code> 可以看到 <code>jetty</code> 已经运行,如果你想使用<code>host</code>的端口请做如下端口映射:</p>
 <pre><code> $ docker run <span class="operator">-d</span> -p <span class="number">8888</span>:<span class="number">8080</span> jetty
-</code></pre><p>现在可以用 <code>Docker host</code> 的 ip 和端口 8888 来测试 <code>Jetty</code></p>
+</code></pre><p>现在可以用 <code>Docker host</code> 的 ip 和端口 8888 来测试 <code>jetty</code></p>
 <pre><code> $curl http://docker-host-ip:8888
  <span class="tag">&lt;<span class="title">HTML</span>&gt;</span>
  <span class="tag">&lt;<span class="title">HEAD</span>&gt;</span>
@@ -41,7 +41,7 @@
  No context on this server matched or handled this request.<span class="tag">&lt;<span class="title">BR</span>&gt;</span>Contexts known to this server are: <span class="tag">&lt;<span class="title">ul</span>&gt;</span><span class="tag">&lt;/<span class="title">ul</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">border</span>=<span class="value">0</span> <span class="attribute">src</span>=<span class="value">"/favicon.ico"</span>/&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span>Powered by Jetty:// Java Web Server<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>/&gt;</span>
 </code></pre></li>
 </ol>
-<p><code>Jetty</code>镜像的默认环境配置:</p>
+<p><code>jetty</code>镜像的默认环境配置:</p>
 <pre><code>    $ docker run -i -t jetty env
     <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
@@ -186,23 +186,23 @@
     <link href="http://xusida.github.io/2015/03/18/Docker%E5%AD%A6%E4%B9%A0/"/>
     <id>http://xusida.github.io/2015/03/18/Docker学习/</id>
     <published>2015-03-18T08:01:45.000Z</published>
-    <updated>2015-03-19T05:53:38.000Z</updated>
+    <updated>2015-03-20T09:09:20.000Z</updated>
     <content type="html"><![CDATA[<h3 id="软件准备">软件准备</h3>
 <p>Oracle VirtualBox4.3.6</p>
 <p>CentOS-6.6-x86_64-minimal.iso</p>
 <h3 id="Docker_安装">Docker 安装</h3>
 <ol>
-<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
+<li><p>确认你的<code>CentOS</code> 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
 <pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
  CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
 </code></pre></li>
-<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
+<li><p>下载<code>EPEL</code> 的rpm 安装包<br>现在从上面的地址下载<code>CentOS</code> 版本所对应的<code>EPEL</code> 的版本</p>
 <pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
 </code></pre></li>
-<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
+<li><p>安装<code>EPEL</code><br>通过以下命令安装<code>EPEL</code> 软件包</p>
 <pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
 </code></pre><a id="more"></a></li>
-<li><p>检查EPEL 源<br>安装好EPEL 源后，用yum 命令来检查是否添加到源列表</p>
+<li><p>检查<code>EPEL</code> 源<br>安装好EPEL 源后，用yum 命令来检查是否添加到源列表</p>
 <pre><code> <span class="comment"># yum repolist</span>
  Loaded plugins: fastestmirror
  Loading mirror speeds <span class="keyword">from</span> cached hostfile
@@ -216,20 +216,20 @@
  extras         CentOS-<span class="number">6</span> - Extras                                          <span class="number">13</span>
  nginx          nginx repo                                                 <span class="number">47</span>
  updates        CentOS-<span class="number">6</span> - Updates                                      <span class="number">1</span>,<span class="number">555</span>
-</code></pre><p>EPEL已经在repo 后列出，并且显示提供了上万个软件包，所以EPEL 已经安装到你的CentOS了。<br>EPEL源的配置安装到了 /etc/yum.repos.d/epel.repo 文件。        repolist: 18,019</p>
+</code></pre><p><code>EPEL</code>已经在repo 后列出，并且显示提供了上万个软件包，所以<code>EPEL</code> 已经安装到你的<code>CentOS</code>了。<br>EPEL源的配置安装到了 <code>/etc/yum.repos.d/epel.repo</code> 文件。        </p>
 </li>
-<li><p>安装 Docker —— CentOS-6<br>要在 CentOS-6 上安装 docker，请利用以下指令安装 docker-io 组件：</p>
+<li><p>安装 Docker —— CentOS-6<br>要在 <code>CentOS-6</code> 上安装 docker，请利用以下指令安装 <code>docker-io</code> 组件：</p>
 <pre><code> $ <span class="built_in">sudo</span> yum install docker-io
-</code></pre><p>安装 docker 后，你必须引导该服务才能应用它。</p>
+</code></pre><p>安装 <code>docker</code> 后，你必须引导该服务才能应用它。</p>
 <pre><code> $ <span class="built_in">sudo</span> service docker start
-</code></pre><p>若要开机时引导 docker 服务：</p>
+</code></pre><p>若要开机时引导 <code>docker</code> 服务：</p>
 <pre><code> $ sudo chkconfig docker <span class="command"><span class="keyword">on</span></span>
 </code></pre></li>
-<li><p>应用 Docker<br>在缺省情况下，docker 必须由 root 或是通过 sudo 的权限执行。你也可以把一个用户加进 docker 群组来让该用户才接执行 docker。<br>请留意要是该用户逃出了容器之外，这样做也许会让他能提升权限。</p>
+<li><p>应用 Docker<br>在缺省情况下，<code>docker</code> 必须由 root 或是通过 sudo 的权限执行。你也可以把一个用户加进 <code>docker</code> 群组来让该用户才接执行 <code>docker</code>。<br>请留意要是该用户逃出了容器之外，这样做也许会让他能提升权限。</p>
 <pre><code> $ <span class="built_in">sudo</span> usermod <span class="operator">-a</span> -G docker &lt;你的用户&gt;
-</code></pre><p>要从 Docker Hub 取得最新的稳定版 CentOS 官方映像：</p>
+</code></pre><p>要从 <code>Docker Hub</code> 取得最新的稳定版 <code>CentOS</code> 官方映像：</p>
 <pre><code> $ <span class="built_in">sudo</span> docker pull centos
-</code></pre><p>这个指令只会取出标签为 centos:latest 的映像，该标签永远指向最新的稳定版 CentOS 发行版本，现时为 CentOS 7（centos:centos7）。若要访问其它版本的 CentOS 映像，例如 CentOS 6：</p>
+</code></pre><p>这个指令只会取出标签为 <code>centos:latest</code> 的映像，该标签永远指向最新的稳定版 <code>CentOS</code> 发行版本，现时为 <code>CentOS 7（centos:centos7）</code>。若要访问其它版本的 <code>CentOS</code> 映像，例如 CentOS 6：</p>
 <pre><code> $ <span class="built_in">sudo</span> docker pull centos:centos6
 </code></pre><p>要查看已下载至本地的映像：</p>
 <pre><code> $ <span class="built_in">sudo</span> docker images centos
@@ -237,7 +237,7 @@
  centos              centos6             a30bc9f3097e        <span class="number">3</span> days ago          <span class="number">215.8</span> MB
  centos              latest              dade6cb4530a        <span class="number">3</span> days ago          <span class="number">224</span> MB
  centos              centos7             dade6cb4530a        <span class="number">3</span> days ago          <span class="number">224</span> MB
-</code></pre><p>要通过 docker 执行基本的 cat 指令：</p>
+</code></pre><p>要通过 <code>docker</code> 执行基本的 <code>cat</code> 指令：</p>
 <pre><code> $ sudo docker run cento<span class="variable">s:latest</span> <span class="keyword">cat</span> /etc/centos-release
  CentOS Linux release <span class="number">7.0</span>.<span class="number">1406</span> (Core)
 </code></pre></li>
@@ -249,14 +249,14 @@
 <p>CentOS-6.6-x86_64-minimal.iso</p>
 <h3 id="Docker_安装">Docker 安装</h3>
 <ol>
-<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
+<li><p>确认你的<code>CentOS</code> 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
 <pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
  CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
 </code></pre></li>
-<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
+<li><p>下载<code>EPEL</code> 的rpm 安装包<br>现在从上面的地址下载<code>CentOS</code> 版本所对应的<code>EPEL</code> 的版本</p>
 <pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
 </code></pre></li>
-<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
+<li><p>安装<code>EPEL</code><br>通过以下命令安装<code>EPEL</code> 软件包</p>
 <pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
 </code></pre>]]>
     

@@ -105,9 +105,9 @@
 </li>
 <li><p>官方文档 <a href="https://registry.hub.docker.com/u/library/jetty/" target="_blank" rel="external">Jetty registry</a></p>
 <pre><code> $ docker run <span class="operator">-d</span> jetty
-</code></pre><p>测试 <code>http://container-ip:8080</code> 可以看到 <code>Jetty</code> 已经运行,如果你想使用<code>host</code>的端口请做如下端口映射:</p>
+</code></pre><p>测试 <code>http://container-ip:8080</code> 可以看到 <code>jetty</code> 已经运行,如果你想使用<code>host</code>的端口请做如下端口映射:</p>
 <pre><code> $ docker run <span class="operator">-d</span> -p <span class="number">8888</span>:<span class="number">8080</span> jetty
-</code></pre><p>现在可以用 <code>Docker host</code> 的 ip 和端口 8888 来测试 <code>Jetty</code></p>
+</code></pre><p>现在可以用 <code>Docker host</code> 的 ip 和端口 8888 来测试 <code>jetty</code></p>
 <pre><code> $curl http://docker-host-ip:8888
  <span class="tag">&lt;<span class="title">HTML</span>&gt;</span>
  <span class="tag">&lt;<span class="title">HEAD</span>&gt;</span>
@@ -117,7 +117,7 @@
  No context on this server matched or handled this request.<span class="tag">&lt;<span class="title">BR</span>&gt;</span>Contexts known to this server are: <span class="tag">&lt;<span class="title">ul</span>&gt;</span><span class="tag">&lt;/<span class="title">ul</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">border</span>=<span class="value">0</span> <span class="attribute">src</span>=<span class="value">"/favicon.ico"</span>/&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span>Powered by Jetty:// Java Web Server<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>/&gt;</span>
 </code></pre></li>
 </ol>
-<p><code>Jetty</code>镜像的默认环境配置:</p>
+<p><code>jetty</code>镜像的默认环境配置:</p>
 <pre><code>    $ docker run -i -t jetty env
     <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
@@ -319,14 +319,14 @@
 <p>CentOS-6.6-x86_64-minimal.iso</p>
 <h3 id="Docker_安装">Docker 安装</h3>
 <ol>
-<li><p>确认你的CentOS 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
+<li><p>确认你的<code>CentOS</code> 的版本<br>首先通过以下命令确认你的CentOS 版本</p>
 <pre><code> $ cat /etc/redhat-<span class="operator"><span class="keyword">release</span> 
  CentOS <span class="keyword">release</span> <span class="number">6.6</span> (Final)</span>
 </code></pre></li>
-<li><p>下载EPEL 的rpm 安装包<br>现在从上面的地址下载CentOS 版本所对应的EPEL 的版本</p>
+<li><p>下载<code>EPEL</code> 的rpm 安装包<br>现在从上面的地址下载<code>CentOS</code> 版本所对应的<code>EPEL</code> 的版本</p>
 <pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/i386/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
 </code></pre></li>
-<li><p>安装EPEL<br>通过以下命令安装EPEL 软件包</p>
+<li><p>安装<code>EPEL</code><br>通过以下命令安装<code>EPEL</code> 软件包</p>
 <pre><code> $ <span class="built_in">sudo</span> rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
 </code></pre>
         
