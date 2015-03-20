@@ -98,16 +98,16 @@
       
         <h3 id="部署一个web应用">部署一个web应用</h3>
 <ol>
-<li><p>下载jetty镜像</p>
+<li><p>下载<code>jetty</code>镜像</p>
 <pre><code> <span class="variable">$ </span>docker pull jetty
  jetty     <span class="number">9</span>        <span class="number">3</span>f468c596b78        <span class="number">2</span> days ago          <span class="number">344.1</span> <span class="constant">MB</span>
-</code></pre><p>大概300M+，包括OpenJdk1.7 和操作系统</p>
+</code></pre><p>大概300M+，包括<code>OpenJdk1.7</code> 和操作系统</p>
 </li>
 <li><p>官方文档 <a href="https://registry.hub.docker.com/u/library/jetty/" target="_blank" rel="external">Jetty registry</a></p>
 <pre><code> $ docker run <span class="operator">-d</span> jetty
-</code></pre><p>测试 <strong><em><a href="http://container-ip:8080" target="_blank" rel="external">http://container-ip:8080</a></em></strong> 可以看到 Jetty 已经运行,如果你想使用host的端口请做如下端口映射:</p>
+</code></pre><p>测试 <code>http://container-ip:8080</code> 可以看到 <code>Jetty</code> 已经运行,如果你想使用<code>host</code>的端口请做如下端口映射:</p>
 <pre><code> $ docker run <span class="operator">-d</span> -p <span class="number">8888</span>:<span class="number">8080</span> jetty
-</code></pre><p>现在可以用 Docker host 的 ip 和端口 8888 来测试 Jetty</p>
+</code></pre><p>现在可以用 <code>Docker host</code> 的 ip 和端口 8888 来测试 <code>Jetty</code></p>
 <pre><code> $curl http://docker-host-ip:8888
  <span class="tag">&lt;<span class="title">HTML</span>&gt;</span>
  <span class="tag">&lt;<span class="title">HEAD</span>&gt;</span>
@@ -117,7 +117,7 @@
  No context on this server matched or handled this request.<span class="tag">&lt;<span class="title">BR</span>&gt;</span>Contexts known to this server are: <span class="tag">&lt;<span class="title">ul</span>&gt;</span><span class="tag">&lt;/<span class="title">ul</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">border</span>=<span class="value">0</span> <span class="attribute">src</span>=<span class="value">"/favicon.ico"</span>/&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span>Powered by Jetty:// Java Web Server<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>/&gt;</span>
 </code></pre></li>
 </ol>
-<p>Jetty镜像的默认环境配置:</p>
+<p><code>Jetty</code>镜像的默认环境配置:</p>
 <pre><code>    $ docker run -i -t jetty env
     <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
@@ -133,9 +133,9 @@
     <span class="variable">JETTY_STATE=</span>/run/jetty/jetty.state
     <span class="variable">TMPDIR=</span>/tmp/jetty
     <span class="variable">HOME=</span>/root    
-</code></pre><p>Webapps 被部署在容器内的 <strong><em>/var/lib/jetty/webapps</em></strong>.<br>挂载 Docker Host 上的目录到容器内：</p>
+</code></pre><p><code>Webapps</code> 被部署在容器内的 <code>/var/lib/jetty/webapps</code>.<br>挂载 <code>Docker Host</code> 上的目录到容器内：</p>
 <pre><code>    $ docker run -d  -v <span class="regexp">/tmp/</span>webapps:<span class="regexp">/var/</span>lib<span class="regexp">/jetty/</span>webapps -p <span class="number">8080</span>:<span class="number">8080</span> jetty
-</code></pre><p>挂载 Docker Host上的 <strong><em>/tmp/webapps</em></strong> 到容器的 <strong><em>/var/lib/jetty/webapps</em></strong> 目录并映射 Host 上8080端口到容器的 8080 端口。<br>下面部署webapp到 <strong><em>/tmp/webapps</em></strong> 中，建立一个 Web Project ： jetty-webapp-test,在web根目录添加两个测试文件 index.jsp 和 index.html，打包成 jetty-webapp-test.war。把war包移动到 Docker Host 的 <strong><em>/tmp/webapps</em></strong> 下:</p>
+</code></pre><p>挂载 <code>Docker Host</code>上的 <code>/tmp/webapps</code> 到容器的 <code>/var/lib/jetty/webapps</code> 目录并映射 Host 上<code>8080</code>端口到容器的 <code>8080</code> 端口。<br>下面部署<code>webapp</code>到 <code>/tmp/webapps</code> 中，建立一个<code>Web Project:jetty-webapp-test</code>,在web根目录添加两个测试文件 <code>index.jsp</code> 和 <code>index.html</code>，打包成 <code>jetty-webapp-test.war</code>。把war包移动到<code>Docker Host</code>的 <code>/tmp/webapps</code> 下:</p>
 <pre><code>    $ curl http://localhost:8080/jetty-webapp-test/index.html
     <span class="doctype">&lt;!DOCTYPE html&gt;</span>
     <span class="tag">&lt;<span class="title">html</span>&gt;</span>
@@ -200,7 +200,7 @@
         <h3 id="教程示例">教程示例</h3>
 <p><a href="http://www.docker.org.cn/book/docker.html" target="_blank" rel="external">入门教程</a></p>
 <ol>
-<li><p>搜索可用的docker镜像</p>
+<li><p>搜索可用的<code>docker</code>镜像</p>
 <pre><code> $ docker <span class="built_in">search</span> tutorial
  NAME                                       DESCRIPTION   STARS     OFFICIAL   AUTOMATED
  learn/tutorial                                           <span class="number">8</span>                    
@@ -211,20 +211,20 @@
  tobegit3hub/tutorial-beego                               <span class="number">0</span>                    [OK]
  wonderlamb/tutorial                        Tutorial      <span class="number">0</span>                    
  kedarvaidya/rails-tutorial-v3-dev                        <span class="number">0</span>                    [OK]
-</code></pre><p>找到 <strong><em>learn/tutorial</em></strong>，官方入门示例。</p>
+</code></pre><p>找到 <code>learn/tutorial</code>，官方入门示例。</p>
 </li>
 <li><p>下载容器镜像</p>
 <pre><code><span class="attribute"> $ docker pull learn/tutorial
  Pulling repository learn/tutorial
  8dbd9e392a96: Downloading [================</span>=<span class="string">&gt;                                 ]    20 MB/58.34 MB 7m40s</span>
 </code></pre></li>
-<li><p>在docker容器中运行hello world!</p>
+<li><p>在<code>docker</code>容器中运行<code>hello world!</code></p>
 <pre><code> $ docker <span class="command">run</span> learn/tutorial echo <span class="string">"hello word"</span>
  hello <span class="property">word</span>
 </code></pre></li>
 <li><p>在容器中安装新的程序</p>
 <pre><code> $ docker <span class="command">run</span> learn/tutorial apt-<span class="keyword">get</span> install -y ping
-</code></pre><p>在执行apt-get 命令的时候，要带上-y参数。如果不指定-y参数的话，apt-get命令会进入交互模式，需要用户输入命令来进行确认，但在docker环境中是无法响应这种交互的。</p>
+</code></pre><p>在执行<code>apt-get</code> 命令的时候，要带上<code>-y</code>参数。如果不指定<code>-y</code>参数的话，<code>apt-get</code>命令会进入交互模式，需要用户输入命令来进行确认，但在<code>docker</code>环境中是无法响应这种交互的。</p>
 </li>
 <li><p>保存对容器的修改</p>
 <pre><code> $ docker <span class="keyword">ps</span> -<span class="keyword">l</span>
@@ -239,12 +239,37 @@
  centos              centos7             <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
  centos              latest              <span class="number">88</span>f9454e60dd        <span class="number">2</span> weeks ago         <span class="number">223.9</span> MB
  learn/tutorial      latest              <span class="number">8</span>dbd9e392a96        <span class="number">23</span> months ago       <span class="number">128</span> MB
-</code></pre><p>首先使用docker ps -l命令获得安装完ping命令之后容器的id。然后把这个镜像保存为learn/ping。</p>
+</code></pre><p>首先使用<code>docker ps -l</code>命令获得安装完<code>ping</code>命令之后容器的id。然后把这个镜像保存为<code>learn/ping</code>。</p>
 </li>
 <li><p>运行新的镜像</p>
-<pre><code> $docker run learn/<span class="built_in">ping</span> <span class="built_in">ping</span> www.google.com
+<pre><code> $docker run learn/ping ping www.sina.<span class="keyword">com</span>.<span class="keyword">cn</span>
 </code></pre></li>
 </ol>
+<h3 id="网上对Docker的理解">网上对Docker的理解</h3>
+<blockquote>
+<ol>
+<li><p>每个container中运行的进程，是的的确确运行在<code>host</code>上的（用ps 可以查看的到), 这样的话，无论你的镜像是基于<code>ubuntu</code>, <code>centos</code>, 还是<code>debian</code>的，都是运行在主机内核上的（container中没有自己的内核）。也就是说如果主机内核不满足需求，container中的依赖此特性的应用程序就无法运行</p>
+</li>
+<li><p><code>Image</code>的分层，可以想象成<code>photoshop</code>中不同的<code>layer</code>。每一层中包含特定的文件，当container运行时，这些叠加在一起的层就构成了container的运行环境（包括相应的文件，运行库等，不包括内核）。<code>Image</code>通过依赖的关系，来确定整个镜像内到底包含那些文件。之后的版本的<code>docker</code>，会推出<code>squash</code>的功能，把不同的层压缩成为一个，和<code>Photoshop</code>中合并层的感觉差不多。</p>
+</li>
+<li><p><code>Docker</code>中的镜像就是一堆文件的集合，并不是像VM那样的是一个操作系统。镜像可以简单到只有一个程序文件。如果你写一个<code>helloworld</code> 静态编译后放到一个空的<code>Image</code>中（可以用FROM scratch作为基础镜像)，那么整个<code>image</code>的大小，就是你编译后的二进制文件的大小。 如果你不是静态编译的话，就要把相应的链接库放到镜像中相应的位置，才能使得程序正确运行，否则会提示找不到文件。官方提供的<code>ubuntu</code>等基础镜像，就是把依赖的文件放到正确的地方，从而使得绝大部分程序可以正常运行。和VM的镜像是完全不同的概念</p>
+</li>
+<li><p><code>Docker</code>能够限制container使用的主机资源。<code>lxc container</code>是<code>docker</code>最早版本的运行环境，现在他们默认采用<code>libcontainer</code>，今后估计会逐步减少<code>lxc container</code>的支持。如果要限制cpu和memory，在<code>docker run</code> 中直接使用<code>-c -m</code>参数即可。个人认为，这只是限制了container的资源，并不能够保证container能够确实分到足够的资源。当然，如果你的所有程序都是运行在container中，并且都限制好资源的话，那么应该还是可以满足你的需求的。每台<code>host</code>中，可以同时运行上百个container，互不干扰。每个container只是一个<code>host</code>中的进程，很轻量化。VM就不能做到同时运行这么多。编程接口，docker提供了Remote API和python library(docker-py), 同时还有<code>github</code>上还有很多第三方的库，支持不同的语言</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="相关资料">相关资料</h3>
+<ul>
+<li><a href="http://dockerpool.com/static/books/docker_practice/data_management/volume.html" target="_blank" rel="external">Docker —— 从入门到实践</a></li>
+<li><a href="http://www.infoq.com/cn/articles/docker-core-technology-preview" target="_blank" rel="external">深入浅出Docker（一）：Docker核心技术预览</a></li>
+<li><a href="http://www.infoq.com/cn/articles/docker-command-line-quest" target="_blank" rel="external">深入浅出Docker（二）：Docker命令行探秘</a></li>
+<li><a href="http://www.infoq.com/cn/articles/docker-open-source-road" target="_blank" rel="external">深入浅出Docker（三）：Docker开源之路</a></li>
+<li><a href="http://www.infoq.com/cn/articles/docker-integrated-test-and-deployment" target="_blank" rel="external">深入浅出Docker（四）：Docker的集成测试部署之道</a></li>
+<li><a href="http://www.infoq.com/cn/articles/docker-build-development-environment-based-on-fig" target="_blank" rel="external">深入浅出Docker（五）：基于Fig搭建开发环境</a></li>
+<li><a href="http://www.infoq.com/cn/articles/deploy-your-application-like-google" target="_blank" rel="external">深入浅出Docker（六）：像谷歌一样部署你的应用</a></li>
+</ul>
+<h3 id="相关资源">相关资源</h3>
+<p><a href="https://www.docker.io" target="_blank" rel="external">Docker主站点</a><br><a href="https://index.docker.io" target="_blank" rel="external">Docker注册中心</a><br><a href="http://docs.docker.com/reference/api/registry_api/" target="_blank" rel="external">Docker注册中心相关的API</a><br><a href="http://docs.docker.com/reference/api/docker-io_api/" target="_blank" rel="external">Docker Hub API</a><br><a href="http://docs.docker.com/reference/api/docker_remote_api/" target="_blank" rel="external">Docker远端应用API</a> </p>
 
       
     </div>

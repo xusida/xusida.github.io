@@ -123,16 +123,16 @@
       
         <h3 id="部署一个web应用">部署一个web应用</h3>
 <ol>
-<li><p>下载jetty镜像</p>
+<li><p>下载<code>jetty</code>镜像</p>
 <pre><code> <span class="variable">$ </span>docker pull jetty
  jetty     <span class="number">9</span>        <span class="number">3</span>f468c596b78        <span class="number">2</span> days ago          <span class="number">344.1</span> <span class="constant">MB</span>
-</code></pre><p>大概300M+，包括OpenJdk1.7 和操作系统</p>
+</code></pre><p>大概300M+，包括<code>OpenJdk1.7</code> 和操作系统</p>
 </li>
 <li><p>官方文档 <a href="https://registry.hub.docker.com/u/library/jetty/" target="_blank" rel="external">Jetty registry</a></p>
 <pre><code> $ docker run <span class="operator">-d</span> jetty
-</code></pre><p>测试 <strong><em><a href="http://container-ip:8080" target="_blank" rel="external">http://container-ip:8080</a></em></strong> 可以看到 Jetty 已经运行,如果你想使用host的端口请做如下端口映射:</p>
+</code></pre><p>测试 <code>http://container-ip:8080</code> 可以看到 <code>Jetty</code> 已经运行,如果你想使用<code>host</code>的端口请做如下端口映射:</p>
 <pre><code> $ docker run <span class="operator">-d</span> -p <span class="number">8888</span>:<span class="number">8080</span> jetty
-</code></pre><p>现在可以用 Docker host 的 ip 和端口 8888 来测试 Jetty</p>
+</code></pre><p>现在可以用 <code>Docker host</code> 的 ip 和端口 8888 来测试 <code>Jetty</code></p>
 <pre><code> $curl http://docker-host-ip:8888
  <span class="tag">&lt;<span class="title">HTML</span>&gt;</span>
  <span class="tag">&lt;<span class="title">HEAD</span>&gt;</span>
@@ -142,7 +142,7 @@
  No context on this server matched or handled this request.<span class="tag">&lt;<span class="title">BR</span>&gt;</span>Contexts known to this server are: <span class="tag">&lt;<span class="title">ul</span>&gt;</span><span class="tag">&lt;/<span class="title">ul</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">border</span>=<span class="value">0</span> <span class="attribute">src</span>=<span class="value">"/favicon.ico"</span>/&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span>Powered by Jetty:// Java Web Server<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>/&gt;</span>
 </code></pre></li>
 </ol>
-<p>Jetty镜像的默认环境配置:</p>
+<p><code>Jetty</code>镜像的默认环境配置:</p>
 <pre><code>    $ docker run -i -t jetty env
     <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
@@ -158,9 +158,9 @@
     <span class="variable">JETTY_STATE=</span>/run/jetty/jetty.state
     <span class="variable">TMPDIR=</span>/tmp/jetty
     <span class="variable">HOME=</span>/root    
-</code></pre><p>Webapps 被部署在容器内的 <strong><em>/var/lib/jetty/webapps</em></strong>.<br>挂载 Docker Host 上的目录到容器内：</p>
+</code></pre><p><code>Webapps</code> 被部署在容器内的 <code>/var/lib/jetty/webapps</code>.<br>挂载 <code>Docker Host</code> 上的目录到容器内：</p>
 <pre><code>    $ docker run -d  -v <span class="regexp">/tmp/</span>webapps:<span class="regexp">/var/</span>lib<span class="regexp">/jetty/</span>webapps -p <span class="number">8080</span>:<span class="number">8080</span> jetty
-</code></pre><p>挂载 Docker Host上的 <strong><em>/tmp/webapps</em></strong> 到容器的 <strong><em>/var/lib/jetty/webapps</em></strong> 目录并映射 Host 上8080端口到容器的 8080 端口。<br>下面部署webapp到 <strong><em>/tmp/webapps</em></strong> 中，建立一个 Web Project ： jetty-webapp-test,在web根目录添加两个测试文件 index.jsp 和 index.html，打包成 jetty-webapp-test.war。把war包移动到 Docker Host 的 <strong><em>/tmp/webapps</em></strong> 下:</p>
+</code></pre><p>挂载 <code>Docker Host</code>上的 <code>/tmp/webapps</code> 到容器的 <code>/var/lib/jetty/webapps</code> 目录并映射 Host 上<code>8080</code>端口到容器的 <code>8080</code> 端口。<br>下面部署<code>webapp</code>到 <code>/tmp/webapps</code> 中，建立一个<code>Web Project:jetty-webapp-test</code>,在web根目录添加两个测试文件 <code>index.jsp</code> 和 <code>index.html</code>，打包成 <code>jetty-webapp-test.war</code>。把war包移动到<code>Docker Host</code>的 <code>/tmp/webapps</code> 下:</p>
 <pre><code>    $ curl http://localhost:8080/jetty-webapp-test/index.html
     <span class="doctype">&lt;!DOCTYPE html&gt;</span>
     <span class="tag">&lt;<span class="title">html</span>&gt;</span>
