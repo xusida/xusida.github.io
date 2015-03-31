@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-03-20T09:09:38.792Z</updated>
+  <updated>2015-03-31T03:31:37.485Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -15,11 +15,243 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Hadoop做文件服务器POC<1>环境准备]]></title>
+    <link href="http://xusida.github.io/2015/03/30/Hadoop%E5%81%9A%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8POC1/"/>
+    <id>http://xusida.github.io/2015/03/30/Hadoop做文件服务器POC1/</id>
+    <published>2015-03-30T08:01:45.000Z</published>
+    <updated>2015-03-31T03:28:10.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="硬件准备">硬件准备</h2>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td>
+<td>192.168.55.173</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+</tr>
+<tr>
+<td>supervisor1</td>
+<td>192.168.55.174</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+</tr>
+<tr>
+<td>supervisor2</td>
+<td>192.168.55.175</td>
+<td>4cpu 2.93GHz 4G内存</td>
+<td>Linux x86_64</td>
+</tr>
+</tbody>
+</table>
+<h2 id="软件准备">软件准备</h2>
+<blockquote>
+<p>三台虚拟机，一台作为<code>Hadoop</code>的<code>namenode</code>，另外两台做<code>Hadoop</code>的<code>datanode</code>。</p>
+</blockquote>
+<h3 id="基本软件安装">基本软件安装</h3>
+<blockquote>
+<p>三台机器必备安装软件，jdk、hadoop</p>
+</blockquote>
+<h4 id="Jdk1-7-0_15安装">Jdk1.7.0_15安装</h4>
+<ol>
+<li><p>下载JDK</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.oracle.com/otn</span>-pub/java/jdk/<span class="number">8</span>u31-b13/jdk-<span class="number">7</span>u15-linux-x64.tar.gz
+</code></pre></li>
+<li><p>解压JDK</p>
+<pre><code> <span class="title">tar</span> zvxf jdk-7u15-linux-x64.tar.gz
+</code></pre></li>
+<li><p>设置环境变量</p>
+<pre><code> <span class="variable">$ </span>set <span class="constant">PATH</span>=<span class="regexp">/your_jdk_unzip_dir/jdk</span>1.<span class="number">7.0_15</span>/<span class="symbol">bin:</span><span class="variable">$PATH</span>
+ <span class="variable">$ </span>set <span class="constant">JAVA_HOME</span>=<span class="regexp">/your_jdk_unzip_dir/jdk</span>1.<span class="number">7.0_15</span>
+</code></pre></li>
+<li><p>验证Jdk版本</p>
+<pre><code> $ jdk -<span class="keyword">version</span>
+</code></pre></li>
+</ol>
+<h4 id="Hadoop2-6-0安装">Hadoop2.6.0安装</h4>
+<ol>
+<li><p>下载Hadoop</p>
+<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/apache.fayea.com/hadoop</span><span class="regexp">/common/stable</span><span class="regexp">/hadoop-2.6.0.tar.gz</span>
+</code></pre></li>
+<li><p>切换root用户添加Hadoop用户</p>
+<pre><code> <span class="variable">$ </span>groupadd hadoop  
+ <span class="variable">$ </span>useradd hadoop hadoop  
+ <span class="variable">$ </span>passwd  hadoop  <span class="comment">#为用户添加密码   可以不设置密码  </span>
+</code></pre></li>
+<li><p>安装ssh</p>
+<pre><code> <span class="variable">$ </span>rpm -qa |grep ssh  <span class="comment">#检查是否装了SSH包  </span>
+ <span class="variable">$ </span>yum install openssh-server  <span class="comment"># 安装ssh  </span>
+ <span class="variable">$ </span>chkconfig --list sshd <span class="comment">#检查SSHD是否设置为开机启动  </span>
+ <span class="variable">$ </span>chkconfig --level <span class="number">2345</span> sshd on  <span class="comment">#如果没设置启动就设置下.  </span>
+ <span class="variable">$ </span>service sshd restart  <span class="comment">#重新启动  </span>
+</code></pre></li>
+<li><p>配置ssh无密码登录</p>
+<pre><code> nimbus<span class="variable">$ </span>ssh-keygen -t rsa
+ nimbus<span class="variable">$ </span>ssh-copy-id hadoop<span class="variable">@nimbus</span>
+ nimbus<span class="variable">$ </span>ssh-copy-id hadoop<span class="variable">@supervisor1</span>
+ nimbus<span class="variable">$ </span>ssh-copy-id hadoop<span class="variable">@supervisor2</span>
+</code></pre></li>
+</ol>
+<p>然后用scp命令，把公钥文件发放给slaver</p>
+<pre><code>    nimbus<span class="variable">$ </span>scp .ssh/id_rsa.pub hadoop<span class="variable">@supervisor1</span><span class="symbol">:/home/hadoop/id_rsa_01</span>.pub
+    nimbus<span class="variable">$ </span>scp .ssh/id_rsa.pub hadoop<span class="variable">@supervisor2</span><span class="symbol">:/home/hadoop/id_rsa_01</span>.pub
+</code></pre><p>测试无密码登录</p>
+<pre><code>    <span class="variable">$ </span>ssh nimbus
+    <span class="variable">$ </span>ssh supervisor1
+    <span class="variable">$ </span>ssh supervisor2
+</code></pre><ol>
+<li>安装hadoop<pre><code> <span class="variable">$ </span>tar vxzf hadoop-<span class="number">2.6</span>.<span class="number">0</span>.tar.gz
+</code></pre></li>
+</ol>
+<p>修改hadoop配置文件</p>
+<ol>
+<li><p>slaves</p>
+<pre><code> <span class="variable">$vi</span> etc/hadoop/slaves
+ supervisor1
+ supervisor2
+</code></pre></li>
+<li><p>core-site.xml</p>
+<pre><code> $vi etc/hadoop/core-site.xml
+ <span class="variable">&lt;configuration&gt;</span>
+        <span class="variable">&lt;property&gt;</span>
+                 <span class="variable">&lt;name&gt;</span>fs.defaultFS<span class="variable">&lt;/name&gt;</span>
+                 <span class="variable">&lt;value&gt;</span>hdfs://nimbus:8020<span class="variable">&lt;/value&gt;</span>
+        <span class="variable">&lt;/property&gt;</span>
+        <span class="variable">&lt;property&gt;</span>
+                 <span class="variable">&lt;name&gt;</span>io.file.buffer.size<span class="variable">&lt;/name&gt;</span>
+                 <span class="variable">&lt;value&gt;</span>131072<span class="variable">&lt;/value&gt;</span>
+         <span class="variable">&lt;/property&gt;</span>
+        <span class="variable">&lt;property&gt;</span>
+                <span class="variable">&lt;name&gt;</span>hadoop.tmp.dir<span class="variable">&lt;/name&gt;</span>
+                <span class="variable">&lt;value&gt;</span>file:/app/hadoop/tmp<span class="variable">&lt;/value&gt;</span>
+                <span class="variable">&lt;description&gt;</span>Abase for other temporary   directories.<span class="variable">&lt;/description&gt;</span>
+        <span class="variable">&lt;/property&gt;</span>
+         <span class="variable">&lt;property&gt;</span>
+                <span class="variable">&lt;name&gt;</span>hadoop.proxyuser.u0.hosts<span class="variable">&lt;/name&gt;</span>
+                <span class="variable">&lt;value&gt;</span><span class="keyword">*</span><span class="variable">&lt;/value&gt;</span>
+        <span class="variable">&lt;/property&gt;</span>
+        <span class="variable">&lt;property&gt;</span>
+                <span class="variable">&lt;name&gt;</span>hadoop.proxyuser.u0.groups<span class="variable">&lt;/name&gt;</span>
+                <span class="variable">&lt;value&gt;</span><span class="keyword">*</span><span class="variable">&lt;/value&gt;</span>
+        <span class="variable">&lt;/property&gt;</span>
+ <span class="variable">&lt;/configuration&gt;</span>
+</code></pre></li>
+<li><p>hdfs-site.xml</p>
+<pre><code> $vi etc/hadoop/hdfs-site.xml
+ <span class="tag">&lt;<span class="title">configuration</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+                 <span class="tag">&lt;<span class="title">name</span>&gt;</span>dfs.namenode.secondary.http-address<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">value</span>&gt;</span>nimbus:9001<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+              <span class="tag">&lt;<span class="title">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+              <span class="tag">&lt;<span class="title">value</span>&gt;</span>file:/app/hadoop/dfs/name<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+               <span class="tag">&lt;<span class="title">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+               <span class="tag">&lt;<span class="title">value</span>&gt;</span>file:/app/hadoop/dfs/data<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">value</span>&gt;</span>3<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+         <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+                  <span class="tag">&lt;<span class="title">name</span>&gt;</span>dfs.webhdfs.enabled<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+                   <span class="tag">&lt;<span class="title">value</span>&gt;</span>true<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+          <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+ <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span>
+</code></pre></li>
+<li><p>mapred-site.xml</p>
+<pre><code> $vi etc/hadoop/mapred-site.xml
+ <span class="tag">&lt;<span class="title">configuration</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">name</span>&gt;</span>mapreduce.jobhistory.address<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">value</span>&gt;</span>nimbus:10020<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">name</span>&gt;</span>mapreduce.jobhistory.webapp.address<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">value</span>&gt;</span>nimbus:19888<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">property</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">name</span>&gt;</span>dfs.permissions<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">value</span>&gt;</span>false<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+ <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span>
+</code></pre></li>
+</ol>
+<p>同步hadoop目录到supervisor和supervisor2</p>
+<pre><code>    <span class="variable">$ </span>scp hadoop/* -<span class="constant">R</span> hadoop<span class="variable">@supervisor1</span><span class="symbol">:/app/hadoop/</span>
+    <span class="variable">$ </span>scp hadoop/* -<span class="constant">R</span> hadoop<span class="variable">@supervisor2</span><span class="symbol">:/app/hadoop/</span>
+</code></pre><p>启动hadoop</p>
+<pre><code>    $ ./sbin/<span class="operator"><span class="keyword">start</span>-<span class="keyword">all</span>.sh
+    This script <span class="keyword">is</span> Deprecated. Instead <span class="keyword">use</span> <span class="keyword">start</span>-dfs.sh <span class="keyword">and</span> <span class="keyword">start</span>-yarn.sh
+    <span class="number">15</span>/<span class="number">03</span>/<span class="number">30</span> <span class="number">17</span>:<span class="number">50</span>:<span class="number">10</span> WARN util.NativeCodeLoader: Unable <span class="keyword">to</span> <span class="keyword">load</span> native-hadoop library <span class="keyword">for</span> your platform... <span class="keyword">using</span> builtin-java classes <span class="keyword">where</span> applicable
+    <span class="keyword">Starting</span> namenodes <span class="keyword">on</span> [nimbus]
+    nimbus: <span class="keyword">starting</span> namenode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-namenode-nimbus.out
+    supervisor2: <span class="keyword">starting</span> datanode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-datanode-supervisor2.out
+    supervisor1: <span class="keyword">starting</span> datanode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-datanode-supervisor1.out
+    <span class="keyword">Starting</span> secondary namenodes [nimbus]
+    nimbus: <span class="keyword">starting</span> secondarynamenode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-secondarynamenode-nimbus.out
+    <span class="number">15</span>/<span class="number">03</span>/<span class="number">30</span> <span class="number">17</span>:<span class="number">50</span>:<span class="number">30</span> WARN util.NativeCodeLoader: Unable <span class="keyword">to</span> <span class="keyword">load</span> native-hadoop library <span class="keyword">for</span> your platform... <span class="keyword">using</span> builtin-java classes <span class="keyword">where</span> applicable
+    <span class="keyword">starting</span> yarn daemons
+    <span class="keyword">starting</span> resourcemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-resourcemanager-nimbus.out
+    supervisor2: <span class="keyword">starting</span> nodemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-nodemanager-supervisor2.out
+    supervisor1: <span class="keyword">starting</span> nodemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-nodemanager-supervisor1.out</span>
+</code></pre><p>查看进程</p>
+<pre><code>    nimbus<span class="variable">$ </span>jps
+    <span class="number">10775</span> <span class="constant">Jps</span>
+    <span class="number">10146</span> <span class="constant">NameNode</span>
+    <span class="number">10305</span> <span class="constant">SecondaryNameNode</span>
+    <span class="number">10464</span> <span class="constant">ResourceManager</span>
+
+    supervisor1<span class="variable">$ </span>jps
+    <span class="number">4308</span> <span class="constant">Jps</span>
+    <span class="number">4094</span> <span class="constant">NodeManager</span>
+    <span class="number">3993</span> <span class="constant">DataNode</span>
+
+    supervisor2<span class="variable">$ </span>jps
+    <span class="number">4308</span> <span class="constant">Jps</span>
+    <span class="number">4094</span> <span class="constant">NodeManager</span>
+    <span class="number">3993</span> <span class="constant">DataNode</span>    
+</code></pre><p>查看管理页面<br><img src="img/3-1.png" alt="http://192.168.55.173:50070/dfshealth.html#tab-overview"><br><img src="img/3-2.png" alt="http://192.168.55.173:50070/dfshealth.html#tab-overview"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="硬件准备">硬件准备</h2>
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th>IP</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nimbus</td]]>
+    </summary>
+    
+      <category term="Hadoop" scheme="http://xusida.github.io/tags/Hadoop/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Docker学习<3>部署一个Web应用]]></title>
     <link href="http://xusida.github.io/2015/03/20/Docker%E5%AD%A6%E4%B9%A03/"/>
     <id>http://xusida.github.io/2015/03/20/Docker学习3/</id>
     <published>2015-03-20T08:01:45.000Z</published>
-    <updated>2015-03-20T09:07:18.000Z</updated>
+    <updated>2015-03-23T06:21:06.000Z</updated>
     <content type="html"><![CDATA[<h3 id="部署一个web应用">部署一个web应用</h3>
 <ol>
 <li><p>下载<code>jetty</code>镜像</p>
@@ -39,44 +271,44 @@
  <span class="tag">&lt;<span class="title">BODY</span>&gt;</span>
  <span class="tag">&lt;<span class="title">H2</span>&gt;</span>Error 404 - Not Found.<span class="tag">&lt;/<span class="title">H2</span>&gt;</span>
  No context on this server matched or handled this request.<span class="tag">&lt;<span class="title">BR</span>&gt;</span>Contexts known to this server are: <span class="tag">&lt;<span class="title">ul</span>&gt;</span><span class="tag">&lt;/<span class="title">ul</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">border</span>=<span class="value">0</span> <span class="attribute">src</span>=<span class="value">"/favicon.ico"</span>/&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://eclipse.org/jetty"</span>&gt;</span>Powered by Jetty:// Java Web Server<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;<span class="title">hr</span>/&gt;</span>
-</code></pre></li>
-</ol>
-<p><code>jetty</code>镜像的默认环境配置:</p>
-<pre><code>    $ docker run -i -t jetty env
-    <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
-    <span class="variable">TERM=</span>xterm
-    <span class="variable">JAVA_VERSION=</span><span class="number">7</span>u75
-    <span class="variable">JAVA_DEBIAN_VERSION=</span><span class="number">7</span>u75-<span class="number">2.5</span>.<span class="number">4</span>-<span class="number">2</span>
-    <span class="variable">JETTY_HOME=</span>/usr/local/jetty
-    <span class="variable">JETTY_MAJOR=</span><span class="number">9</span>
-    <span class="variable">JETTY_VERSION=</span><span class="number">9.2</span>.<span class="number">10</span>.v20150310
-    <span class="variable">JETTY_TGZ_URL=</span>http://eclipse.org/downloads/download.php?<span class="variable">r=</span><span class="number">1</span>&amp;<span class="variable">file=</span>/jetty/stable-<span class="number">9</span>/dist/jetty-distribution-<span class="number">9.2</span>.<span class="number">10</span>.v20150310.tar.gz
-    <span class="variable">JETTY_BASE=</span>/var/lib/jetty
-    <span class="variable">JETTY_RUN=</span>/run/jetty
-    <span class="variable">JETTY_STATE=</span>/run/jetty/jetty.state
-    <span class="variable">TMPDIR=</span>/tmp/jetty
-    <span class="variable">HOME=</span>/root    
+</code></pre><p><code>jetty</code>镜像的默认环境配置:</p>
+<pre><code> $ docker run -i -t jetty env
+ <span class="variable">PATH=</span>/usr/local/jetty/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ <span class="variable">HOSTNAME=</span><span class="number">9</span>a862391d719
+ <span class="variable">TERM=</span>xterm
+ <span class="variable">JAVA_VERSION=</span><span class="number">7</span>u75
+ <span class="variable">JAVA_DEBIAN_VERSION=</span><span class="number">7</span>u75-<span class="number">2.5</span>.<span class="number">4</span>-<span class="number">2</span>
+ <span class="variable">JETTY_HOME=</span>/usr/local/jetty
+ <span class="variable">JETTY_MAJOR=</span><span class="number">9</span>
+ <span class="variable">JETTY_VERSION=</span><span class="number">9.2</span>.<span class="number">10</span>.v20150310
+ <span class="variable">JETTY_TGZ_URL=</span>http://eclipse.org/downloads/download.php?<span class="variable">r=</span><span class="number">1</span>&amp;<span class="variable">file=</span>/jetty/stable-<span class="number">9</span>/dist/jetty-distribution-<span class="number">9.2</span>.<span class="number">10</span>.v20150310.tar.gz
+ <span class="variable">JETTY_BASE=</span>/var/lib/jetty
+ <span class="variable">JETTY_RUN=</span>/run/jetty
+ <span class="variable">JETTY_STATE=</span>/run/jetty/jetty.state
+ <span class="variable">TMPDIR=</span>/tmp/jetty
+ <span class="variable">HOME=</span>/root    
 </code></pre><p><code>Webapps</code> 被部署在容器内的 <code>/var/lib/jetty/webapps</code>.<br>挂载 <code>Docker Host</code> 上的目录到容器内：</p>
-<pre><code>    $ docker run -d  -v <span class="regexp">/tmp/</span>webapps:<span class="regexp">/var/</span>lib<span class="regexp">/jetty/</span>webapps -p <span class="number">8080</span>:<span class="number">8080</span> jetty
+<pre><code> $ docker run -d  -v <span class="regexp">/tmp/</span>webapps:<span class="regexp">/var/</span>lib<span class="regexp">/jetty/</span>webapps -p <span class="number">8080</span>:<span class="number">8080</span> jetty
 </code></pre><p>挂载 <code>Docker Host</code>上的 <code>/tmp/webapps</code> 到容器的 <code>/var/lib/jetty/webapps</code> 目录并映射 Host 上<code>8080</code>端口到容器的 <code>8080</code> 端口。<br>下面部署<code>webapp</code>到 <code>/tmp/webapps</code> 中，建立一个<code>Web Project:jetty-webapp-test</code>,在web根目录添加两个测试文件 <code>index.jsp</code> 和 <code>index.html</code>，打包成 <code>jetty-webapp-test.war</code>。把war包移动到<code>Docker Host</code>的 <code>/tmp/webapps</code> 下:</p>
-<pre><code>    $ curl http://localhost:8080/jetty-webapp-test/index.html
-    <span class="doctype">&lt;!DOCTYPE html&gt;</span>
-    <span class="tag">&lt;<span class="title">html</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">title</span>&gt;</span>index.html<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-    这是一个测试html！
-    <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">html</span>&gt;</span>
-    $ curl http://localhost:8080/jetty-webapp-test/index.jsp
-    <span class="tag">&lt;<span class="title">html</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">h2</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="title">h2</span>&gt;</span>
-    hello world!
+<pre><code> $ curl http://localhost:8080/jetty-webapp-test/index.html
+ <span class="doctype">&lt;!DOCTYPE html&gt;</span>
+ <span class="tag">&lt;<span class="title">html</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">title</span>&gt;</span>index.html<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+ <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+ 这是一个测试html！
+ <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+ <span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+ $ curl http://localhost:8080/jetty-webapp-test/index.jsp
+ <span class="tag">&lt;<span class="title">html</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+ <span class="tag">&lt;<span class="title">h2</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="title">h2</span>&gt;</span>
+ hello world!
 </code></pre><p>部署完成。</p>
+</li>
+</ol>
 ]]></content>
     <summary type="html">
     <![CDATA[<h3 id="部署一个web应用">部署一个web应用</h3>
@@ -95,7 +327,7 @@
     <link href="http://xusida.github.io/2015/03/19/Docker%E5%AD%A6%E4%B9%A02/"/>
     <id>http://xusida.github.io/2015/03/19/Docker学习2/</id>
     <published>2015-03-19T08:01:45.000Z</published>
-    <updated>2015-03-20T09:01:43.000Z</updated>
+    <updated>2015-03-30T08:44:25.000Z</updated>
     <content type="html"><![CDATA[<h3 id="教程示例">教程示例</h3>
 <p><a href="http://www.docker.org.cn/book/docker.html" target="_blank" rel="external">入门教程</a></p>
 <ol>
@@ -168,7 +400,13 @@
 <li><a href="http://www.infoq.com/cn/articles/deploy-your-application-like-google" target="_blank" rel="external">深入浅出Docker（六）：像谷歌一样部署你的应用</a></li>
 </ul>
 <h3 id="相关资源">相关资源</h3>
-<p><a href="https://www.docker.io" target="_blank" rel="external">Docker主站点</a><br><a href="https://index.docker.io" target="_blank" rel="external">Docker注册中心</a><br><a href="http://docs.docker.com/reference/api/registry_api/" target="_blank" rel="external">Docker注册中心相关的API</a><br><a href="http://docs.docker.com/reference/api/docker-io_api/" target="_blank" rel="external">Docker Hub API</a><br><a href="http://docs.docker.com/reference/api/docker_remote_api/" target="_blank" rel="external">Docker远端应用API</a> </p>
+<ul>
+<li><a href="https://www.docker.io" target="_blank" rel="external">Docker主站点</a> </li>
+<li><a href="https://index.docker.io" target="_blank" rel="external">Docker注册中心</a> </li>
+<li><a href="http://docs.docker.com/reference/api/registry_api/" target="_blank" rel="external">Docker注册中心相关的API</a>  </li>
+<li><a href="http://docs.docker.com/reference/api/docker-io_api/" target="_blank" rel="external">Docker Hub API</a> </li>
+<li><a href="http://docs.docker.com/reference/api/docker_remote_api/" target="_blank" rel="external">Docker远端应用API</a> </li>
+</ul>
 ]]></content>
     <summary type="html">
     <![CDATA[<h3 id="教程示例">教程示例</h3>
@@ -183,8 +421,8 @@
   
   <entry>
     <title><![CDATA[Docker学习<1>环境准备]]></title>
-    <link href="http://xusida.github.io/2015/03/18/Docker%E5%AD%A6%E4%B9%A0/"/>
-    <id>http://xusida.github.io/2015/03/18/Docker学习/</id>
+    <link href="http://xusida.github.io/2015/03/18/Docker%E5%AD%A6%E4%B9%A01/"/>
+    <id>http://xusida.github.io/2015/03/18/Docker学习1/</id>
     <published>2015-03-18T08:01:45.000Z</published>
     <updated>2015-03-20T09:09:20.000Z</updated>
     <content type="html"><![CDATA[<h3 id="软件准备">软件准备</h3>
@@ -400,7 +638,7 @@
     <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%971%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/"/>
     <id>http://xusida.github.io/2015/02/10/实时计算1环境准备/</id>
     <published>2015-02-10T07:00:54.000Z</published>
-    <updated>2015-02-10T08:26:49.000Z</updated>
+    <updated>2015-03-30T08:52:42.000Z</updated>
     <content type="html"><![CDATA[<h2 id="硬件准备">硬件准备</h2>
 <table>
 <thead>
@@ -453,8 +691,7 @@
 </blockquote>
 <h4 id="Jdk1-7-0_15安装">Jdk1.7.0_15安装</h4>
 <ol>
-<li><p>下载JDK</p>
-<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.oracle.com/otn</span>-pub/java/jdk/<span class="number">8</span>u31-b13/jdk-<span class="number">7</span>u15-linux-x64.tar.gz
+<li>下载JDK<pre><code> <span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/download.oracle.com/otn</span>-pub/java/jdk/<span class="number">8</span>u31-b13/jdk-<span class="number">7</span>u15-linux-x64.tar.gz
 </code></pre></li>
 <li><p>解压JDK</p>
 <pre><code> <span class="title">tar</span> zvxf jdk-7u15-linux-x64.tar.gz
