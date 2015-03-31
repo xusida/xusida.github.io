@@ -74,6 +74,326 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-Hadoop做文件服务器POC3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/31/Hadoop做文件服务器POC3/" class="article-date">
+  <time datetime="2015-03-31T08:59:48.000Z" itemprop="datePublished">3月 31 2015</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/31/Hadoop做文件服务器POC3/">Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装Nginx">安装Nginx</h2>
+<ol>
+<li><p>下载Nginx</p>
+<pre><code> <span class="variable">$ </span>cd /app/nginx
+ <span class="variable">$ </span><span class="constant">Wget</span> <span class="symbol">http:</span>/<span class="regexp">/nginx.org/download</span><span class="regexp">/nginx-1.7.11.tar.gz</span>
+</code></pre></li>
+<li><p>编译Nginx</p>
+<pre><code> <span class="variable">$ </span>cd /app/nginx
+ <span class="variable">$ </span>tar zvxf nginx-<span class="number">1.7</span>.<span class="number">11</span>.tar.gz
+ <span class="variable">$ </span>cd nginx-<span class="number">1.7</span>.<span class="number">11</span>
+ <span class="variable">$ </span>.configure
+</code></pre></li>
+<li><p>安装Nginx</p>
+<pre><code> $ <span class="keyword">make</span> &amp; <span class="keyword">make</span> install
+</code></pre></li>
+</ol>
+<h2 id="配置反向代理">配置反向代理</h2>
+<ol>
+<li><p>修改配置文件</p>
+<pre><code>     $ <span class="keyword">cd</span> /usr/local/nginx
+     $ <span class="keyword">vi</span> ./<span class="keyword">conf</span>/nginx.<span class="keyword">conf</span>
+</code></pre></li>
+<li><p>添加以下代码到server&gt;location / 中</p>
+<pre><code>     <span class="title">add_header</span> <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">'*'</span>;
+     <span class="title">add_header</span> <span class="string">'Access-Control-Allow-Credentials'</span> <span class="string">'true'</span>;
+     <span class="title">add_header</span> <span class="string">'Access-Control-Allow-Methods'</span> <span class="string">'GET'</span>;
+     <span class="title">proxy_pass</span> <span class="url">http://192.168.55.64:8002/HDFSWeb/</span>;
+</code></pre></li>
+<li>保存配置</li>
+</ol>
+<h2 id="配置文件缓存">配置文件缓存</h2>
+<ol>
+<li><p>修改配置文件</p>
+<pre><code>     $ <span class="keyword">cd</span> /usr/local/nginx
+     $ <span class="keyword">vi</span> ./<span class="keyword">conf</span>/nginx.<span class="keyword">conf</span>
+</code></pre></li>
+<li><p>添加以下代码到server 中</p>
+<pre><code>   <span class="comment">##cache##</span>
+   <span class="title">proxy_connect_timeout</span> <span class="number">5</span>;
+   <span class="title">proxy_read_timeout</span> <span class="number">60</span>;
+   <span class="title">proxy_send_timeout</span> <span class="number">5</span>;
+   <span class="title">proxy_buffer_size</span> <span class="number">16k</span>;
+   <span class="title">proxy_buffers</span> <span class="number">4</span> <span class="number">64k</span>;
+   <span class="title">proxy_busy_buffers_size</span> <span class="number">128k</span>;
+   <span class="title">proxy_temp_file_write_size</span> <span class="number">128k</span>;
+   <span class="title">proxy_temp_path</span> /home/temp_dir;
+   <span class="title">proxy_cache_path</span> /home/cache levels=<span class="number">1</span>:<span class="number">2</span> keys_zone=cache_one:<span class="number">200m</span> inactive=<span class="number">1d</span> max_size=<span class="number">30g</span>;
+   <span class="comment">##end##</span>
+</code></pre></li>
+<li><p>添加以下代码到server 中</p>
+<pre><code>   <span class="title">proxy_redirect</span> <span class="built_in">off</span>;
+   <span class="title">proxy_set_header</span> Host <span class="variable">$host</span>;
+   <span class="title">proxy_cache</span> cache_one;
+   <span class="title">proxy_cache_valid</span> <span class="number">200</span> <span class="number">302</span> <span class="number">1h</span>;
+   <span class="title">proxy_cache_valid</span> <span class="number">301</span> <span class="number">1d</span>;
+   <span class="title">proxy_cache_valid</span> any <span class="number">1m</span>;
+   <span class="title">expires</span> <span class="number">30d</span>;
+</code></pre></li>
+<li><p>保存配置</p>
+</li>
+</ol>
+<h2 id="启动Nginx">启动Nginx</h2>
+<pre><code>     $ <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span>
+</code></pre><h2 id="测试">测试</h2>
+<ol>
+<li><p>点击文件下载<br> <img src="/img/3-11.png" alt="使用的是反向代理地址"></p>
+</li>
+<li><p>下载完成查看缓存目录</p>
+<pre><code> $ <span class="built_in">cd</span> /home/cache
+</code></pre><p> 查看缓存文件</p>
+<pre><code> <span class="literal">-</span><span class="comment">rw</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="string">.</span> <span class="comment">1</span> <span class="comment">nobody</span> <span class="comment">nobody</span> <span class="comment">8212493</span> <span class="comment">Mar</span> <span class="comment">31</span> <span class="comment">17:27</span> <span class="comment">91aa96dab8d300dc81295f78552a4a0a</span>
+</code></pre></li>
+</ol>
+<p><img src="/img/3-12.png" alt="vi查看文件内容"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/" data-id="1vwawfgm6y1o7cth" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+        <a href="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Hadoop做文件服务器POC2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/31/Hadoop做文件服务器POC2/" class="article-date">
+  <time datetime="2015-03-31T07:41:45.000Z" itemprop="datePublished">3月 31 2015</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/31/Hadoop做文件服务器POC2/">Hadoop做文件服务器POC&lt;2&gt;服务开发</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Eclipse配置">Eclipse配置</h2>
+<ol>
+<li><p>新建Maven项目<br> <img src="/img/3-3.png" alt="选择webapp项目"><br> <img src="/img/3-4.png" alt="配置项目"></p>
+</li>
+<li><p>配置pom.xml</p>
+<pre><code> <span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+   <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cn.com.git<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>HDFSWeb<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">name</span>&gt;</span>HDFSWeb Maven Webapp<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>hadoop-common<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.6.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>hadoop-hdfs<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+         <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.6.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+   <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">build</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">finalName</span>&gt;</span>HDFSWeb<span class="tag">&lt;/<span class="title">finalName</span>&gt;</span>
+   <span class="tag">&lt;/<span class="title">build</span>&gt;</span>
+ <span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre></li>
+</ol>
+<h2 id="代码开发">代码开发</h2>
+<ol>
+<li><p>编写HDFSUtil<br> <img src="/img/3-5.png" alt="新建HDFSUtil"></p>
+<p> 上传文件</p>
+<pre><code>     <span class="javadoc">/**
+      * 用输入流上传文件到HDFS
+      * 
+      *<span class="javadoctag"> @param</span> is
+      *<span class="javadoctag"> @param</span> remoteName
+      *<span class="javadoctag"> @return</span>
+      *<span class="javadoctag"> @throws</span> Exception
+      */</span>
+     <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">upload</span>(InputStream is, String remoteName) <span class="keyword">throws</span> Exception {
+         FileSystem fs = <span class="keyword">null</span>;
+         <span class="keyword">try</span> {
+             fs = FileSystem.get(URI.create(HDFS), conf);
+             OutputStream outStream = fs.create(<span class="keyword">new</span> Path(remoteName), <span class="keyword">new</span> Progressable() {
+                 <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">progress</span>() {
+                     System.out.print(<span class="string">'.'</span>);
+                 }
+             });
+             logger.info(<span class="string">"开始上传: "</span> + remoteName);
+             IOUtils.copyBytes(is, outStream, <span class="number">4096000</span>, <span class="keyword">true</span>);
+             logger.info(<span class="string">"上传结束！"</span>);
+             is.close();
+             <span class="keyword">return</span> <span class="number">0</span>;
+         } <span class="keyword">catch</span> (IOException e) {
+             is.close();
+             e.printStackTrace();
+             <span class="keyword">return</span> -<span class="number">1</span>;
+         }
+     }
+
+     <span class="javadoc">/**
+      * 上传文件到HDFS
+      * 
+      *<span class="javadoctag"> @param</span> localName
+      *<span class="javadoctag"> @param</span> remoteName
+      *<span class="javadoctag"> @return</span>
+      *<span class="javadoctag"> @throws</span> Exception
+      */</span>
+     <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">upload</span>(String localName, String remoteName) <span class="keyword">throws</span> Exception {
+         InputStream is = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(localName));
+         <span class="keyword">return</span> upload(is, remoteName);
+     }
+</code></pre><p> 下载文件</p>
+<pre><code>     <span class="javadoc">/**
+          * HDFS上下载文件并返回文件流
+          * 
+          *<span class="javadoctag"> @param</span> hadoopFile
+          *<span class="javadoctag"> @return</span>
+          *<span class="javadoctag"> @throws</span> Exception
+          */</span>
+         <span class="keyword">public</span> FSDataInputStream <span class="title">download</span>(String hadoopFile) <span class="keyword">throws</span> Exception {
+             FSDataInputStream iStream = <span class="keyword">null</span>;
+             FileSystem fs = <span class="keyword">null</span>;
+             fs = FileSystem.get(URI.create(HDFS), conf);
+             Path path = <span class="keyword">new</span> Path(hadoopFile);
+             iStream = fs.open(path);
+             <span class="keyword">return</span> iStream;
+         }
+</code></pre><p> 删除文件</p>
+<pre><code>         <span class="javadoc">/**
+          * 删除HDFS文件
+          * 
+          *<span class="javadoctag"> @param</span> hadoopFile
+          *<span class="javadoctag"> @return</span>
+          */</span>
+         <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deleteFile</span>(String hadoopFile) {
+             <span class="keyword">try</span> {
+                 FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
+                 Path path = <span class="keyword">new</span> Path(hadoopFile);
+                 fs.delete(path, <span class="keyword">true</span>);
+                 fs.close();
+             } <span class="keyword">catch</span> (Exception e) {
+                 e.printStackTrace();
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+             }
+             <span class="keyword">return</span> <span class="keyword">true</span>;
+         }
+</code></pre><p> 显示文件夹文件列表</p>
+<pre><code>         <span class="javadoc">/**
+          * 显示文件夹中文件列表
+          * 
+          *<span class="javadoctag"> @param</span> folder
+          *<span class="javadoctag"> @return</span> 文件列表对象
+          *<span class="javadoctag"> @throws</span> Exception
+          */</span>
+         <span class="keyword">public</span> FileStatus[] <span class="title">list</span>(String folder) <span class="keyword">throws</span> Exception {
+             Path path = <span class="keyword">new</span> Path(folder);
+             FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
+             <span class="keyword">return</span> fs.listStatus(path);
+         }
+
+         <span class="javadoc">/**
+          * 显示文件夹中文件列表并打印
+          * 
+          *<span class="javadoctag"> @param</span> folder
+          *<span class="javadoctag"> @throws</span> Exception
+          */</span>
+         <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ls</span>(String folder) <span class="keyword">throws</span> Exception {
+             Path path = <span class="keyword">new</span> Path(folder);
+             FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
+             FileStatus[] list = fs.listStatus(path);
+             <span class="keyword">for</span> (FileStatus f : list) {
+                 System.out.printf(<span class="string">"name: %s, folder: %s, size: %d\n"</span>, f.getPath(), f.isDir(), f.getLen());
+             }
+         }    
+</code></pre></li>
+<li><p>前端页面<br> <img src="/img/3-6.png" alt="WebContent目录"></p>
+<p> <img src="/img/3-7.png" alt="Web页面"></p>
+</li>
+</ol>
+<h2 id="Web部署">Web部署</h2>
+<ol>
+<li><p>应用打包成war</p>
+<pre><code> Eclipse&gt;<span class="keyword">File</span>&gt;<span class="keyword">Export</span>&gt;Web&gt;war file&gt;HDFSWeb.war
+</code></pre></li>
+<li><p>部署到weblogic 11g</p>
+<pre><code> Weblogic Console&gt;部署&gt;<span class="keyword">new</span>&gt;upload war&gt;<span class="keyword">finish</span>&gt;激活更改&gt;启动HDFSWeb    
+</code></pre></li>
+<li><p>查看部署结果<br> <img src="/img/3-8.png" alt="Web页面"></p>
+</li>
+</ol>
+<h2 id="测试HDFS上传和下载">测试HDFS上传和下载</h2>
+<p>测试<br>    <img src="/img/3-9.png" alt="测试上传"><br>    <img src="/img/3-10.png" alt="测试下载"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC2/" data-id="0yy9dvwfd5idk8i4" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+        <a href="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC2/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Hadoop做文件服务器POC1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/03/30/Hadoop做文件服务器POC1/" class="article-date">
@@ -173,27 +493,21 @@
  nimbus<span class="variable">$ </span>ssh-copy-id hadoop<span class="variable">@nimbus</span>
  nimbus<span class="variable">$ </span>ssh-copy-id hadoop<span class="variable">@supervisor1</span>
  nimbus<span class="variable">$ </span>ssh-copy-id hadoop<span class="variable">@supervisor2</span>
+</code></pre><p> 然后用scp命令，把公钥文件发放给slaver</p>
+<pre><code> nimbus<span class="variable">$ </span>scp .ssh/id_rsa.pub hadoop<span class="variable">@supervisor1</span><span class="symbol">:/home/hadoop/id_rsa_01</span>.pub
+ nimbus<span class="variable">$ </span>scp .ssh/id_rsa.pub hadoop<span class="variable">@supervisor2</span><span class="symbol">:/home/hadoop/id_rsa_01</span>.pub
+</code></pre><p> 测试无密码登录</p>
+<pre><code> <span class="variable">$ </span>ssh nimbus
+ <span class="variable">$ </span>ssh supervisor1
+ <span class="variable">$ </span>ssh supervisor2
 </code></pre></li>
-</ol>
-<p>然后用scp命令，把公钥文件发放给slaver</p>
-<pre><code>    nimbus<span class="variable">$ </span>scp .ssh/id_rsa.pub hadoop<span class="variable">@supervisor1</span><span class="symbol">:/home/hadoop/id_rsa_01</span>.pub
-    nimbus<span class="variable">$ </span>scp .ssh/id_rsa.pub hadoop<span class="variable">@supervisor2</span><span class="symbol">:/home/hadoop/id_rsa_01</span>.pub
-</code></pre><p>测试无密码登录</p>
-<pre><code>    <span class="variable">$ </span>ssh nimbus
-    <span class="variable">$ </span>ssh supervisor1
-    <span class="variable">$ </span>ssh supervisor2
-</code></pre><ol>
-<li>安装hadoop<pre><code> <span class="variable">$ </span>tar vxzf hadoop-<span class="number">2.6</span>.<span class="number">0</span>.tar.gz
-</code></pre></li>
-</ol>
-<p>修改hadoop配置文件</p>
-<ol>
-<li><p>slaves</p>
+<li><p>安装hadoop</p>
+<pre><code> <span class="variable">$ </span>tar vxzf hadoop-<span class="number">2.6</span>.<span class="number">0</span>.tar.gz
+</code></pre><p> 修改hadoop配置文件<br>  slaves</p>
 <pre><code> <span class="variable">$vi</span> etc/hadoop/slaves
  supervisor1
  supervisor2
-</code></pre></li>
-<li><p>core-site.xml</p>
+</code></pre><p>  core-site.xml</p>
 <pre><code> $vi etc/hadoop/core-site.xml
  <span class="variable">&lt;configuration&gt;</span>
         <span class="variable">&lt;property&gt;</span>
@@ -218,8 +532,7 @@
                 <span class="variable">&lt;value&gt;</span><span class="keyword">*</span><span class="variable">&lt;/value&gt;</span>
         <span class="variable">&lt;/property&gt;</span>
  <span class="variable">&lt;/configuration&gt;</span>
-</code></pre></li>
-<li><p>hdfs-site.xml</p>
+</code></pre><p>  hdfs-site.xml</p>
 <pre><code> $vi etc/hadoop/hdfs-site.xml
  <span class="tag">&lt;<span class="title">configuration</span>&gt;</span>
        <span class="tag">&lt;<span class="title">property</span>&gt;</span>
@@ -243,8 +556,7 @@
                    <span class="tag">&lt;<span class="title">value</span>&gt;</span>true<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
           <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
  <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span>
-</code></pre></li>
-<li><p>mapred-site.xml</p>
+</code></pre><p> mapred-site.xml</p>
 <pre><code> $vi etc/hadoop/mapred-site.xml
  <span class="tag">&lt;<span class="title">configuration</span>&gt;</span>
      <span class="tag">&lt;<span class="title">property</span>&gt;</span>
@@ -264,43 +576,45 @@
      <span class="tag">&lt;<span class="title">value</span>&gt;</span>false<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
      <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
  <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span>
+</code></pre><p> 同步hadoop目录到supervisor和supervisor2</p>
+<pre><code> <span class="variable">$ </span>scp hadoop/* -<span class="constant">R</span> hadoop<span class="variable">@supervisor1</span><span class="symbol">:/app/hadoop/</span>
+ <span class="variable">$ </span>scp hadoop/* -<span class="constant">R</span> hadoop<span class="variable">@supervisor2</span><span class="symbol">:/app/hadoop/</span>
 </code></pre></li>
+<li><p>启动hadoop</p>
+<pre><code> $ ./sbin/<span class="operator"><span class="keyword">start</span>-<span class="keyword">all</span>.sh
+ This script <span class="keyword">is</span> Deprecated. Instead <span class="keyword">use</span> <span class="keyword">start</span>-dfs.sh <span class="keyword">and</span> <span class="keyword">start</span>-yarn.sh
+ <span class="number">15</span>/<span class="number">03</span>/<span class="number">30</span> <span class="number">17</span>:<span class="number">50</span>:<span class="number">10</span> WARN util.NativeCodeLoader: Unable <span class="keyword">to</span> <span class="keyword">load</span> native-hadoop library <span class="keyword">for</span> your platform... <span class="keyword">using</span> builtin-java classes <span class="keyword">where</span> applicable
+ <span class="keyword">Starting</span> namenodes <span class="keyword">on</span> [nimbus]
+ nimbus: <span class="keyword">starting</span> namenode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-namenode-nimbus.out
+ supervisor2: <span class="keyword">starting</span> datanode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-datanode-supervisor2.out
+ supervisor1: <span class="keyword">starting</span> datanode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-datanode-supervisor1.out
+ <span class="keyword">Starting</span> secondary namenodes [nimbus]
+ nimbus: <span class="keyword">starting</span> secondarynamenode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-secondarynamenode-nimbus.out
+ <span class="number">15</span>/<span class="number">03</span>/<span class="number">30</span> <span class="number">17</span>:<span class="number">50</span>:<span class="number">30</span> WARN util.NativeCodeLoader: Unable <span class="keyword">to</span> <span class="keyword">load</span> native-hadoop library <span class="keyword">for</span> your platform... <span class="keyword">using</span> builtin-java classes <span class="keyword">where</span> applicable
+ <span class="keyword">starting</span> yarn daemons
+ <span class="keyword">starting</span> resourcemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-resourcemanager-nimbus.out
+ supervisor2: <span class="keyword">starting</span> nodemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-nodemanager-supervisor2.out
+ supervisor1: <span class="keyword">starting</span> nodemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-nodemanager-supervisor1.out</span>
+</code></pre><p> 查看进程</p>
+<pre><code> nimbus<span class="variable">$ </span>jps
+ <span class="number">10775</span> <span class="constant">Jps</span>
+ <span class="number">10146</span> <span class="constant">NameNode</span>
+ <span class="number">10305</span> <span class="constant">SecondaryNameNode</span>
+ <span class="number">10464</span> <span class="constant">ResourceManager</span>
+
+ supervisor1<span class="variable">$ </span>jps
+ <span class="number">4308</span> <span class="constant">Jps</span>
+ <span class="number">4094</span> <span class="constant">NodeManager</span>
+ <span class="number">3993</span> <span class="constant">DataNode</span>
+
+ supervisor2<span class="variable">$ </span>jps
+ <span class="number">4308</span> <span class="constant">Jps</span>
+ <span class="number">4094</span> <span class="constant">NodeManager</span>
+ <span class="number">3993</span> <span class="constant">DataNode</span>    
+</code></pre><p> 查看管理页面<br> <img src="/img/3-1.png" alt="http://192.168.55.173:50070/"></p>
+<p> <img src="/img/3-2.png" alt="http://192.168.55.173:8088/"></p>
+</li>
 </ol>
-<p>同步hadoop目录到supervisor和supervisor2</p>
-<pre><code>    <span class="variable">$ </span>scp hadoop/* -<span class="constant">R</span> hadoop<span class="variable">@supervisor1</span><span class="symbol">:/app/hadoop/</span>
-    <span class="variable">$ </span>scp hadoop/* -<span class="constant">R</span> hadoop<span class="variable">@supervisor2</span><span class="symbol">:/app/hadoop/</span>
-</code></pre><p>启动hadoop</p>
-<pre><code>    $ ./sbin/<span class="operator"><span class="keyword">start</span>-<span class="keyword">all</span>.sh
-    This script <span class="keyword">is</span> Deprecated. Instead <span class="keyword">use</span> <span class="keyword">start</span>-dfs.sh <span class="keyword">and</span> <span class="keyword">start</span>-yarn.sh
-    <span class="number">15</span>/<span class="number">03</span>/<span class="number">30</span> <span class="number">17</span>:<span class="number">50</span>:<span class="number">10</span> WARN util.NativeCodeLoader: Unable <span class="keyword">to</span> <span class="keyword">load</span> native-hadoop library <span class="keyword">for</span> your platform... <span class="keyword">using</span> builtin-java classes <span class="keyword">where</span> applicable
-    <span class="keyword">Starting</span> namenodes <span class="keyword">on</span> [nimbus]
-    nimbus: <span class="keyword">starting</span> namenode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-namenode-nimbus.out
-    supervisor2: <span class="keyword">starting</span> datanode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-datanode-supervisor2.out
-    supervisor1: <span class="keyword">starting</span> datanode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-datanode-supervisor1.out
-    <span class="keyword">Starting</span> secondary namenodes [nimbus]
-    nimbus: <span class="keyword">starting</span> secondarynamenode, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/hadoop-hadoop-secondarynamenode-nimbus.out
-    <span class="number">15</span>/<span class="number">03</span>/<span class="number">30</span> <span class="number">17</span>:<span class="number">50</span>:<span class="number">30</span> WARN util.NativeCodeLoader: Unable <span class="keyword">to</span> <span class="keyword">load</span> native-hadoop library <span class="keyword">for</span> your platform... <span class="keyword">using</span> builtin-java classes <span class="keyword">where</span> applicable
-    <span class="keyword">starting</span> yarn daemons
-    <span class="keyword">starting</span> resourcemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-resourcemanager-nimbus.out
-    supervisor2: <span class="keyword">starting</span> nodemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-nodemanager-supervisor2.out
-    supervisor1: <span class="keyword">starting</span> nodemanager, logging <span class="keyword">to</span> /app/hadoop/<span class="keyword">logs</span>/yarn-hadoop-nodemanager-supervisor1.out</span>
-</code></pre><p>查看进程</p>
-<pre><code>    nimbus<span class="variable">$ </span>jps
-    <span class="number">10775</span> <span class="constant">Jps</span>
-    <span class="number">10146</span> <span class="constant">NameNode</span>
-    <span class="number">10305</span> <span class="constant">SecondaryNameNode</span>
-    <span class="number">10464</span> <span class="constant">ResourceManager</span>
-
-    supervisor1<span class="variable">$ </span>jps
-    <span class="number">4308</span> <span class="constant">Jps</span>
-    <span class="number">4094</span> <span class="constant">NodeManager</span>
-    <span class="number">3993</span> <span class="constant">DataNode</span>
-
-    supervisor2<span class="variable">$ </span>jps
-    <span class="number">4308</span> <span class="constant">Jps</span>
-    <span class="number">4094</span> <span class="constant">NodeManager</span>
-    <span class="number">3993</span> <span class="constant">DataNode</span>    
-</code></pre><p>查看管理页面<br><img src="img/3-1.png" alt="http://192.168.55.173:50070/dfshealth.html#tab-overview"><br><img src="img/3-2.png" alt="http://192.168.55.173:50070/dfshealth.html#tab-overview"></p>
 
       
     </div>
@@ -621,7 +935,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/华泰证券/">华泰证券</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -630,7 +944,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 20.00px;">Docker</a><a href="/tags/Hadoop/" style="font-size: 10.00px;">Hadoop</a><a href="/tags/华泰证券/" style="font-size: 15.00px;">华泰证券</a>
+      <a href="/tags/Docker/" style="font-size: 20.00px;">Docker</a><a href="/tags/Hadoop/" style="font-size: 20.00px;">Hadoop</a><a href="/tags/华泰证券/" style="font-size: 10.00px;">华泰证券</a>
     </div>
   </div>
 
@@ -639,7 +953,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -651,6 +965,14 @@
       <ul>
         
           <li>
+            <a href="/2015/03/31/Hadoop做文件服务器POC3/">Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/31/Hadoop做文件服务器POC2/">Hadoop做文件服务器POC&lt;2&gt;服务开发</a>
+          </li>
+        
+          <li>
             <a href="/2015/03/30/Hadoop做文件服务器POC1/">Hadoop做文件服务器POC&lt;1&gt;环境准备</a>
           </li>
         
@@ -660,14 +982,6 @@
         
           <li>
             <a href="/2015/03/19/Docker学习2/">Docker学习&lt;2&gt;入门</a>
-          </li>
-        
-          <li>
-            <a href="/2015/03/18/Docker学习1/">Docker学习&lt;1&gt;环境准备</a>
-          </li>
-        
-          <li>
-            <a href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
           </li>
         
       </ul>

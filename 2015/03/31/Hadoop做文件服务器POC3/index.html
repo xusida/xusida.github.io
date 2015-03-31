@@ -4,17 +4,58 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 华泰证券 | 男怕夜奔，女怕思凡</title>
+  <title>Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存 | 男怕夜奔，女怕思凡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="知识管理、学习记录">
-<meta property="og:type" content="website">
-<meta property="og:title" content="男怕夜奔，女怕思凡">
-<meta property="og:url" content="http://xusida.github.io/tags/华泰证券/">
+  <meta name="description" content="安装Nginx
+
+下载Nginx
+ $ cd /app/nginx
+ $ Wget http://nginx.org/download/nginx-1.7.11.tar.gz
+
+编译Nginx
+ $ cd /app/nginx
+ $ tar zvxf nginx-1.7.11.tar.gz
+ $ cd nginx-1.7.11
+ $ .configure
+
+安装Nginx
+ $ make &amp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop做文件服务器POC<3>Nginx文件缓存">
+<meta property="og:url" content="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/">
 <meta property="og:site_name" content="男怕夜奔，女怕思凡">
-<meta property="og:description" content="知识管理、学习记录">
+<meta property="og:description" content="安装Nginx
+
+下载Nginx
+ $ cd /app/nginx
+ $ Wget http://nginx.org/download/nginx-1.7.11.tar.gz
+
+编译Nginx
+ $ cd /app/nginx
+ $ tar zvxf nginx-1.7.11.tar.gz
+ $ cd nginx-1.7.11
+ $ .configure
+
+安装Nginx
+ $ make &amp">
+<meta property="og:image" content="/img/3-11.png">
+<meta property="og:image" content="/img/3-12.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="男怕夜奔，女怕思凡">
-<meta name="twitter:description" content="知识管理、学习记录">
+<meta name="twitter:title" content="Hadoop做文件服务器POC<3>Nginx文件缓存">
+<meta name="twitter:description" content="安装Nginx
+
+下载Nginx
+ $ cd /app/nginx
+ $ Wget http://nginx.org/download/nginx-1.7.11.tar.gz
+
+编译Nginx
+ $ cd /app/nginx
+ $ tar zvxf nginx-1.7.11.tar.gz
+ $ cd nginx-1.7.11
+ $ .configure
+
+安装Nginx
+ $ make &amp">
 
   
     <link rel="alternative" href="/atom.xml" title="男怕夜奔，女怕思凡" type="application/atom+xml">
@@ -72,12 +113,10 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-实时计算2最大回撤" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Hadoop做文件服务器POC3" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/02/10/实时计算2最大回撤/" class="article-date">
-  <time datetime="2015-02-10T07:01:15.000Z" itemprop="datePublished">2月 10 2015</time>
+    <a href="/2015/03/31/Hadoop做文件服务器POC3/" class="article-date">
+  <time datetime="2015-03-31T08:59:48.000Z" itemprop="datePublished">3月 31 2015</time>
 </a>
     
   </div>
@@ -87,8 +126,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算2最大回撤/">实时计算&lt;2&gt;最大回撤</a>
+    <h1 class="article-title" itemprop="name">
+      Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存
     </h1>
   
 
@@ -96,141 +135,116 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="最大回撤计算">最大回撤计算</h2>
-<blockquote>
-<p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
-</blockquote>
-<h3 id="要求">要求</h3>
-<blockquote>
-<p>实时计算，每只股票处理延迟平均不超过50ms<br>计算结果持久化，可查询每只股票某天的最大回撤值。</p>
-</blockquote>
-<h3 id="数据准备">数据准备</h3>
-<blockquote>
-<p>模拟5000只股票信息<br>模拟5000只股票一天的实时行情记录，每只股票暂定3秒抓取一次实时行情，那么每天应该有60/3×60×4=4800条行情记录。总记录数=4800×5000=2400万条行情记录。<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算2最大回撤/#more">Read More</a>
-          </p>
-        
+        <h2 id="安装Nginx">安装Nginx</h2>
+<ol>
+<li><p>下载Nginx</p>
+<pre><code> <span class="variable">$ </span>cd /app/nginx
+ <span class="variable">$ </span><span class="constant">Wget</span> <span class="symbol">http:</span>/<span class="regexp">/nginx.org/download</span><span class="regexp">/nginx-1.7.11.tar.gz</span>
+</code></pre></li>
+<li><p>编译Nginx</p>
+<pre><code> <span class="variable">$ </span>cd /app/nginx
+ <span class="variable">$ </span>tar zvxf nginx-<span class="number">1.7</span>.<span class="number">11</span>.tar.gz
+ <span class="variable">$ </span>cd nginx-<span class="number">1.7</span>.<span class="number">11</span>
+ <span class="variable">$ </span>.configure
+</code></pre></li>
+<li><p>安装Nginx</p>
+<pre><code> $ <span class="keyword">make</span> &amp; <span class="keyword">make</span> install
+</code></pre></li>
+</ol>
+<h2 id="配置反向代理">配置反向代理</h2>
+<ol>
+<li><p>修改配置文件</p>
+<pre><code>     $ <span class="keyword">cd</span> /usr/local/nginx
+     $ <span class="keyword">vi</span> ./<span class="keyword">conf</span>/nginx.<span class="keyword">conf</span>
+</code></pre></li>
+<li><p>添加以下代码到server&gt;location / 中</p>
+<pre><code>     <span class="title">add_header</span> <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">'*'</span>;
+     <span class="title">add_header</span> <span class="string">'Access-Control-Allow-Credentials'</span> <span class="string">'true'</span>;
+     <span class="title">add_header</span> <span class="string">'Access-Control-Allow-Methods'</span> <span class="string">'GET'</span>;
+     <span class="title">proxy_pass</span> <span class="url">http://192.168.55.64:8002/HDFSWeb/</span>;
+</code></pre></li>
+<li>保存配置</li>
+</ol>
+<h2 id="配置文件缓存">配置文件缓存</h2>
+<ol>
+<li><p>修改配置文件</p>
+<pre><code>     $ <span class="keyword">cd</span> /usr/local/nginx
+     $ <span class="keyword">vi</span> ./<span class="keyword">conf</span>/nginx.<span class="keyword">conf</span>
+</code></pre></li>
+<li><p>添加以下代码到server 中</p>
+<pre><code>   <span class="comment">##cache##</span>
+   <span class="title">proxy_connect_timeout</span> <span class="number">5</span>;
+   <span class="title">proxy_read_timeout</span> <span class="number">60</span>;
+   <span class="title">proxy_send_timeout</span> <span class="number">5</span>;
+   <span class="title">proxy_buffer_size</span> <span class="number">16k</span>;
+   <span class="title">proxy_buffers</span> <span class="number">4</span> <span class="number">64k</span>;
+   <span class="title">proxy_busy_buffers_size</span> <span class="number">128k</span>;
+   <span class="title">proxy_temp_file_write_size</span> <span class="number">128k</span>;
+   <span class="title">proxy_temp_path</span> /home/temp_dir;
+   <span class="title">proxy_cache_path</span> /home/cache levels=<span class="number">1</span>:<span class="number">2</span> keys_zone=cache_one:<span class="number">200m</span> inactive=<span class="number">1d</span> max_size=<span class="number">30g</span>;
+   <span class="comment">##end##</span>
+</code></pre></li>
+<li><p>添加以下代码到server 中</p>
+<pre><code>   <span class="title">proxy_redirect</span> <span class="built_in">off</span>;
+   <span class="title">proxy_set_header</span> Host <span class="variable">$host</span>;
+   <span class="title">proxy_cache</span> cache_one;
+   <span class="title">proxy_cache_valid</span> <span class="number">200</span> <span class="number">302</span> <span class="number">1h</span>;
+   <span class="title">proxy_cache_valid</span> <span class="number">301</span> <span class="number">1d</span>;
+   <span class="title">proxy_cache_valid</span> any <span class="number">1m</span>;
+   <span class="title">expires</span> <span class="number">30d</span>;
+</code></pre></li>
+<li><p>保存配置</p>
+</li>
+</ol>
+<h2 id="启动Nginx">启动Nginx</h2>
+<pre><code>     $ <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span>
+</code></pre><h2 id="测试">测试</h2>
+<ol>
+<li><p>点击文件下载<br> <img src="/img/3-11.png" alt="使用的是反向代理地址"></p>
+</li>
+<li><p>下载完成查看缓存目录</p>
+<pre><code> $ <span class="built_in">cd</span> /home/cache
+</code></pre><p> 查看缓存文件</p>
+<pre><code> <span class="literal">-</span><span class="comment">rw</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="string">.</span> <span class="comment">1</span> <span class="comment">nobody</span> <span class="comment">nobody</span> <span class="comment">8212493</span> <span class="comment">Mar</span> <span class="comment">31</span> <span class="comment">17:27</span> <span class="comment">91aa96dab8d300dc81295f78552a4a0a</span>
+</code></pre></li>
+</ol>
+<p><img src="/img/3-12.png" alt="vi查看文件内容"></p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算2最大回撤/" data-id="b2l2tbdz67w6g7ue" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/" data-id="1vwawfgm6y1o7cth" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
-        <a href="http://xusida.github.io/2015/02/10/实时计算2最大回撤/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-实时计算1环境准备" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/02/10/实时计算1环境准备/" class="article-date">
-  <time datetime="2015-02-10T07:00:54.000Z" itemprop="datePublished">2月 10 2015</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/02/10/实时计算1环境准备/">实时计算&lt;1&gt;环境准备</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="硬件准备">硬件准备</h2>
-<table>
-<thead>
-<tr>
-<th>机器名</th>
-<th>IP</th>
-<th>硬件配置</th>
-<th>操作系统</th>
-<th>软件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>nimbus</td>
-<td>192.168.55.173</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>redis2.8、 storm0.9.1 nimbus/UI/DRPC、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor1</td>
-<td>192.168.55.174</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-<tr>
-<td>supervisor2</td>
-<td>192.168.55.175</td>
-<td>4cpu 2.93GHz 4G内存</td>
-<td>Linux x86_64</td>
-<td>storm0.9.1 supervisor、zookeeper3.4.6</td>
-</tr>
-</tbody>
-</table>
-<h2 id="软件准备">软件准备</h2>
-<blockquote>
-<p>三台虚拟机，一台作为Storm的nimbus和redis数据库，另外两台做Storm的supervisor。</p>
-</blockquote>
-<p>设置hosts文件</p>
-<pre><code>    <span class="keyword">vi</span> /ets/hosts
-</code></pre><p>如下</p>
-<pre><code>    127.0.0.1 nimbus
-    192.168.55.173  nimbus
-    192.168.55.174 supervisor1
-    192.168.55.175 supervisor2
-</code></pre><h3 id="基本软件安装">基本软件安装</h3>
-<blockquote>
-<p>三台机器必备安装软件，jdk、storm、zookeeper<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/02/10/实时计算1环境准备/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://xusida.github.io/2015/02/10/实时计算1环境准备/" data-id="hmgr2tgclslli78g" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-        <a href="http://xusida.github.io/2015/02/10/实时计算1环境准备/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/华泰证券/">华泰证券</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
 
     </footer>
   </div>
   
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/03/31/Hadoop做文件服务器POC2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hadoop做文件服务器POC&lt;2&gt;服务开发</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-  
-  
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/03/31/Hadoop做文件服务器POC3/" data-title="Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存" data-url="http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">
