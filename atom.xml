@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-03-31T10:02:59.932Z</updated>
+  <updated>2015-04-01T01:56:42.069Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -771,7 +771,7 @@
     <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%972%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4/"/>
     <id>http://xusida.github.io/2015/02/10/实时计算2最大回撤/</id>
     <published>2015-02-10T07:01:15.000Z</published>
-    <updated>2015-02-10T07:36:14.000Z</updated>
+    <updated>2015-03-31T10:08:16.000Z</updated>
     <content type="html"><![CDATA[<h2 id="最大回撤计算">最大回撤计算</h2>
 <blockquote>
 <p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
@@ -891,7 +891,7 @@
     
     </summary>
     
-      <category term="华泰证券" scheme="http://xusida.github.io/tags/%E5%8D%8E%E6%B3%B0%E8%AF%81%E5%88%B8/"/>
+      <category term="Storm" scheme="http://xusida.github.io/tags/Storm/"/>
     
   </entry>
   
@@ -900,7 +900,7 @@
     <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%971%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/"/>
     <id>http://xusida.github.io/2015/02/10/实时计算1环境准备/</id>
     <published>2015-02-10T07:00:54.000Z</published>
-    <updated>2015-03-30T08:52:42.000Z</updated>
+    <updated>2015-03-31T10:08:22.000Z</updated>
     <content type="html"><![CDATA[<h2 id="硬件准备">硬件准备</h2>
 <table>
 <thead>
@@ -1110,7 +1110,7 @@
     
     </summary>
     
-      <category term="华泰证券" scheme="http://xusida.github.io/tags/%E5%8D%8E%E6%B3%B0%E8%AF%81%E5%88%B8/"/>
+      <category term="Storm" scheme="http://xusida.github.io/tags/Storm/"/>
     
   </entry>
   
