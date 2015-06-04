@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[男怕夜奔，女怕思凡]]></title>
+  <title><![CDATA[知识管理、学习记录]]></title>
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-04-01T02:26:57.482Z</updated>
+  <updated>2015-06-04T03:01:44.881Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://xusida.github.io/2015/03/31/Hadoop%E5%81%9A%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8POC3/"/>
     <id>http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC3/</id>
     <published>2015-03-31T08:59:48.000Z</published>
-    <updated>2015-03-31T10:01:54.000Z</updated>
+    <updated>2015-04-01T03:35:55.000Z</updated>
     <content type="html"><![CDATA[<h2 id="安装Nginx">安装Nginx</h2>
 <ol>
 <li><p>下载Nginx</p>
@@ -94,6 +94,11 @@
 </code></pre></li>
 </ol>
 <p><img src="/img/3-12.png" alt="vi查看文件内容"></p>
+<h2 id="POC过程中的疑问">POC过程中的疑问</h2>
+<ol>
+<li>Hadoop是否适合做分布式文件服务器？<br> 作为分布式文件系统，<code>hadoop</code>默认的文件存储块大小为64M，而对于作为文件服务器存放小文件，会极大浪费系统资源。如果调整默认存储块大小，那么对于其它基于<code>hadoop</code>服务的应用会不会受到影响。</li>
+<li>作为分布式文件服务器性能测试。<br> 性能测试尚未完成。</li>
+</ol>
 ]]></content>
     <summary type="html">
     <![CDATA[<h2 id="安装Nginx">安装Nginx</h2>
@@ -112,7 +117,7 @@
     <link href="http://xusida.github.io/2015/03/31/Hadoop%E5%81%9A%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8POC2/"/>
     <id>http://xusida.github.io/2015/03/31/Hadoop做文件服务器POC2/</id>
     <published>2015-03-31T07:41:45.000Z</published>
-    <updated>2015-03-31T08:57:18.000Z</updated>
+    <updated>2015-04-01T03:35:40.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Eclipse配置">Eclipse配置</h2>
 <ol>
 <li><p>新建Maven项目<br> <img src="/img/3-3.png" alt="选择webapp项目"><br> <img src="/img/3-4.png" alt="配置项目"></p>
@@ -287,7 +292,7 @@
     <link href="http://xusida.github.io/2015/03/30/Hadoop%E5%81%9A%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8POC1/"/>
     <id>http://xusida.github.io/2015/03/30/Hadoop做文件服务器POC1/</id>
     <published>2015-03-30T08:01:45.000Z</published>
-    <updated>2015-03-31T07:40:22.000Z</updated>
+    <updated>2015-04-01T03:35:00.000Z</updated>
     <content type="html"><![CDATA[<h2 id="硬件准备">硬件准备</h2>
 <table>
 <thead>
@@ -771,7 +776,7 @@
     <link href="http://xusida.github.io/2015/02/10/%E5%AE%9E%E6%97%B6%E8%AE%A1%E7%AE%972%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4/"/>
     <id>http://xusida.github.io/2015/02/10/实时计算2最大回撤/</id>
     <published>2015-02-10T07:01:15.000Z</published>
-    <updated>2015-03-31T10:08:16.000Z</updated>
+    <updated>2015-04-01T03:09:34.000Z</updated>
     <content type="html"><![CDATA[<h2 id="最大回撤计算">最大回撤计算</h2>
 <blockquote>
 <p>描述：计算一批股票在一天的实时行情最大回撤值（绝对额）。<br> 名词解释：<a href="http://baike.baidu.com/view/9958471.htm" target="_blank" rel="external">最大回撤率</a>,在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。<br> 最大回撤用来描述买入产品后可能出现的最糟糕的情况。最大回撤是一个重要的风险指标，对于对冲基金和数量化策略交易，该指标比波动率还重要。  </p>
@@ -868,7 +873,7 @@
 <li><a href="https://storm.apache.org/" target="_blank" rel="external">Storm</a>系统的处理延迟为毫秒级。</li>
 <li><a href="https://storm.apache.org/" target="_blank" rel="external">Storm</a> 在场景测试中，tuple全部ack没有fail出现。</li>
 <li><a href="http://redis.io" target="_blank" rel="external">Redis</a> 基于内存的数据库在读取和写入配合storm并行计算可以把延迟控制在毫秒级</li>
-<li><a href="http://redis.io" target="_blank" rel="external">Redis</a> 由于单机部署在 storm nimbus机器上，没有做性能测试。作为内存数据库redis提供了丰6. 富的数据结构和处理方式。</li>
+<li><a href="http://redis.io" target="_blank" rel="external">Redis</a> 由于单机部署在 storm nimbus机器上，没有做性能测试。作为内存数据库redis提供了丰富的数据结构和处理方式。</li>
 </ol>
 <h4 id="场景应用中的一些问题">场景应用中的一些问题</h4>
 <ol>
