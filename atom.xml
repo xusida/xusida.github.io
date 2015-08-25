@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不为无益之事，何以遣有涯之生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://xusida.github.io/"/>
-  <updated>2015-08-25T08:57:00.724Z</updated>
+  <updated>2015-08-25T09:38:46.240Z</updated>
   <id>http://xusida.github.io/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://xusida.github.io/2015/08/25/CI%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/"/>
     <id>http://xusida.github.io/2015/08/25/CI服务器搭建/</id>
     <published>2015-08-25T06:54:17.000Z</published>
-    <updated>2015-08-25T08:56:23.000Z</updated>
+    <updated>2015-08-25T09:38:33.000Z</updated>
     <content type="html"><![CDATA[<h3 id="CI服务器">CI服务器</h3>
 <p>CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。</p>
 <h3 id="环境准备">环境准备</h3>
@@ -41,18 +41,20 @@
 <p>1.安装</p>
 <pre><code>    <span class="built_in">sudo</span> docker search jenkins
 </code></pre><p>找到官方<code>image</code></p>
-<pre><code>    <span class="tag">jenkins</span>                               <span class="tag">Official</span> <span class="tag">Jenkins</span> <span class="tag">Docker</span> <span class="tag">image</span>                   553       <span class="attr_selector">[OK]</span>     
+<pre><code>    jenkins                               Official Jenkins Docker image                   <span class="number">553</span>       [OK]     
+    <span class="built_in">sudo</span> docker pull sonatype/nexus
 </code></pre><p>下载<code>image</code>完成后，启动<code>jenkins</code></p>
 <pre><code>    <span class="built_in">sudo</span> docker run --name jenkins <span class="operator">-d</span> -u root -p <span class="number">8080</span>:<span class="number">8080</span> -v /app/jenkins_home:/var/jenkins_home jenkins
 </code></pre><p>映射容器<code>8080</code>端口和数据存放目录<code>/var/jenkins_home</code>  到宿主机器上。</p>
 <p>2.配置</p>
 <p>访问 <code>http://jenkins:8080</code> </p>
-<p><img src="/img/4-2.png" alt="http://jenkins:8080"></p>
+<p><img src="/img/4-2.png" alt="http://jenkins:8080"><br><a id="more"></a></p>
 <h3 id="Sonar安装">Sonar安装</h3>
 <p>1.安装</p>
 <pre><code>    <span class="built_in">sudo</span> docker search sonar
 </code></pre><p>找到官方<code>image</code></p>
 <pre><code>     sonarqube                    SonarQube <span class="keyword">is</span> <span class="keyword">an</span> <span class="keyword">open</span> <span class="keyword">source</span> platform <span class="keyword">for</span> <span class="keyword">c</span>...   <span class="number">46</span>        [OK]      
+     sudo docker pull sonatype/nexus
 </code></pre><p>下载<code>image</code>完成后，启动<code>sonar</code></p>
 <pre><code>    <span class="built_in">sudo</span> docker run <span class="operator">-d</span> --name sonarqube -p <span class="number">9000</span>:<span class="number">9000</span> -p <span class="number">9092</span>:<span class="number">9092</span> sonarqube
 </code></pre><p>映射容器<code>9000</code>、<code>9092</code>端口  到宿主机器上。</p>
@@ -124,7 +126,35 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<h3 id="CI服务器">CI服务器</h3>
-<p>CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。</p>]]>
+<p>CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。</p>
+<h3 id="环境准备">环境准备</h3>
+<p>Docker环境准备（略），确信docker服务已安装并且docker命令可执行。</p>
+<pre><code>    <span class="built_in">sudo</span> docker
+</code></pre><h3 id="Nexus安装">Nexus安装</h3>
+<p>1.安装</p>
+<pre><code>    <span class="built_in">sudo</span> docker search nexus
+</code></pre><p>找到<code>sonatype/nexus</code></p>
+<pre><code>    sonatype/nexus                       Sonatype Nexus                                  <span class="number">51</span>                   [OK]
+    <span class="built_in">sudo</span> docker pull sonatype/nexus
+</code></pre><p>下载image完成后，启动nexus</p>
+<pre><code>    <span class="built_in">sudo</span> docker run <span class="operator">-d</span> -p <span class="number">8081</span>:<span class="number">8081</span> --name sonatype-nexus -v /app/nexus-data/sonatype-work:/sonatype-work sonatype/nexus:oss 
+</code></pre><p>映射容器<code>8081</code>端口和数据存放目录<code>/sonatype-work</code> 到宿主机器上。</p>
+<p>2.配置</p>
+<p>访问 <code>http://nexus:8081</code> 默认管理员账号<code>admin/admin123</code>登录。</p>
+<p><img src="/img/4-1.png" alt="http://nexus:8081"></p>
+<h3 id="Jenkins安装">Jenkins安装</h3>
+<p>1.安装</p>
+<pre><code>    <span class="built_in">sudo</span> docker search jenkins
+</code></pre><p>找到官方<code>image</code></p>
+<pre><code>    jenkins                               Official Jenkins Docker image                   <span class="number">553</span>       [OK]     
+    <span class="built_in">sudo</span> docker pull sonatype/nexus
+</code></pre><p>下载<code>image</code>完成后，启动<code>jenkins</code></p>
+<pre><code>    <span class="built_in">sudo</span> docker run --name jenkins <span class="operator">-d</span> -u root -p <span class="number">8080</span>:<span class="number">8080</span> -v /app/jenkins_home:/var/jenkins_home jenkins
+</code></pre><p>映射容器<code>8080</code>端口和数据存放目录<code>/var/jenkins_home</code>  到宿主机器上。</p>
+<p>2.配置</p>
+<p>访问 <code>http://jenkins:8080</code> </p>
+<p><img src="/img/4-2.png" alt="http://jenkins:8080"><br>]]>
+    
     </summary>
     
       <category term="Jenkins" scheme="http://xusida.github.io/tags/Jenkins/"/>
