@@ -150,7 +150,7 @@ Nexus安装
 <pre><code>    <span class="built_in">sudo</span> docker search jenkins
 </code></pre><p>找到官方<code>image</code></p>
 <pre><code>    jenkins                               Official Jenkins Docker image                   <span class="number">553</span>       [OK]     
-    <span class="built_in">sudo</span> docker pull sonatype/nexus
+    <span class="built_in">sudo</span> docker pull jenkins
 </code></pre><p>下载<code>image</code>完成后，启动<code>jenkins</code></p>
 <pre><code>    <span class="built_in">sudo</span> docker run --name jenkins <span class="operator">-d</span> -u root -p <span class="number">8080</span>:<span class="number">8080</span> -v /app/jenkins_home:/var/jenkins_home jenkins
 </code></pre><p>映射容器<code>8080</code>端口和数据存放目录<code>/var/jenkins_home</code>  到宿主机器上。</p>
@@ -162,7 +162,7 @@ Nexus安装
 <pre><code>    <span class="built_in">sudo</span> docker search sonar
 </code></pre><p>找到官方<code>image</code></p>
 <pre><code>     sonarqube                    SonarQube <span class="keyword">is</span> <span class="keyword">an</span> <span class="keyword">open</span> <span class="keyword">source</span> platform <span class="keyword">for</span> <span class="keyword">c</span>...   <span class="number">46</span>        [OK]      
-     sudo docker pull sonatype/nexus
+     sudo docker pull sonarqube
 </code></pre><p>下载<code>image</code>完成后，启动<code>sonar</code></p>
 <pre><code>    <span class="built_in">sudo</span> docker run <span class="operator">-d</span> --name sonarqube -p <span class="number">9000</span>:<span class="number">9000</span> -p <span class="number">9092</span>:<span class="number">9092</span> sonarqube
 </code></pre><p>映射容器<code>9000</code>、<code>9092</code>端口  到宿主机器上。</p>

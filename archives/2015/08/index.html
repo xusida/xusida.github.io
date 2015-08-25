@@ -118,7 +118,7 @@
 <pre><code>    <span class="built_in">sudo</span> docker search jenkins
 </code></pre><p>找到官方<code>image</code></p>
 <pre><code>    jenkins                               Official Jenkins Docker image                   <span class="number">553</span>       [OK]     
-    <span class="built_in">sudo</span> docker pull sonatype/nexus
+    <span class="built_in">sudo</span> docker pull jenkins
 </code></pre><p>下载<code>image</code>完成后，启动<code>jenkins</code></p>
 <pre><code>    <span class="built_in">sudo</span> docker run --name jenkins <span class="operator">-d</span> -u root -p <span class="number">8080</span>:<span class="number">8080</span> -v /app/jenkins_home:/var/jenkins_home jenkins
 </code></pre><p>映射容器<code>8080</code>端口和数据存放目录<code>/var/jenkins_home</code>  到宿主机器上。</p>
