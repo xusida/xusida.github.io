@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CI服务器搭建 | 知识管理、学习记录</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="CI服务器
+CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。
+环境准备
+Docker环境准备（略），确信docker服务已安装并且docker命令可执行。
+    sudo docker
+Nexus安装
+1.安装
+    sudo d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CI服务器搭建">
+<meta property="og:url" content="http://xusida.github.io/2015/08/25/CI服务器搭建/">
+<meta property="og:site_name" content="知识管理、学习记录">
+<meta property="og:description" content="CI服务器
+CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。
+环境准备
+Docker环境准备（略），确信docker服务已安装并且docker命令可执行。
+    sudo docker
+Nexus安装
+1.安装
+    sudo d">
+<meta property="og:image" content="/img/4-1.png">
+<meta property="og:image" content="/img/4-2.png">
+<meta property="og:image" content="/img/4-3.png">
+<meta property="og:image" content="/img/4-4.png">
+<meta property="og:image" content="/img/4-5.png">
+<meta property="og:image" content="/img/4-6.png">
+<meta property="og:image" content="/img/4-7.png">
+<meta property="og:image" content="/img/4-8.png">
+<meta property="og:image" content="/img/4-9.png">
+<meta property="og:image" content="/img/4-11.png">
+<meta property="og:image" content="/img/4-10.png">
+<meta property="og:image" content="/img/4-12.png">
+<meta property="og:image" content="/img/4-13.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CI服务器搭建">
+<meta name="twitter:description" content="CI服务器
+CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。
+环境准备
+Docker环境准备（略），确信docker服务已安装并且docker命令可执行。
+    sudo docker
+Nexus安装
+1.安装
+    sudo d">
+
+  
+    <link rel="alternative" href="/atom.xml" title="知识管理、学习记录" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">知识管理、学习记录</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">不为无益之事，何以遣有涯之生</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="xusida.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-CI服务器搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/25/CI服务器搭建/" class="article-date">
+  <time datetime="2015-08-25T06:54:17.000Z" itemprop="datePublished">8月 25 2015</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CI服务器搭建
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="CI服务器">CI服务器</h3>
+<p>CI服务器，持续集成服务器,通过自动化的构建来验证，包括自动编译、发布和测试，从而尽快地发现集成错误，让团队能够更快的开发内聚的软件。本文搭建基于 Docker+Jenkis+Sonar+Nexus 的CI服务器。</p>
+<h3 id="环境准备">环境准备</h3>
+<p>Docker环境准备（略），确信docker服务已安装并且docker命令可执行。</p>
+<pre><code>    <span class="built_in">sudo</span> docker
+</code></pre><h3 id="Nexus安装">Nexus安装</h3>
+<p>1.安装</p>
+<pre><code>    <span class="built_in">sudo</span> docker search nexus
+</code></pre><p>找到<code>sonatype/nexus</code></p>
+<pre><code>    sonatype/nexus                       Sonatype Nexus                                  <span class="number">51</span>                   [OK]
+    <span class="built_in">sudo</span> docker pull sonatype/nexus
+</code></pre><p>下载image完成后，启动nexus</p>
+<pre><code>    <span class="built_in">sudo</span> docker run <span class="operator">-d</span> -p <span class="number">8081</span>:<span class="number">8081</span> --name sonatype-nexus -v /app/nexus-data/sonatype-work:/sonatype-work sonatype/nexus:oss 
+</code></pre><p>映射容器<code>8081</code>端口和数据存放目录<code>/sonatype-work</code> 到宿主机器上。</p>
+<p>2.配置</p>
+<p>访问 <code>http://nexus:8081</code> 默认管理员账号<code>admin/admin123</code>登录。</p>
+<p><img src="/img/4-1.png" alt="http://nexus:8081"></p>
+<h3 id="Jenkins安装">Jenkins安装</h3>
+<p>1.安装</p>
+<pre><code>    <span class="built_in">sudo</span> docker search jenkins
+</code></pre><p>找到官方<code>image</code></p>
+<pre><code>    <span class="tag">jenkins</span>                               <span class="tag">Official</span> <span class="tag">Jenkins</span> <span class="tag">Docker</span> <span class="tag">image</span>                   553       <span class="attr_selector">[OK]</span>     
+</code></pre><p>下载<code>image</code>完成后，启动<code>jenkins</code></p>
+<pre><code>    <span class="built_in">sudo</span> docker run --name jenkins <span class="operator">-d</span> -u root -p <span class="number">8080</span>:<span class="number">8080</span> -v /app/jenkins_home:/var/jenkins_home jenkins
+</code></pre><p>映射容器<code>8080</code>端口和数据存放目录<code>/var/jenkins_home</code>  到宿主机器上。</p>
+<p>2.配置</p>
+<p>访问 <code>http://jenkins:8080</code> </p>
+<p><img src="/img/4-2.png" alt="http://jenkins:8080"></p>
+<h3 id="Sonar安装">Sonar安装</h3>
+<p>1.安装</p>
+<pre><code>    <span class="built_in">sudo</span> docker search sonar
+</code></pre><p>找到官方<code>image</code></p>
+<pre><code>     sonarqube                    SonarQube <span class="keyword">is</span> <span class="keyword">an</span> <span class="keyword">open</span> <span class="keyword">source</span> platform <span class="keyword">for</span> <span class="keyword">c</span>...   <span class="number">46</span>        [OK]      
+</code></pre><p>下载<code>image</code>完成后，启动<code>sonar</code></p>
+<pre><code>    <span class="built_in">sudo</span> docker run <span class="operator">-d</span> --name sonarqube -p <span class="number">9000</span>:<span class="number">9000</span> -p <span class="number">9092</span>:<span class="number">9092</span> sonarqube
+</code></pre><p>映射容器<code>9000</code>、<code>9092</code>端口  到宿主机器上。</p>
+<p>2.配置</p>
+<p>访问 <code>http://sonar:9000</code> 默认管理员账号<code>admin/admin</code>登录</p>
+<p><img src="/img/4-3.png" alt="http://sonar:9000"></p>
+<h3 id="开发部署实例">开发部署实例</h3>
+<blockquote>
+<p>场景描述：现有多<code>module</code>的Maven项目<code>qts</code>(量化择时系统),使用SVN做代码版本控制，需要通过CI服务器，做自动编译、发布、测试和代码质量检查。最终部署到SIT环境。</p>
+</blockquote>
+<p>1.设置本地Maven的仓库为Nexus私有仓库并添加Sonar配置，需要修改settings.xml,</p>
+<pre><code>    <span class="tag">&lt;<span class="title">settings</span>&gt;</span> 
+     <span class="comment">&lt;!-- 仓库设置Nexus --&gt;</span>
+     <span class="tag">&lt;<span class="title">mirrors</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">mirror</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">id</span>&gt;</span>local_mirror<span class="tag">&lt;/<span class="title">id</span>&gt;</span> 
+        <span class="tag">&lt;<span class="title">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="title">mirrorOf</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>local_mirror<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://nexus:8081/content/groups/public/<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">mirror</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">mirrors</span>&gt;</span> 
+     <span class="tag">&lt;<span class="title">profiles</span>&gt;</span>
+            <span class="comment">&lt;!-- Sonar 配置 --&gt;</span>
+            <span class="tag">&lt;<span class="title">profile</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">id</span>&gt;</span>sonar<span class="tag">&lt;/<span class="title">id</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">activation</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="title">activeByDefault</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">activation</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
+                    <span class="comment">&lt;!-- optional URL to server. Default value is http://localhost:9000 --&gt;</span>
+                    <span class="tag">&lt;<span class="title">sonar.host.url</span>&gt;</span>http://sonar:9000/<span class="tag">&lt;/<span class="title">sonar.host.url</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">sonar.jdbc.url</span>&gt;</span>jdbc:h2:tcp://sonar/sonar<span class="tag">&lt;/<span class="title">sonar.jdbc.url</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">profile</span>&gt;</span>
+         <span class="tag">&lt;/<span class="title">profiles</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">settings</span>&gt;</span>
+</code></pre><p>2.打开<code>Jenkins</code>管理控制台，进入<code>系统配置</code>-&gt;<code>管理插件</code>,安装以下插件：</p>
+<pre><code>        *Maven Integration plugin <span class="comment">//Maven集成插件</span>
+        *Publish Over SSH    <span class="comment">//发布SSH工具</span>
+        *SonarQube Plugin    <span class="comment">//Sonar插件    </span>
+        *Subversion Plug-<span class="keyword">in</span> <span class="comment">//Svn插件</span>
+</code></pre><p>进入<code>系统配置</code>-&gt;<code>系统设置</code> 修改 <code>Maven Configuration</code>,并按上步配置settings.xml</p>
+<p><img src="/img/4-4.png" alt="http://jenkins:8080"></p>
+<p>配置 <code>SonarQube Runner</code></p>
+<p><img src="/img/4-5.png" alt="http://jenkins:8080"></p>
+<p>配置 <code>Publish over SSH</code>,<code>192.168.55.64</code> 为SIT测试环境主机</p>
+<p><img src="/img/4-6.png" alt="http://jenkins:8080"></p>
+<p>3.新建 <code>Qts-sit</code> 项目</p>
+<p><img src="/img/4-7.png" alt="http://jenkins:8080"></p>
+<p>配置 <code>Qts-sit</code> 项目源码管理</p>
+<p><img src="/img/4-8.png" alt="http://jenkins:8080"></p>
+<blockquote>
+<p><code>https://192.168.55.61/svn/src_code/qts@HEAD</code> SVN项目地址，<code>@HEAD</code> 表示根据版本HEAD变化检查源码。</p>
+</blockquote>
+<p>配置构建触发器，选择 <code>Poll SCM</code>，定义轮询规则<code>*/5 * * * *</code> 表示5分钟轮询一次。</p>
+<p><img src="/img/4-9.png" alt="http://jenkins:8080"></p>
+<p>选择<code>构建后操作步骤</code>-&gt;<code>SonarQube</code>, 此配置节点通过<code>Sonar Runner</code>自动任务，构建后把代码发布到Sonar做代码质量检查。</p>
+<p><img src="/img/4-11.png" alt="http://jenkins:8080"></p>
+<p>选择<code>构建后操作步骤</code>-&gt;<code>Send build artifacts over SSH</code><br>配置 <code>Send build artifacts over SSH</code> ，此配置节点通过SSH登录SIT测试服务器，执行Weblogic的<code>redepoly</code></p>
+<p><img src="/img/4-10.png" alt="http://jenkins:8080"></p>
+<p>4.测试项目<br>本地开发人员修改代码并提交SVN，5分钟后，Jenkins将会自动构建、测试、并部署到SIT测试环境。在SIT测试环境已经可以查看到最新代码的变化。</p>
+<p><img src="/img/4-12.png" alt="http://jenkins:8080"></p>
+<p>点击<code>SonarQube</code>,跳转到代码质量管理Sonar页面</p>
+<p><img src="/img/4-13.png" alt="http://jenkins:8080"></p>
+<p>5.Sonar 管理</p>
+<blockquote>
+<p>sonar中可以对每个项目自定义代码质量检查规则，可以安装插件以支持多种开发语言，相关配置参考官方文档。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://xusida.github.io/2015/08/25/CI服务器搭建/" data-id="j5pcv2szqor1cxew" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+        <a href="http://xusida.github.io/2015/08/25/CI服务器搭建/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nexus/">Nexus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sonar/">Sonar</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/03/31/Hadoop做文件服务器POC3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/08/25/CI服务器搭建/" data-title="CI服务器搭建" data-url="http://xusida.github.io/2015/08/25/CI服务器搭建/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nexus/">Nexus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Storm/">Storm</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 20.00px;">Docker</a><a href="/tags/Hadoop/" style="font-size: 16.67px;">Hadoop</a><a href="/tags/Jenkins/" style="font-size: 10.00px;">Jenkins</a><a href="/tags/Nexus/" style="font-size: 10.00px;">Nexus</a><a href="/tags/Sonar/" style="font-size: 10.00px;">Sonar</a><a href="/tags/Storm/" style="font-size: 13.33px;">Storm</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/08/25/CI服务器搭建/">CI服务器搭建</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/31/Hadoop做文件服务器POC3/">Hadoop做文件服务器POC&lt;3&gt;Nginx文件缓存</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/31/Hadoop做文件服务器POC2/">Hadoop做文件服务器POC&lt;2&gt;服务开发</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/30/Hadoop做文件服务器POC1/">Hadoop做文件服务器POC&lt;1&gt;环境准备</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/20/Docker学习3/">Docker学习&lt;3&gt;部署一个Web应用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 xusida<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"xusida"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"css/style.css"}};with(document)0[(getElementsByTagName("head")[0]||body).appendChild(createElement("script")).src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion="+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+</div>
+</body>
+</html>

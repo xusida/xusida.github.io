@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xusida.github.io/2015/08/25/CI%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2015-08-25T08:56:23.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://xusida.github.io/2015/03/31/Hadoop%E5%81%9A%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8POC3/</loc>
     <lastmod>2015-04-01T03:35:55.000Z</lastmod>
   </url>
